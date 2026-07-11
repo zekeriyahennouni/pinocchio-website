@@ -91,7 +91,7 @@ function fmt(n) { return n.toFixed(2).replace('.', ',') + ' €'; }
 async function lookupOrder(orderNumber) {
   const resultWrap = document.getElementById('resultWrap');
   try {
-    const res = await fetch(`${API_BASE}/api/orders/${encodeURIComponent(orderNumber)}`);
+    const res = await fetch(`${API_BASE}/api/orders/${encodeURIComponent(orderNumber)}`, { cache: 'no-store' });
     if (res.status === 404) {
       resultWrap.innerHTML = `<div class="error-box">Bestellung "${orderNumber}" wurde nicht gefunden. Bitte prüft die Nummer oder ruft uns an.</div><a href="index.html" class="home-btn">🏠 Zurück zur Startseite</a>`;
       return;
@@ -159,7 +159,7 @@ function renderOrder(order) {
   const bannerText = {
     received: '📥 Eure Bestellung ist bei uns eingegangen.',
     preparing: '👨‍🍳 Wird gerade frisch für euch zubereitet.',
-    ready: order.type === 'lieferung' ? '🛵 Fertig — der Fahrer ist unterwegs zu euch!' : '✅ Fertig — ihr könnt sie abholen!',
+    ready: order.type === 'lieferung' ? '🛵 Fertig — wird jetzt zu euch geliefert!' : '✅ Fertig — ihr könnt sie abholen!',
     completed: '🎉 Abgeschlossen — guten Appetit!',
   }[order.status] || '';
 
