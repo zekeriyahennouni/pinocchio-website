@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pinocchio · Pizza, Pasta &amp; mehr in Stolberg — online bestellen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#191512;
+    --paper:#faf7f1;
+    --paper-2:#f1ece1;
+    --tomato:#e2452b;
+    --tomato-dark:#b8341e;
+    --basil:#3f6b45;
+    --gold:#d9a441;
+    --gray:#726c60;
+    --line:#e7e0d1;
+    --white:#ffffff;
+    --radius:18px;
+    --shadow: 0 10px 30px rgba(25,21,18,.08);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:'Manrope', sans-serif; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:'Fraunces', serif; margin:0; color:var(--ink); font-weight:600;}
+  a{color:inherit;}
+  img,svg{max-width:100%; display:block;}
+  button{font-family:inherit; cursor:pointer;}
+  ::selection{background:var(--tomato); color:#fff;}
+
+  /* ---------- Image placeholder ---------- */
+  .ph{
+    position:relative; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:6px;
+    background:repeating-linear-gradient(135deg, #efe8d8, #efe8d8 10px, #e8e0cc 10px, #e8e0cc 20px);
+    border:2px dashed #d6c9a3; border-radius:14px; color:#8f8365; overflow:hidden;
+  }
+  .ph svg{width:28px; height:28px; opacity:.55;}
+  .ph span{font-size:.72rem; font-weight:600; text-align:center; padding:0 10px; opacity:.75;}
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:sticky; top:0; z-index:80; background:rgba(250,247,241,.92);
+    -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    padding:12px clamp(18px,4vw,50px); border-bottom:1px solid var(--line);
+  }
+  .brand{display:flex; align-items:center; gap:10px; min-width:0;}
+  .brand img{height:38px; width:auto; border-radius:8px; flex:0 0 auto;}
+  .brand-name{font-family:'Fraunces',serif; font-weight:700; font-size:1.1rem; white-space:nowrap;}
+  .brand-name span{display:block; font-family:'Manrope',sans-serif; font-weight:600; font-size:.6rem; letter-spacing:1.5px; color:var(--tomato); text-transform:uppercase;}
+  .nav-links{display:flex; gap:22px; list-style:none; margin:0; padding:0;}
+  .nav-links a{text-decoration:none; font-size:.88rem; font-weight:600; color:var(--ink); opacity:.75; transition:opacity .2s;}
+  .nav-links a:hover{opacity:1;}
+  .nav-right{display:flex; align-items:center; gap:8px; flex:0 0 auto;}
+  .icon-btn{
+    position:relative; display:flex; align-items:center; justify-content:center; width:44px; height:44px;
+    background:var(--white); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); flex:0 0 auto;
+  }
+  .icon-btn svg{width:20px; height:20px;}
+  .cart-badge{
+    position:absolute; top:-6px; right:-6px; background:var(--tomato); color:#fff; font-size:.68rem; font-weight:700;
+    min-width:18px; height:18px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px;
+  }
+  .nav-call{background:var(--ink); color:#fff; padding:10px 14px; border-radius:12px; font-weight:700; font-size:.85rem; text-decoration:none; white-space:nowrap;}
+  .nav-toggle{display:none; background:var(--white); border:1px solid var(--line); border-radius:12px; width:44px; height:44px; align-items:center; justify-content:center; flex:0 0 auto;}
+  .nav-toggle svg{width:20px; height:20px;}
+  @media(max-width:860px){
+    .nav-links{
+      display:none; position:fixed; top:66px; left:0; right:0; z-index:70;
+      background:var(--paper); border-bottom:1px solid var(--line); box-shadow:var(--shadow);
+      flex-direction:column; gap:0; padding:6px clamp(18px,4vw,50px) 12px;
+    }
+    .nav-links.open{display:flex;}
+    .nav-links a{display:block; padding:14px 4px; border-bottom:1px solid var(--line); font-size:.98rem;}
+    .nav-call{display:none;}
+    .nav-toggle{display:flex;}
+  }
+  @media(min-width:861px){ .nav-toggle{display:none !important;} }
+
+  /* ---------- HERO ---------- */
+  .hero{padding:50px clamp(18px,5vw,60px) 30px; display:grid; grid-template-columns:1.05fr .95fr; gap:44px; align-items:center;}
+  .badge-row{display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap;}
+  .pill{display:inline-flex; align-items:center; gap:6px; background:var(--white); border:1px solid var(--line); padding:7px 13px; border-radius:20px; font-size:.78rem; font-weight:700; box-shadow:var(--shadow);}
+  .pill .g{color:var(--gold);}
+  .hero h1{font-size:clamp(2.1rem,4.4vw,3.5rem); line-height:1.05;}
+  .hero h1 em{font-style:italic; color:var(--tomato); font-weight:500;}
+  .hero p.lead{color:var(--gray); font-size:1.05rem; max-width:50ch; margin-top:16px; line-height:1.6;}
+  .hero-actions{display:flex; gap:12px; margin-top:26px; flex-wrap:wrap;}
+  .btn{display:inline-flex; align-items:center; gap:8px; padding:14px 22px; border-radius:14px; font-weight:700; font-size:.92rem; text-decoration:none; transition:transform .15s, box-shadow .15s; border:none;}
+  .btn-primary{background:var(--tomato); color:#fff; box-shadow:0 10px 22px rgba(226,69,43,.35);}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-dark{background:var(--ink); color:#fff;}
+  .btn-dark:hover{transform:translateY(-2px);}
+  .btn-outline{border:1.5px solid var(--ink); color:var(--ink); background:transparent;}
+  .btn-outline:hover{background:var(--ink); color:#fff;}
+  .status-line{display:flex; align-items:center; gap:8px; margin-top:24px; font-size:.85rem; font-weight:600;}
+  .dot{width:8px; height:8px; border-radius:50%;}
+  .dot.open{background:#3f9d55;} .dot.closed{background:var(--tomato);}
+
+  .hero-photo{position:relative;}
+  .hero-photo .ph{aspect-ratio:4/4.3; width:100%;}
+  .hero-photo .rating-float{
+    position:absolute; bottom:-18px; left:-18px; background:var(--ink); color:#fff; padding:14px 18px; border-radius:16px;
+    display:flex; align-items:center; gap:10px; box-shadow:0 16px 30px rgba(0,0,0,.25);
+  }
+  .rating-float b{font-family:'Fraunces',serif; font-size:1.3rem;}
+  .rating-float small{display:block; font-size:.68rem; opacity:.7;}
+  @media(max-width:900px){ .hero{grid-template-columns:1fr;} .hero-photo{order:-1;} }
+
+  section{padding:70px clamp(18px,5vw,60px); scroll-margin-top:76px;}
+  .section-head{max-width:680px; margin:0 auto 40px;}
+  .section-head.center{text-align:center;}
+  .kicker{color:var(--tomato); text-transform:uppercase; letter-spacing:2.5px; font-size:.7rem; font-weight:800;}
+  .section-head h2{font-size:clamp(1.7rem,3.2vw,2.4rem); margin-top:10px; line-height:1.15;}
+  .section-head p{color:var(--gray); margin-top:12px; line-height:1.6; font-size:1rem;}
+
+  /* ---------- ABOUT ---------- */
+  .about{background:var(--white); border-radius:28px; margin:0 clamp(18px,5vw,60px); padding:56px clamp(20px,5vw,56px); display:grid; grid-template-columns:.85fr 1.15fr; gap:48px; align-items:center;}
+  .about .ph{aspect-ratio:1/1.05; width:100%;}
+  .quote{font-family:'Caveat',cursive; font-size:1.4rem; color:var(--tomato-dark); margin-top:18px; line-height:1.4;}
+  .quote span{display:block; font-family:'Manrope',sans-serif; font-size:.76rem; color:var(--gray); font-weight:700; margin-top:6px;}
+  .about-body p{color:#5a5445; line-height:1.75; font-size:1rem; margin:0 0 16px;}
+  .trust-strip{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:26px;}
+  .trust-card{background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:16px;}
+  .trust-card .ico{font-size:1.3rem;}
+  .trust-card h3{font-size:.92rem; margin-top:8px;}
+  .trust-card p{font-size:.8rem; color:var(--gray); margin-top:4px; line-height:1.45;}
+  .promise-toggle{margin-top:22px; display:inline-flex; align-items:center; gap:8px; background:var(--paper-2); border:1px solid var(--line); padding:11px 18px; border-radius:12px; font-weight:700; font-size:.86rem;}
+  .promise-result{margin-top:12px; font-family:'Caveat',cursive; font-size:1.25rem; color:var(--basil); min-height:1.5em;}
+  @media(max-width:900px){ .about{grid-template-columns:1fr;} }
+
+  /* ---------- MENU / ORDER ---------- */
+  .order-wrap{max-width:1200px; margin:0 auto;}
+  .tabs{position:sticky; top:66px; z-index:40; display:flex; gap:8px; overflow-x:auto; padding:14px 0 18px; background:var(--paper); scroll-margin-top:66px;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{flex:0 0 auto; background:var(--white); border:1px solid var(--line); color:var(--ink); padding:10px 18px; border-radius:20px; font-size:.85rem; font-weight:700; white-space:nowrap; box-shadow:var(--shadow);}
+  .tab-btn.active{background:var(--ink); color:#fff; border-color:var(--ink);}
+  .menu-panel{display:none;}
+  .menu-panel.active{display:block; animation:fade .3s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+  .menu-subhead{font-family:'Fraunces',serif; font-size:1.15rem; margin:36px 0 16px;}
+  .menu-subhead:first-child{margin-top:6px;}
+  .item-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:18px;}
+  .item-card{background:var(--white); border:1px solid var(--line); border-radius:16px; overflow:hidden; display:flex; flex-direction:column; box-shadow:var(--shadow);}
+  .item-card .ph{aspect-ratio:16/11; border-radius:0; border:none; background:linear-gradient(135deg, #fbeee0, #f3dcc4);}
+  .item-body{padding:14px 16px 16px; display:flex; flex-direction:column; gap:6px; flex:1;}
+  .item-name{font-weight:700; font-size:.98rem; display:flex; align-items:center; gap:6px; flex-wrap:wrap;}
+  .item-name .num{color:var(--gold); font-weight:700; font-size:.75rem;}
+  .item-name .star{background:var(--tomato); color:#fff; font-size:.62rem; font-weight:800; padding:2px 7px; border-radius:8px; letter-spacing:.4px;}
+  .item-desc{font-size:.8rem; color:var(--gray); line-height:1.4; min-height:2.2em;}
+  .item-foot{display:flex; align-items:center; justify-content:space-between; margin-top:auto; padding-top:10px;}
+  .item-price{font-family:'Fraunces',serif; font-weight:700; font-size:1.05rem;}
+  .add-btn{background:var(--ink); color:#fff; border:none; border-radius:10px; padding:9px 14px; font-size:.8rem; font-weight:700; display:flex; align-items:center; gap:6px;}
+  .add-btn:hover{background:var(--tomato);}
+  .qty-ctrl{display:flex; align-items:center; gap:6px; background:var(--ink); border-radius:10px; padding:4px;}
+  .qty-ctrl button{background:none; border:none; color:#fff; font-size:1.05rem; font-weight:800; width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:8px;}
+  .qty-ctrl button:active{background:rgba(255,255,255,.15);}
+  .qty-ctrl span{color:#fff; font-weight:700; font-size:.85rem; min-width:16px; text-align:center;}
+  .menu-note{text-align:center; margin-top:44px; font-size:.82rem; color:var(--gray);}
+
+  /* Handy-Ansicht: horizontale Listenkarten statt vertikaler Grid-Karten —
+     gleiche Gerichte/Daten, aber platzsparender & schneller scrollbar,
+     wie man es von Lieferando/Wolt auf dem Handy kennt. */
+  @media(max-width:640px){
+    .item-grid{display:flex; flex-direction:column; gap:12px;}
+    .item-card{flex-direction:row; align-items:stretch; border-radius:14px;}
+    .item-card .ph{width:92px; flex:0 0 92px; aspect-ratio:1/1; border:none; font-size:1.5rem !important;}
+    .item-body{padding:10px 12px; gap:4px;}
+    .item-name{font-size:.9rem;}
+    .item-desc{font-size:.76rem; min-height:0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
+    .item-foot{padding-top:6px; flex-wrap:wrap; gap:6px;}
+    .item-price{font-size:.95rem;}
+    .add-btn{padding:7px 11px; font-size:.75rem;}
+  }
+
+  .more-btn{
+    display:block; margin:18px auto 6px; background:var(--white); border:1.5px solid var(--ink); color:var(--ink);
+    padding:11px 22px; border-radius:24px; font-weight:700; font-size:.85rem;
+  }
+  .more-btn:hover{background:var(--ink); color:#fff;}
+
+  /* ---------- FLOATING CART BUTTON ---------- */
+  .fab-cart{
+    position:fixed; bottom:calc(22px + env(safe-area-inset-bottom)); right:22px; z-index:90; background:var(--tomato); color:#fff; border:none;
+    border-radius:30px; padding:15px 22px; display:flex; align-items:center; gap:10px; font-weight:800; font-size:.9rem;
+    box-shadow:0 14px 30px rgba(226,69,43,.4); transition:transform .15s;
+  }
+  .fab-cart:hover{transform:translateY(-2px);}
+  .fab-cart .badge{background:#fff; color:var(--tomato); border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:.75rem;}
+
+  /* ---------- CART DRAWER ---------- */
+  .overlay{position:fixed; inset:0; background:rgba(25,21,18,.5); z-index:95; opacity:0; pointer-events:none; transition:opacity .25s;}
+  .overlay.show{opacity:1; pointer-events:auto;}
+  .drawer{
+    position:fixed; top:0; right:0; height:100%; width:min(420px,92vw); background:var(--paper); z-index:100;
+    transform:translateX(100%); transition:transform .3s ease; display:flex; flex-direction:column; box-shadow:-10px 0 30px rgba(0,0,0,.2);
+  }
+  .drawer.show{transform:translateX(0);}
+  .drawer-head{display:flex; align-items:center; justify-content:space-between; padding:20px 22px; border-bottom:1px solid var(--line);}
+  .drawer-head h3{font-size:1.2rem;}
+  .close-btn{background:none; border:none; font-size:1.3rem; color:var(--ink); width:34px; height:34px;}
+  .drawer-body{flex:1; overflow-y:auto; padding:16px 22px; -webkit-overflow-scrolling:touch; overscroll-behavior:contain;}
+  .cart-row{display:flex; gap:12px; padding:14px 0; border-bottom:1px solid var(--line);}
+  .cart-row .ph{width:56px; height:56px; flex:0 0 56px; border-radius:10px;}
+  .cart-row .ph svg{width:18px; height:18px;}
+  .cart-row .info{flex:1;}
+  .cart-row .info .n{font-weight:700; font-size:.9rem;}
+  .cart-row .info .p{font-size:.8rem; color:var(--gray); margin-top:2px;}
+  .cart-row .qty-ctrl{margin-top:8px; padding:4px 8px;}
+  .cart-empty{text-align:center; color:var(--gray); padding:60px 10px; font-size:.9rem;}
+  .drawer-foot{padding:18px 22px calc(18px + env(safe-area-inset-bottom)); border-top:1px solid var(--line); background:var(--white);}
+  .subtotal-row{display:flex; justify-content:space-between; font-weight:700; font-size:1.05rem; margin-bottom:14px;}
+
+  /* ---------- CHECKOUT MODAL ---------- */
+  .modal{
+    position:fixed; inset:0; z-index:110; display:flex; align-items:center; justify-content:center; padding:20px;
+    opacity:0; pointer-events:none; transition:opacity .25s; background:rgba(25,21,18,.55);
+  }
+  .modal.show{opacity:1; pointer-events:auto;}
+  .modal-card{background:var(--paper); border-radius:24px; width:min(560px,100%); max-height:88vh; max-height:88dvh; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; box-shadow:0 30px 60px rgba(0,0,0,.3);}
+  .modal-head{display:flex; align-items:center; justify-content:space-between; padding:22px 26px; border-bottom:1px solid var(--line);}
+  .modal-body{padding:24px 26px;}
+  .steps-dots{display:flex; gap:6px; margin-bottom:22px;}
+  .steps-dots span{height:5px; flex:1; border-radius:3px; background:var(--line);}
+  .steps-dots span.on{background:var(--tomato);}
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:.8rem; font-weight:700; margin-bottom:6px; color:var(--ink);}
+  .field input, .field select, .field textarea{
+    width:100%; padding:12px 14px; border-radius:10px; border:1px solid var(--line); background:var(--white); font-family:inherit; font-size:16px;
+  }
+  .radio-group{display:grid; gap:10px;}
+  .radio-card{display:flex; align-items:center; gap:10px; border:1.5px solid var(--line); border-radius:12px; padding:13px 14px; font-weight:600; font-size:.9rem; background:var(--white);}
+  .radio-card input{width:16px; height:16px;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .demo-note{background:#fff6e9; border:1px solid #f0dcae; color:#8a6a1f; font-size:.78rem; padding:10px 12px; border-radius:10px; margin-top:6px; line-height:1.5;}
+  .modal-foot{padding:18px 26px calc(26px + env(safe-area-inset-bottom)); display:flex; gap:10px;}
+  .modal-foot .btn{flex:1; justify-content:center;}
+  .success-wrap{text-align:center; padding:20px 10px 6px;}
+  .success-wrap .ico{font-size:3rem;}
+  .success-wrap h2{margin-top:10px;}
+  .success-wrap p{color:var(--gray); margin-top:8px; line-height:1.6;}
+  .order-num{font-family:'Fraunces',serif; font-weight:700; font-size:1.4rem; color:var(--tomato); margin-top:14px;}
+
+  /* ---------- REVIEWS ---------- */
+  .reviews{}
+  .overall-rating{display:flex; align-items:center; gap:16px; justify-content:center; margin-bottom:40px;}
+  .overall-num{font-family:'Fraunces',serif; font-weight:700; font-size:2.8rem;}
+  .overall-meta{text-align:left;}
+  .overall-meta .stars{color:var(--gold); font-size:1.05rem;}
+  .overall-meta small{display:block; color:var(--gray); font-size:.8rem;}
+  .review-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:1150px; margin:0 auto;}
+  .review-card{background:var(--white); border:1px solid var(--line); border-radius:16px; padding:22px; box-shadow:var(--shadow);}
+  .review-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;}
+  .review-name{font-weight:700; font-size:.92rem;}
+  .review-source{font-size:.68rem; color:var(--gray); text-transform:uppercase; letter-spacing:1px;}
+  .review-stars{color:var(--gold); font-size:.88rem;}
+  .review-text{font-size:.88rem; line-height:1.55; color:#4a453a;}
+  .review-time{font-size:.74rem; color:var(--gray); margin-top:10px;}
+  @media(max-width:900px){ .review-grid{grid-template-columns:1fr;} }
+
+  /* ---------- LOCATION ---------- */
+  .location{display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start;}
+  .hours-table{width:100%; border-collapse:collapse; font-size:.9rem; margin-top:18px; background:var(--white); border-radius:14px; overflow:hidden; border:1px solid var(--line);}
+  .hours-table td{padding:11px 16px; border-bottom:1px solid var(--line);}
+  .hours-table tr:last-child td{border-bottom:none;}
+  .hours-table td:last-child{text-align:right; font-weight:700;}
+  .hours-table tr.today{background:#fff2ec;}
+  .hours-table tr.today td{color:var(--tomato-dark);}
+  .map-wrap{border-radius:16px; overflow:hidden; box-shadow:var(--shadow); border:1px solid var(--line); margin-top:18px;}
+  .map-wrap iframe{width:100%; height:260px; border:0; display:block;}
+  .contact-card{background:var(--ink); color:#fff; border-radius:20px; padding:30px;}
+  .contact-row{display:flex; gap:14px; padding:13px 0; border-bottom:1px solid rgba(255,255,255,.12);}
+  .contact-row:last-child{border-bottom:none;}
+  .contact-row .ico{color:var(--gold); font-size:1.1rem; width:20px;}
+  .contact-row a{text-decoration:underline; text-decoration-color:var(--gold); color:#fff;}
+  @media(max-width:900px){ .location{grid-template-columns:1fr;} }
+
+  footer{background:var(--ink); color:#c9c2b2; padding:40px clamp(18px,5vw,60px) 100px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;}
+  footer .f-brand{display:flex; align-items:center; gap:10px; color:#fff; font-family:'Fraunces',serif; font-weight:700;}
+  footer .f-brand img{height:26px; border-radius:6px;}
+  footer small{font-size:.76rem;}
+  footer .f-legal{display:flex; gap:16px; flex-wrap:wrap;}
+  footer .f-legal a{color:#c9c2b2; text-decoration:none; font-size:.78rem; font-weight:600;}
+  footer .f-legal a:hover{color:#fff;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="brand">
+    <img src="data:image/png;base64,__NEWLOGO_B64__" alt="Pinocchio Logo" style="height:38px; width:auto;">
+    <div class="brand-name">Pinocchio<span>Pizza · Pasta · Stolberg</span></div>
+  </div>
+  <ul class="nav-links" id="navLinksEl">
+    <li><a href="#ueberuns">Über uns</a></li>
+    <li><a href="#speisekarte">Bestellen</a></li>
+    <li><a href="#bewertungen">Bewertungen</a></li>
+    <li><a href="#standort">Standort</a></li>
+    <li><a href="tel:+4924028644984">📞 02402 86 44 984</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="icon-btn" id="historyOpenBtn" aria-label="Meine Bestellungen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      <span class="cart-badge" id="historyBadge" style="display:none;">0</span>
+    </button>
+    <button class="icon-btn" id="cartOpenBtn" aria-label="Warenkorb öffnen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+      <span class="cart-badge" id="cartBadge" style="display:none;">0</span>
+    </button>
+    <a class="nav-call" href="tel:+4924028644984">📞 Anrufen</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menü öffnen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-copy">
+    <div class="badge-row">
+      <div class="pill"><span class="g">★</span> 4,5 · 288 Bewertungen</div>
+      <div class="pill">👨‍👩‍👧 Familiengeführt</div>
+    </div>
+    <h1>Pizza wie in <em>Neapel,</em><br>geliefert in Stolberg.</h1>
+    <p class="lead">Frisch belegt, im Steinofen gebacken und zu euch nach Hause geliefert – oder direkt bei uns am Tisch. Jetzt einfach online bestellen.</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" onclick="document.getElementById('speisekarte').scrollIntoView({behavior:'smooth'})">🍕 Jetzt online bestellen</button>
+      <a class="btn btn-outline" href="tel:+4924028644984">Restaurant anrufen</a>
+    </div>
+    <div class="status-line"><span class="dot" id="statusDot"></span> <span id="statusText">Status wird geprüft …</span></div>
+  </div>
+  <div class="hero-photo">
+    <div class="ph">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5L5 19"/></svg>
+      <span>Bildplatzhalter — Restaurant-Außenansicht<br>(hier später Foto einfügen)</span>
+    </div>
+    <div class="rating-float">
+      <b>4,5</b>
+      <div><small>★★★★☆</small><small>288 Rezensionen</small></div>
+    </div>
+  </div>
+</header>
+
+<section class="about" id="ueberuns">
+  <div>
+    <div class="ph">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5L5 19"/></svg>
+      <span>Bildplatzhalter — Team / Küche<br>(hier später Foto einfügen)</span>
+    </div>
+    <div class="quote">„Wir kochen so, wie wir selbst essen möchten – ehrlich, frisch und ohne Abkürzungen."<span>— Familie Pinocchio, Stolberg</span></div>
+  </div>
+  <div class="about-body">
+    <div class="kicker">Über uns</div>
+    <h2 style="margin-top:10px;">Warum unsere Gäste uns vertrauen.</h2>
+    <p>Genau wie der kleine Pinocchio aus einem einfachen Stück Holz geschnitzt wurde, entsteht bei uns aus einfachen Zutaten – Mehl, Tomaten, Käse, frischen Kräutern – etwas Lebendiges. Kein Trick, keine Abkürzung: nur Handarbeit im Steinofen und ehrliches italienisches Handwerk.</p>
+    <p>Wir sind ein Familienbetrieb mitten in Stolberg. Ob ihr bei uns Platz nehmt, eure Pizza abholt oder sie euch nach Hause liefern lasst – wir behandeln jede Bestellung so, als wäre sie für unsere eigene Familie.</p>
+    <div class="trust-strip">
+      <div class="trust-card"><div class="ico">🔥</div><h3>Steinofen-Handwerk</h3><p>Frisch belegt, nicht vorgefertigt.</p></div>
+      <div class="trust-card"><div class="ico">🌿</div><h3>Frische Zutaten</h3><p>Täglich frisch statt aus der Dose.</p></div>
+      <div class="trust-card"><div class="ico">👨‍👩‍👧‍👦</div><h3>Familienbetrieb</h3><p>Inhabergeführt, kein Konzern.</p></div>
+      <div class="trust-card"><div class="ico">⭐</div><h3>288 echte Bewertungen</h3><p>4,5 von 5 Sternen im Schnitt.</p></div>
+    </div>
+    <button class="promise-toggle" id="promiseBtn">🤥 Unsere Ehrlichkeits-Garantie testen</button>
+    <div class="promise-result" id="promiseResult"></div>
+  </div>
+</section>
+
+<section id="speisekarte">
+  <div class="section-head center">
+    <div class="kicker">Online bestellen</div>
+    <h2>Wählt aus, wir kümmern uns um den Rest.</h2>
+    <p>Zur Kasse geht's über den Warenkorb-Button unten rechts. Kartenzahlung, Barzahlung bei Abholung oder PayPal.</p>
+  </div>
+  <div class="order-wrap">
+    <div class="tabs" id="tabs"></div>
+    <div id="menuPanels"></div>
+    <p class="menu-note">Alle Preise in €, inkl. MwSt. Angaben zu Zusatzstoffen &amp; Allergenen auf Anfrage. Fotos folgen in Kürze — Platzhalter markieren, wo eure Bilder später hinkommen.</p>
+  </div>
+</section>
+
+<section class="reviews" id="bewertungen">
+  <div class="section-head center">
+    <div class="kicker">Was Gäste sagen</div>
+    <h2>288 Meinungen, ein Ergebnis.</h2>
+  </div>
+  <div class="overall-rating">
+    <div class="overall-num">4,5</div>
+    <div class="overall-meta"><div class="stars">★★★★☆</div><small>Basierend auf 288 Rezensionen · Google &amp; Lieferando</small></div>
+  </div>
+  <div class="review-grid">
+    <div class="review-card">
+      <div class="review-top"><div><div class="review-name">Holger Kresse</div><div class="review-source">Google</div></div><div class="review-stars">★★★★★</div></div>
+      <p class="review-text">„Wir waren 6 Tage als Touristen in Stolberg. Am ersten Abend haben wir zufällig hier gegessen – und sind danach jeden weiteren Abend wiedergekommen."</p>
+      <div class="review-time">vor einem Monat</div>
+    </div>
+    <div class="review-card">
+      <div class="review-top"><div><div class="review-name">Susan Fröschen</div><div class="review-source">Google</div></div><div class="review-stars">★★★★★</div></div>
+      <p class="review-text">„Wir waren jetzt schon mehrfach dort – und wurden bisher nie enttäuscht! Die Besitzer sind richtig herzlich, man merkt sofort: hier steckt Leidenschaft drin."</p>
+      <div class="review-time">vor einem Jahr</div>
+    </div>
+    <div class="review-card">
+      <div class="review-top"><div><div class="review-name">Lieferando-Gast</div><div class="review-source">Lieferando</div></div><div class="review-stars">★★★★☆</div></div>
+      <p class="review-text">„Essen wurde schnell geliefert. Die Pizza war sehr lecker – nur der Salat könnte etwas frischer und mit weniger Essig kommen."</p>
+      <div class="review-time">vor 2 Jahren</div>
+    </div>
+  </div>
+</section>
+
+<section class="location" id="standort">
+  <div>
+    <div class="kicker">So findet ihr uns</div>
+    <h2>Sonnentalstraße 1,<br>52222 Stolberg</h2>
+    <p style="color:var(--gray); margin-top:12px; line-height:1.7;">Mitten in Stolberg – ob zum Sitzen, Abholen oder Liefern lassen.</p>
+    <table class="hours-table" id="hoursTable"></table>
+    <div class="map-wrap" id="mapWrap">
+      <div id="mapConsent" style="height:260px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; background:var(--paper-2); text-align:center; padding:20px;">
+        <div style="font-size:1.6rem;">🗺️</div>
+        <p style="margin:0; font-size:.85rem; color:var(--gray); max-width:36ch;">Beim Laden der Karte werden Daten an Google übertragen (u.a. IP-Adresse).</p>
+        <button class="btn btn-dark" id="loadMapBtn" style="padding:10px 18px; font-size:.85rem;">Karte laden</button>
+      </div>
+    </div>
+    <p style="font-size:.72rem; color:var(--gray); margin-top:8px;">Mehr dazu in unserer <a href="datenschutz.html" style="color:var(--tomato);">Datenschutzerklärung</a>.</p>
+  </div>
+  <div class="contact-card">
+    <div class="contact-row"><div class="ico">📍</div><div><strong style="display:block;">Adresse</strong><a href="https://www.google.com/maps/dir/?api=1&destination=Sonnentalstra%C3%9Fe+1,+52222+Stolberg" target="_blank" rel="noopener">Sonnentalstraße 1, 52222 Stolberg</a></div></div>
+    <div class="contact-row"><div class="ico">📞</div><div><strong style="display:block;">Telefon</strong><a href="tel:+4924028644984">02402 86 44 984</a></div></div>
+    <div class="contact-row"><div class="ico">🛵</div><div><strong style="display:block;">Lieferung</strong><span>Stolberg &amp; 5 km Umkreis</span></div></div>
+    <div class="contact-row"><div class="ico">⭐</div><div><strong style="display:block;">Bewertung</strong><span>4,5 von 5 – 288 Rezensionen</span></div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-brand"><img src="data:image/png;base64,__NEWLOGO_B64__" alt="Logo" style="height:34px; background:#fff; border-radius:6px; padding:2px;"> Pinocchio Stolberg</div>
+  <small>Sonnentalstraße 1 · 52222 Stolberg · Tel. 02402 86 44 984 · 4,5 ★ (288 Rezensionen)</small>
+  <div class="f-legal">
+    <a href="impressum.html">Impressum</a>
+    <a href="datenschutz.html">Datenschutz</a>
+    <a href="agb.html">AGB &amp; Widerruf</a>
+  </div>
+</footer>
+
+<!-- Floating cart button -->
+<button class="fab-cart" id="fabCart">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+  Warenkorb <span class="badge" id="fabBadge">0</span>
+</button>
+
+<!-- Cart drawer -->
+<div class="overlay" id="overlay"></div>
+<div class="drawer" id="cartDrawer">
+  <div class="drawer-head">
+    <h3>Euer Warenkorb</h3>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <button id="clearCartBtn" style="background:none; border:none; color:var(--tomato); font-size:.78rem; font-weight:700; cursor:pointer; display:none;">🗑 Leeren</button>
+      <button class="close-btn" id="cartCloseBtn">✕</button>
+    </div>
+  </div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="drawer-foot">
+    <div id="crossSellNudge" style="display:none; background:var(--paper-2); border-radius:10px; padding:10px 12px; margin-bottom:12px; font-size:.82rem; display:flex; align-items:center; justify-content:space-between; gap:8px;">
+      <span>🥤 Durst? Noch ein Getränk dazu?</span>
+      <button onclick="document.querySelector('[data-tab-key=getraenke]')?.click(); closeCart();" style="background:none; border:1px solid var(--line); border-radius:8px; padding:5px 10px; font-size:.76rem; font-weight:700; color:var(--ink);">Ansehen</button>
+    </div>
+    <div class="subtotal-row"><span>Zwischensumme</span><span id="cartSubtotal">0,00 €</span></div>
+    <button class="btn btn-primary" style="width:100%; justify-content:center;" id="checkoutBtn">Zur Kasse</button>
+  </div>
+</div>
+
+<!-- Bestellverlauf drawer -->
+<div class="drawer" id="historyDrawer">
+  <div class="drawer-head"><h3>Meine Bestellungen</h3><button class="close-btn" id="historyCloseBtn">✕</button></div>
+  <div class="drawer-body" id="historyBody"></div>
+</div>
+
+<!-- Checkout modal -->
+<div class="modal" id="checkoutModal">
+  <div class="modal-card">
+    <div class="modal-head"><h3 id="modalTitle">Bestellung abschließen</h3><button class="close-btn" id="modalCloseBtn">✕</button></div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot" id="modalFoot"></div>
+  </div>
+</div>
+
+<script>
+/* ================= Öffnungsstatus ================= */
+const hours = {
+  1:{name:"Montag", open:"08:00", close:"22:00"},
+  2:{name:"Dienstag", open:"08:00", close:"22:00"},
+  3:{name:"Mittwoch", closed:true},
+  4:{name:"Donnerstag", open:"08:00", close:"22:00"},
+  5:{name:"Freitag", open:"08:00", close:"22:00"},
+  6:{name:"Samstag", open:"08:00", close:"22:00"},
+  0:{name:"Sonntag", open:"08:00", close:"22:00"}
+};
+const order = [1,2,3,4,5,6,0];
+const now = new Date();
+const day = now.getDay();
+const todayInfo = hours[day];
+const tbl = document.getElementById('hoursTable');
+order.forEach(d=>{
+  const h = hours[d];
+  const tr = document.createElement('tr');
+  if(d===day) tr.classList.add('today');
+  const label = h.closed ? "Geschlossen (Ruhetag)" : h.open + "–" + h.close;
+  tr.innerHTML = `<td>${h.name}</td><td>${label}</td>`;
+  tbl.appendChild(tr);
+});
+function isOpenNow(){
+  if(todayInfo.closed) return false;
+  const [oh,om] = todayInfo.open.split(':').map(Number);
+  const [ch,cm] = todayInfo.close.split(':').map(Number);
+  const openMin = oh*60+om, closeMin = ch*60+cm;
+  const nowMin = now.getHours()*60+now.getMinutes();
+  return nowMin >= openMin && nowMin < closeMin;
+}
+const dot = document.getElementById('statusDot');
+const txt = document.getElementById('statusText');
+if(isOpenNow()){ dot.classList.add('open'); txt.textContent = "Jetzt geöffnet · bis " + todayInfo.close + " Uhr — online bestellbar"; }
+else{ dot.classList.add('closed'); txt.textContent = todayInfo.closed ? "Heute geschlossen (Ruhetag)" : "Geschlossen · öffnet um " + todayInfo.open + " Uhr"; }
+
+/* ================= Google Maps erst nach Klick laden (Datenschutz) ================= */
+const loadMapBtn = document.getElementById('loadMapBtn');
+if(loadMapBtn){
+  loadMapBtn.addEventListener('click', () => {
+    const mapWrap = document.getElementById('mapWrap');
+    mapWrap.innerHTML = '<iframe src="https://www.google.com/maps?q=Sonnentalstra%C3%9Fe+1,+52222+Stolberg&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Standort Pinocchio"></iframe>';
+  });
+}
+
+/* ================= Ehrlichkeits-Garantie ================= */
+const pBtn = document.getElementById('promiseBtn');
+const pResult = document.getElementById('promiseResult');
+const phrases = ["Ertappt! Nur der Pizzateig darf bei uns wachsen. 🍕","Keine Notlüge: alles frisch vom Steinofen.","Ehrenwort eines Holzkopfs: 100% echte Zutaten."];
+let pi = 0;
+pBtn.addEventListener('click', () => { pResult.textContent = phrases[pi % phrases.length]; pi++; });
+
+/* ================= Menü-Daten ================= */
+const menuData = {
+  pizza: { label:"🍕 Pizza", groups:[
+    {title:"Pizza Classica — Grundbelag: Tomatensoße, Käse, Oregano", items:[
+      [1,"Margherita","Tomatensoße, Käse","6,50",false,true],
+      [2,"Napoletana","Oliven, Kapern, Sardellen, Knoblauch","8,00"],
+      [3,"Salami","Salami","7,00",false,true],
+      [4,"Mario","Scampi, Spinat","9,50"],
+      [5,"Inferno","Peperoni, Salami (scharf)","8,00"],
+      [6,"Bendito","Zwiebeln, Peperoni (scharf), Knoblauch","8,00"],
+      [7,"Prosciutto e Peperoni","Hinterschinken, Peperoni","8,50"],
+      [8,"Spinaci","Spinat, Knoblauch","8,00"],
+      [9,"Prosciutto","Hinterschinken","7,50"],
+      [10,"Funghi","Champignons","7,00"],
+      [11,"Roma","Champignons, Hinterschinken","8,00"],
+      [12,"Calzone","gefüllt: Hinterschinken, Tomate, Knoblauch (scharf)","9,50"],
+      [13,"Quattro Stagioni","Spinat, Artischocken, Hinterschinken, Thunfisch","9,50"],
+      [14,"Tonno","Thunfisch","8,00"],
+      [15,"Esmeralda","Broccoli, Mais, Zwiebeln, Schafskäse","9,00"],
+      [16,"Valentino","Champignons, Artischocken","9,00"],
+      [17,"Pizzabrötchen gefüllt","Hinterschinken, Salami, Spinat","6,50"],
+      [18,"Cortadina","Champignons, Knoblauch","7,50"],
+      [19,"Marinara","gemischte Meeresfrüchte","9,50"],
+      [20,"Sardegna","Zwiebeln, Champignons, Paprika","8,00"],
+    ]},
+    {title:"Weitere Pizza-Spezialitäten", items:[
+      [21,"Grandiosa","Zwiebeln, Peperoni","7,50"],
+      [22,"Deliziosa","Salami","10,00"],
+      [23,"Scampi","Scampi, Sardellen","10,00"],
+      [24,"Caserreccia","Spinat, Knoblauch, Schafskäse","9,50"],
+      [25,"Miete","Paprika, Salami, Sardellen","9,50"],
+      [26,"Italia","Spinat, Zwiebeln, Paprika","8,50"],
+      [27,"Campagnola","Sardellen, Zwiebeln, Champignons","8,50"],
+      [28,"Vesuvio","Paprika, Zwiebeln","8,00"],
+      [29,"Del Sud","Hinterschinken, Artischocken, Knoblauch","9,50"],
+      [30,"Hawaii","Hinterschinken, Ananas","8,50"],
+      [31,"Pirata","Paprika, Artischocken, Oliven (scharf), Knoblauch","9,00"],
+      [32,"Rustica","Paprika, Zwiebeln, Sardellen","8,50"],
+      [33,"Pinocchio","Frühlingszwiebeln, Hinterschinken, Salami, Spinat, Knoblauch","9,50",true,true],
+      [34,"Olivella","Champignons, Hinterschinken","7,50"],
+      [36,"La Grotta","Spinat, Hinterschinken, Krabben","9,50"],
+      [37,"Antonio","Champignons, Ei","8,00"],
+      [40,"Primavera","Thunfisch, Hinterschinken, zwei Käsesorten (scharf)","9,50"],
+      [43,"Emilio","Thunfisch, Sardellen","9,50"],
+      [44,"Matta","Peperoni, Salami, Sardellen","9,50"],
+      [45,"Bolognese","Rindfleischsoße","9,50"],
+    ]},
+    {title:"Pizza — Hausklassiker", items:[
+      [46,"Mare","Champignons, Krabben, Thunfisch","9,50"],
+      [47,"Verdura","Gemüse, Knoblauch","8,50"],
+      [48,"Casa","Champignons, Thunfisch","8,50"],
+      [49,"Rucola","Parmaschinken, Kirschtomaten, Rucola, Parmesan","9,50"],
+      [50,"Magica","Hinterschinken, Kirschtomaten, überbacken","9,50"],
+      [51,"Pescatore","Thunfisch, Meeresfrüchte, Sardellen, Knoblauch","10,00"],
+      [52,"Pugliese","Thunfisch, Zwiebeln","9,50"],
+      [53,"Zingara","Thunfisch, Champignons, Paprika, Knoblauch","9,50"],
+      [54,"Cosenza","Champignons, Oliven","9,50"],
+      [55,"Kaiser","frische Tomaten, Oliven, Basilikum, Mozzarella","9,50"],
+      [56,"Rimini","Champignons, Paprika, Spinat, Zwiebeln","9,50"],
+      [57,"Andrea","Parmaschinken, Gorgonzola","9,50"],
+      [58,"4 Formaggi","vier verschiedene Käsesorten","9,50"],
+      [59,"Famiglia","Familienpizza Ø 40 cm für 2 Pers.","19,00"],
+      [60,"Pizzablech 40×60 cm","für 4 Personen — auf Anfrage","auf Anfrage"],
+    ]},
+  ]},
+  salate:{ label:"🥗 Salate", groups:[
+    {title:"Salate", items:[
+      [163,"Lena","grüner Salat, Gurken, Tomaten, Zwiebeln, Lachs, Thunfisch, Oliven","11,00"],
+      [164,"Bella Italia","grüner Salat, Tomaten, Schafskäse, Zwiebeln","9,50",false,true],
+      [165,"Eva","grüner Salat, Gurken, Tomaten, Rucola, Parmesan","9,00",false,true],
+      [166,"Verde","grüner Salat","7,00"],
+      [167,"Pomodori","grüner Salat, Tomaten, Zwiebeln","7,50"],
+      [168,"Fantasia","Hähnchensalat, Rucola, Parmesan, Tomaten, Speck, Champignons","11,50"],
+      [170,"Pinocchio-Salat","grüner Salat, Rotkohl, Tomaten, Schafskäse, Rucola","12,50",true,true],
+      [171,"Tonno Fagioli","grüner Salat, Tomaten, Thunfisch, Bohnen","10,50"],
+      [172,"di Pollo","grüner Salat, Hähnchenbrust, Tomaten, Meeresfrüchte","12,00"],
+      [173,"Niçoise","grüner Salat, Tomaten, Thunfisch, Ei, Oliven","10,50"],
+      [174,"Caprigiosa","grüner Salat, Gurken, Tomaten, Mais, Knoblauch, Thunfisch","9,50"],
+      [175,"Marinara","grüner Salat, Gurken, Tomaten, Meeresfrüchte","9,00"],
+      [176,"Formaggio","grüner Salat, Gurken, Tomaten, Käse, Ei","8,50"],
+      [177,"Tonno","grüner Salat, Gurken, Tomaten, Thunfisch","8,50"],
+      [178,"Bizzarella","grüner Salat, Gurken, Zwiebeln, Tomaten","7,00"],
+      [179,"Speciale","grüner Salat, Gurken, Tomaten, Zwiebeln, Schafskäse, Ei","8,50"],
+      [180,"Contadina","grüner Salat, Gurken, Tomaten, Schafskäse","8,00"],
+      [181,"Algerina","grüner Salat, Gurken, Tomaten, Artischocken","8,00"],
+      [182,"Gamberetti","grüner Salat, Krabben, Knoblauch","9,00"],
+      [183,"Hawaii","grüner Salat, Gurken, Tomaten, Ananas","7,00"],
+      [184,"Mirto","grüner Salat, Gurken, Tomaten, Bohnen, Mais","7,50"],
+    ]}
+  ]},
+  pasta:{ label:"🍝 Pasta", groups:[
+    {title:"Spaghetti", items:[
+      [187,"Napoli","Tomatensoße","7,50"],
+      [188,"Bolognese","Fleischsoße","9,00",false,true],
+      [189,"Chef","Hähnchenbrust, Broccoli, Champignons, Sahnesoße","10,00"],
+      [190,"Carbonara","Hinterschinken, Sahne, Ei, Parmesan","9,00",false,true],
+      [191,"Amatriciana","Zwiebeln, Hinterschinken, Tomatensoße","9,00"],
+      [192,"Diavolo","scharf: Hinterschinken, Tomatensoße, Paprika","9,50"],
+      [193,"Marinara","gemischte Meeresfrüchte, Knoblauch","12,50"],
+      [194,"Gorgonzola","Sahnesoße, Gorgonzola","9,00"],
+      [195,"Bella Italia","Sahne, Champignons, Hinterschinken","9,00"],
+      [196,"Tonno","Thunfisch, Sahnesoße","9,00"],
+      [197,"Mare e Monti","Broccoli, Krabben, Champignons","12,50"],
+      [198,"alla Zingara","Tomatensoße, Champignons, Paprika, Knoblauch","9,00"],
+      [199,"Alfredo","Sahne, Champignons, Parmesan","9,00"],
+      [200,"Bucco","Tomatensoße, Hinterschinken (scharf)","9,00"],
+      [202,"Mirto","Tomaten-Sahnesoße, Hinterschinken, Erbsen, Knoblauch, Champignons","9,00"],
+      [203,"Roseanne","Tomaten-Sahnesoße, Hinterschinken, Champignons","9,00"],
+      [204,"Longobucco","Tomaten-Sahnesoße, Hinterschinken (scharf)","9,00"],
+      [205,"Roseamare","Tomaten-Sahnesoße, Champignons, Krabben","12,50"],
+      [206,"all'Uovo","Tomatensoße mit Ei","8,50"],
+      [207,"Aglio e Olio","Knoblauch, Olivenöl (scharf)","7,50"],
+      [208,"Arrabiata","Tomatensoße, Oliven, Peperoni (scharf)","8,00"],
+      [209,"Gamberoni","Tomatensoße, Knoblauch","12,50"],
+    ]},
+    {title:"Maccheroni", items:[
+      [210,"Gratinati","Tomaten-Sahnesoße, Käse, überbacken","8,50"],
+      [211,"Bolognese","Fleischsoße","7,50"],
+      [212,"Napoli","Tomatensoße","7,50"],
+      [213,"Gorgonzola","Sahne, Gorgonzola","8,50"],
+      [214,"Bella Italia","Sahne, Champignons, Hinterschinken","9,00"],
+      [215,"4 Formaggi","vier Käsesorten","9,50"],
+      [216,"Broccoli","Broccoli in Sahnesoße, überbacken","9,00"],
+      [217,"Tonno","Thunfisch, Sahnesoße","9,00"],
+      [218,"Mare e Monti","Broccoli, Krabben, Champignons","12,50"],
+      [219,"alla Zingara","Tomatensoße, Champignons, Paprika, Knoblauch","9,00"],
+      [220,"Alfredo","Sahne, Champignons, Parmesan","9,00"],
+      [221,"Longobucco","Tomatensoße, Hinterschinken (scharf), Knoblauch","9,00"],
+    ]},
+    {title:"Tortellini", items:[
+      [223,"Napoli","Tomatensoße","7,50"],
+      [224,"Gorgonzola","Gorgonzola, Sahne","8,50"],
+      [225,"Gamberoni","Krabben, Sahnesoße","12,50"],
+      [226,"Funghi","Champignons in Sahnesoße","8,00"],
+      [227,"Alfredo","Sahne, Erbsen, Parmesan","9,50",false,true],
+      [228,"Panna e Prosciutto","Sahnesoße, Hinterschinken","9,50"],
+      [229,"Mirto","Tomaten-Sahnesoße, Hinterschinken, Champignons","9,00"],
+      [230,"Longobucco","Tomatensoße, Hinterschinken (scharf), Knoblauch","9,00"],
+      [231,"Carbonara","Hinterschinken, Ei, Sahnesoße, Parmesan","9,50"],
+    ]}
+  ]},
+  fisch:{ label:"🐟 Fisch & Meer", groups:[
+    {title:"Pesce", items:[
+      [194,"Gamberoni alla Griglia","vom Grill, mit Beilage","21,50",false,true],
+      [195,"Gamberoni alla Provinciale","Tomaten-Sahnesoße, Knoblauch","21,50"],
+      [196,"Gamberoni al Pepe Verde","grüne Pfeffersoße","22,50"],
+      [197,"Gamberoni Aglio e Peperoncino","Knoblauch, Peperoncino","21,50"],
+      [198,"Salmone alla Griglia","gegrilltes Lachsfilet","20,50",false,true],
+      [228,"Salmone alla Provinciale","Tomaten-Sahnesoße, Knoblauch","21,00"],
+      [240,"Salmone al Vino Bianco","Weißwein, Sahne","21,00"],
+      [241,"Salmone al Pepe Verde","grüne Pfeffersoße","20,50"],
+    ]},
+    {title:"Zuppe", items:[
+      [350,"Crema di Pomodoro","Tomatencremesuppe","6,50"],
+      [351,"Tortellini in Brodo","Fleischbrühe mit gefüllten Nudeln","6,50"],
+      [353,"Minestrone all'Italiana","italienische Gemüsesuppe","6,50",false,true],
+    ]}
+  ]},
+  beilagen:{ label:"🍟 Beilagen & Dessert", groups:[
+    {title:"Beilagen", items:[
+      [null,"Pommes frites","",  "3,50",false,true],
+      [null,"Kroketten","","3,50"],
+      [null,"Broccoli","","3,50"],
+      [null,"Spinat","","3,50"],
+      [null,"Gemischter Salat","","3,50",false,true],
+      [null,"Tagesbeilage","","3,50"],
+      [null,"Brötchen","mit Kräutercreme","3,50"],
+    ]},
+    {title:"Dessert", items:[
+      [null,"Auswahl an Desserts","fragen Sie uns bitte","auf Anfrage",false,true],
+      [null,"Flaschenweine","fragen Sie uns bitte","auf Anfrage"],
+    ]}
+  ]},
+  getraenke:{ label:"🥤 Getränke", groups:[
+    {title:"Getränke zum Mitnehmen", items:[
+      [null,"Coca-Cola","0,5 l","2,50"],
+      [null,"Coca-Cola Light","0,5 l","2,50"],
+      [null,"Coca-Cola Zero","0,5 l","2,50"],
+      [null,"Fanta","0,5 l","2,50"],
+      [null,"Sprite","0,5 l","2,50"],
+      [null,"San Pellegrino","0,5 l","2,50"],
+      [null,"Bitburger","0,5 l","3,00"],
+      [null,"Weißbier","0,5 l","3,00"],
+      [null,"Rotwein","0,7 l","8,00"],
+      [null,"Weißwein","0,7 l","8,00"],
+      [null,"Lambrusco","0,7 l","8,00"],
+    ]}
+  ]}
+};
+
+/* ================= Backend-Verbindung ================= */
+// TODO: Sobald das Backend online ist (siehe README im Backend-Projekt),
+// hier die echte Adresse eintragen, z. B. "https://pinocchio-backend.onrender.com"
+const API_BASE = "https://pinocchio-backend.onrender.com";
+const MIN_ORDER_DELIVERY = 15.0; // € – muss zum Wert in server.js passen
+
+/* ================= Warenkorb-Status ================= */
+// Der Warenkorb wird im Browser gespeichert (localStorage), damit er auch
+// nach der Weiterleitung zu Stripe und zurück erhalten bleibt.
+function loadCartFromStorage(){
+  try {
+    const raw = localStorage.getItem('pinocchio_cart');
+    return raw ? JSON.parse(raw) : {};
+  } catch(e) { return {}; }
+}
+function saveCartToStorage(){
+  try { localStorage.setItem('pinocchio_cart', JSON.stringify(cart)); } catch(e) {}
+}
+const cart = loadCartFromStorage(); // id -> {name, price, qty}
+
+/* ================= Bestellverlauf (localStorage) ================= */
+function loadOrderHistory(){
+  try {
+    const raw = localStorage.getItem('pinocchio_order_history');
+    return raw ? JSON.parse(raw) : [];
+  } catch(e) { return []; }
+}
+function saveOrderToHistory(order){
+  try {
+    const history = loadOrderHistory();
+    history.unshift(order); // neueste zuerst
+    localStorage.setItem('pinocchio_order_history', JSON.stringify(history.slice(0, 10)));
+    updateHistoryBadge();
+  } catch(e) {}
+}
+function updateHistoryBadge(){
+  const count = loadOrderHistory().length;
+  const badge = document.getElementById('historyBadge');
+  if(!badge) return;
+  badge.textContent = count;
+  badge.style.display = count > 0 ? 'flex' : 'none';
+}
+
+function priceToNumber(p){
+  if(p === 'auf Anfrage') return null;
+  return parseFloat(p.replace('.','').replace(',','.'));
+}
+function fmt(n){ return n.toFixed(2).replace('.', ',') + ' €'; }
+
+function updateCartUI(){
+  const ids = Object.keys(cart);
+  const count = ids.reduce((s,id)=>s+cart[id].qty,0);
+  document.getElementById('fabBadge').textContent = count;
+  const navBadge = document.getElementById('cartBadge');
+  navBadge.textContent = count;
+  navBadge.style.display = count>0 ? 'flex':'none';
+  document.getElementById('clearCartBtn').style.display = ids.length>0 ? 'inline-block' : 'none';
+
+  const body = document.getElementById('cartBody');
+  body.innerHTML = '';
+  let subtotal = 0;
+  if(ids.length===0){
+    body.innerHTML = '<div class="cart-empty">Euer Warenkorb ist noch leer.<br>Stöbert in der Speisekarte und fügt eure Favoriten hinzu 🍕</div>';
+  } else {
+    ids.forEach(id=>{
+      const it = cart[id];
+      subtotal += it.price * it.qty;
+      const row = document.createElement('div');
+      row.className = 'cart-row';
+      row.innerHTML = `
+        <div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5L5 19"/></svg></div>
+        <div class="info">
+          <div class="n">${it.name}</div>
+          <div class="p">${fmt(it.price)} · Zwischensumme: ${fmt(it.price*it.qty)}</div>
+          <div class="qty-ctrl" style="background:var(--paper-2);">
+            <button style="color:var(--ink);" onclick="changeQty('${id}',-1)">–</button>
+            <span style="color:var(--ink);">${it.qty}</span>
+            <button style="color:var(--ink);" onclick="changeQty('${id}',1)">+</button>
+          </div>
+        </div>`;
+      body.appendChild(row);
+    });
+  }
+  document.getElementById('cartSubtotal').textContent = fmt(subtotal);
+  const drinkNames = menuData.getraenke.groups.flatMap(g=>g.items.map(it=>it[1]));
+  const hasDrink = Object.values(cart).some(it => drinkNames.includes(it.name));
+  const nudgeEl = document.getElementById('crossSellNudge');
+  if(nudgeEl) nudgeEl.style.display = (ids.length > 0 && !hasDrink) ? 'flex' : 'none';
+  document.querySelectorAll('.item-card').forEach(card=>{
+    const id = card.dataset.id;
+    const stepper = card.querySelector('.stepper-slot');
+    if(!stepper) return;
+    if(card.dataset.priceless === '1'){
+      stepper.innerHTML = `<span style="font-size:.75rem; color:var(--gray);">Bitte anrufen</span>`;
+      return;
+    }
+    if(cart[id]){
+      stepper.innerHTML = `<div class="qty-ctrl"><button onclick="changeQty('${id}',-1)">–</button><span>${cart[id].qty}</span><button onclick="changeQty('${id}',1)">+</button></div>`;
+    } else {
+      stepper.innerHTML = `<button class="add-btn" onclick="addToCart('${id}')">+ Hinzufügen</button>`;
+    }
+  });
+}
+
+// Merkt sich zu jeder Katalog-Referenz (Kategorie::Nummer/Name) die
+// Anzeige-Daten (Name, Preis) — befüllt beim Rendern der Speisekarte.
+// Der Server prüft Preise ohnehin nochmal selbst; das hier ist nur für
+// eine korrekte Anzeige im Warenkorb.
+const CATALOG_LOOKUP = {};
+
+function addToCart(catalogKey){
+  const info = CATALOG_LOOKUP[catalogKey];
+  if(!info) return;
+  if(cart[catalogKey]) cart[catalogKey].qty++;
+  else cart[catalogKey] = {catalogKey, name:info.name, price:info.price, qty:1};
+  saveCartToStorage();
+  updateCartUI();
+}
+function changeQty(id, delta){
+  if(!cart[id]) return;
+  cart[id].qty += delta;
+  if(cart[id].qty<=0) delete cart[id];
+  saveCartToStorage();
+  updateCartUI();
+}
+
+/* ================= Menü rendern ================= */
+const tabsEl = document.getElementById('tabs');
+const panelsEl = document.getElementById('menuPanels');
+const keys = Object.keys(menuData);
+const EXPAND_LIMIT = 6;
+
+const CATEGORY_ICON = {
+  pizza: '🍕', salate: '🥗', pasta: '🍝', fisch: '🐟', beilagen: '🍟', getraenke: '🥤'
+};
+
+function buildItemCard(item, categoryKey){
+  const [num, name, desc, price, star, bestseller] = item;
+  const priceNum = priceToNumber(price);
+  // Eindeutiger Katalog-Schlüssel: Kategorie + Nummer (oder Name, falls
+  // keine Nummer vorhanden) — so werden z.B. "Bolognese" bei Spaghetti
+  // und bei Maccheroni trotz unterschiedlicher Preise korrekt getrennt.
+  const cardId = categoryKey + '::' + (num!==null ? num : name);
+  if(priceNum!==null) CATALOG_LOOKUP[cardId] = { name, price: priceNum };
+  const card = document.createElement('div');
+  card.className = 'item-card';
+  card.dataset.id = cardId;
+  card.dataset.priceless = priceNum===null ? '1' : '0';
+  const icon = CATEGORY_ICON[categoryKey] || '🍽️';
+  card.innerHTML = `
+    <div class="ph" style="font-size:2.2rem;">${icon}</div>
+    <div class="item-body">
+      <div class="item-name">${num?'<span class="num">#'+num+'</span>':''} ${name} ${bestseller?'<span class="star" style="background:var(--gold);">🏆 Bestseller</span>':''}${star?'<span class="star">Hausempfehlung</span>':''}</div>
+      <div class="item-desc">${desc||''}</div>
+      <div class="item-foot">
+        <div class="item-price">${price}${priceNum!==null?' €':''}</div>
+        <div class="stepper-slot">
+          ${priceNum!==null ? `<button class="add-btn" onclick="addToCart('${cardId}')">+ Hinzufügen</button>` : `<span style="font-size:.75rem; color:var(--gray);">Bitte anrufen</span>`}
+        </div>
+      </div>
+    </div>`;
+  return card;
+}
+
+function buildGrid(items, collapsible, categoryKey){
+  const wrap = document.createElement('div');
+  const grid = document.createElement('div');
+  grid.className = 'item-grid';
+  wrap.appendChild(grid);
+
+  items.forEach((item, i)=>{
+    const card = buildItemCard(item, categoryKey);
+    if(collapsible && i >= EXPAND_LIMIT){
+      card.classList.add('extra-item');
+      card.style.display = 'none';
+    }
+    grid.appendChild(card);
+  });
+
+  if(collapsible && items.length > EXPAND_LIMIT){
+    const moreBtn = document.createElement('button');
+    moreBtn.className = 'more-btn';
+    const hiddenCount = items.length - EXPAND_LIMIT;
+    moreBtn.textContent = `Mehr anzeigen (+${hiddenCount})`;
+    let expanded = false;
+    moreBtn.addEventListener('click', ()=>{
+      expanded = !expanded;
+      grid.querySelectorAll('.extra-item').forEach(el=>{ el.style.display = expanded ? '' : 'none'; });
+      moreBtn.textContent = expanded ? 'Weniger anzeigen' : `Mehr anzeigen (+${hiddenCount})`;
+    });
+    wrap.appendChild(moreBtn);
+  }
+  return wrap;
+}
+
+keys.forEach((key, idx)=>{
+  const btn = document.createElement('button');
+  btn.className = 'tab-btn' + (idx===0 ? ' active':'');
+  btn.textContent = menuData[key].label;
+  btn.dataset.tabKey = key;
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.menu-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+key).classList.add('active');
+    document.getElementById('tabs').scrollIntoView({behavior:'smooth', block:'start'});
+  });
+  tabsEl.appendChild(btn);
+
+  const panel = document.createElement('div');
+  panel.className = 'menu-panel' + (idx===0 ? ' active':'');
+  panel.id = 'panel-'+key;
+
+  // Bestseller-Spotlight: die 3 markierten Artikel dieser Kategorie zuerst
+  const bestsellerItems = [];
+  menuData[key].groups.forEach(group=>{
+    group.items.forEach(item=>{ if(item[5]===true) bestsellerItems.push(item); });
+  });
+  if(bestsellerItems.length){
+    const h = document.createElement('div');
+    h.className = 'menu-subhead';
+    h.innerHTML = '🏆 Beliebteste bei euch';
+    panel.appendChild(h);
+    panel.appendChild(buildGrid(bestsellerItems, false, key));
+  }
+
+  menuData[key].groups.forEach(group=>{
+    const h = document.createElement('div');
+    h.className = 'menu-subhead';
+    h.textContent = group.title;
+    panel.appendChild(h);
+    panel.appendChild(buildGrid(group.items, true, key));
+  });
+  panelsEl.appendChild(panel);
+});
+updateCartUI();
+updateHistoryBadge();
+
+/* ================= Mobiles Menü ================= */
+const navToggle = document.getElementById('navToggle');
+const navLinksEl = document.getElementById('navLinksEl');
+navToggle.addEventListener('click', ()=> navLinksEl.classList.toggle('open'));
+navLinksEl.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=> navLinksEl.classList.remove('open')));
+
+/* ================= Body-Scroll sperren, wenn Overlay offen ================= */
+function lockBodyScroll(){ document.body.style.overflow = 'hidden'; }
+function unlockBodyScroll(){
+  if(!document.getElementById('cartDrawer').classList.contains('show') && !document.getElementById('checkoutModal').classList.contains('show')){
+    document.body.style.overflow = '';
+  }
+}
+
+/* ================= Cart Drawer öffnen/schließen ================= */
+const overlay = document.getElementById('overlay');
+const drawer = document.getElementById('cartDrawer');
+function openCart(){ closeHistory(); overlay.classList.add('show'); drawer.classList.add('show'); lockBodyScroll(); }
+function closeCart(){ overlay.classList.remove('show'); drawer.classList.remove('show'); unlockBodyScroll(); }
+document.getElementById('fabCart').addEventListener('click', openCart);
+document.getElementById('cartOpenBtn').addEventListener('click', openCart);
+document.getElementById('cartCloseBtn').addEventListener('click', closeCart);
+document.getElementById('clearCartBtn').addEventListener('click', ()=>{
+  if(confirm('Warenkorb wirklich komplett leeren?')){
+    Object.keys(cart).forEach(k=>delete cart[k]);
+    saveCartToStorage();
+    updateCartUI();
+  }
+});
+overlay.addEventListener('click', ()=>{ closeCart(); closeHistory(); closeModal(); });
+
+/* ================= Verlauf-Drawer öffnen/schließen ================= */
+const historyDrawer = document.getElementById('historyDrawer');
+function openHistory(){ closeCart(); renderHistory(); overlay.classList.add('show'); historyDrawer.classList.add('show'); lockBodyScroll(); }
+function closeHistory(){ overlay.classList.remove('show'); historyDrawer.classList.remove('show'); unlockBodyScroll(); }
+document.getElementById('historyOpenBtn').addEventListener('click', openHistory);
+document.getElementById('historyCloseBtn').addEventListener('click', closeHistory);
+
+function renderHistory(){
+  const body = document.getElementById('historyBody');
+  const history = loadOrderHistory();
+  if(history.length === 0){
+    body.innerHTML = '<div class="cart-empty">Noch keine Bestellungen aufgegeben.<br>Eure erste Bestellung erscheint hier — inklusive "Nochmal bestellen" 🍕</div>';
+    return;
+  }
+  body.innerHTML = history.map(o => {
+    const itemsStr = o.items.map(it => `${it.qty}× ${it.name}`).join(', ');
+    const dateStr = new Date(o.createdAt).toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    return `
+      <div class="cart-row" style="flex-direction:column; align-items:stretch; gap:8px;">
+        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+          <strong style="font-size:.92rem;">${o.orderNumber}</strong>
+          <span style="font-size:.74rem; color:var(--gray);">${dateStr}</span>
+        </div>
+        <div class="items-list" style="font-size:.85rem; color:#4a453a;">${itemsStr}</div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <strong style="font-size:.9rem;">${fmt(o.total)}</strong>
+          <div style="display:flex; gap:8px;">
+            <a href="order-status.html?order=${encodeURIComponent(o.orderNumber)}" class="add-btn" style="background:var(--white); color:var(--ink); border:1px solid var(--line); text-decoration:none;">📦 Verfolgen</a>
+            <button class="add-btn" onclick="reorder('${o.orderNumber}')">🔁 Nochmal bestellen</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function reorder(orderNumber){
+  const history = loadOrderHistory();
+  const order = history.find(o => o.orderNumber === orderNumber);
+  if(!order) return;
+  order.items.forEach(it => {
+    // Ältere Verlaufseinträge (vor diesem Update) haben evtl. noch keinen
+    // catalogKey gespeichert — in dem Fall überspringen wir sie sicherheitshalber,
+    // statt mit falschen/veralteten Preisen weiterzumachen.
+    if(!it.catalogKey || !CATALOG_LOOKUP[it.catalogKey]) return;
+    if(cart[it.catalogKey]) cart[it.catalogKey].qty += it.qty;
+    else cart[it.catalogKey] = { catalogKey: it.catalogKey, name: it.name, price: it.price, qty: it.qty };
+  });
+  saveCartToStorage();
+  updateCartUI();
+  closeHistory();
+  openCart();
+}
+
+/* ================= Checkout-Flow ================= */
+const modal = document.getElementById('checkoutModal');
+const modalBody = document.getElementById('modalBody');
+const modalFoot = document.getElementById('modalFoot');
+const modalTitle = document.getElementById('modalTitle');
+let checkoutState = { type:'lieferung', name:'', phone:'', email:'', address:'', payment:'karte', note:'' };
+let step = 1;
+
+function openModal(){
+  if(Object.keys(cart).length===0){ return; }
+  step = 1;
+  modal.classList.add('show');
+  overlay.classList.add('show');
+  lockBodyScroll();
+  renderStep();
+}
+function closeModal(){
+  modal.classList.remove('show');
+  if(!drawer.classList.contains('show')) overlay.classList.remove('show');
+  unlockBodyScroll();
+}
+document.getElementById('checkoutBtn').addEventListener('click', openModal);
+document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+
+function subtotalValue(){
+  return Object.values(cart).reduce((s,it)=>s+it.price*it.qty,0);
+}
+
+function renderStep(){
+  modalFoot.innerHTML = '';
+  if(step===1){
+    modalTitle.textContent = 'Wie möchtet ihr bestellen?';
+    const belowMin = MIN_ORDER_DELIVERY - subtotalValue();
+    modalBody.innerHTML = `
+      <div class="steps-dots"><span class="on"></span><span></span><span></span><span></span></div>
+      <div class="radio-group">
+        <label class="radio-card"><input type="radio" name="otype" value="lieferung" ${checkoutState.type==='lieferung'?'checked':''}> 🛵 Lieferung nach Hause</label>
+        <label class="radio-card"><input type="radio" name="otype" value="abholung" ${checkoutState.type==='abholung'?'checked':''}> 🥡 Selbst abholen</label>
+        <label class="radio-card"><input type="radio" name="otype" value="vorort" ${checkoutState.type==='vorort'?'checked':''}> 🍽️ Vor Ort essen</label>
+      </div>
+      <div class="field" id="addressField" style="margin-top:16px; ${checkoutState.type!=='lieferung'?'display:none;':''}">
+        <label>Lieferadresse</label>
+        <input type="text" id="addressInput" placeholder="Straße, Hausnummer, PLZ Stolberg" value="${checkoutState.address}">
+        <div id="addressError" style="display:none; color:var(--tomato); font-size:.8rem; font-weight:700; margin-top:6px;">Bitte gebt eine vollständige Adresse mit Hausnummer und PLZ ein (z. B. Musterstr. 5, 52222 Stolberg).</div>
+        <div id="minOrderNote" style="display:${belowMin > 0 ? 'block' : 'none'}; color:var(--tomato); font-size:.8rem; font-weight:700; margin-top:6px;">Noch ${fmt(Math.max(belowMin,0))} bis zum Mindestbestellwert von ${fmt(MIN_ORDER_DELIVERY)} für die Lieferung.</div>
+      </div>
+    `;
+    document.querySelectorAll('input[name="otype"]').forEach(r=>r.addEventListener('change', e=>{
+      checkoutState.type = e.target.value;
+      document.getElementById('addressField').style.display = checkoutState.type==='lieferung' ? '' : 'none';
+      document.getElementById('addressError').style.display = 'none';
+    }));
+    const addrInputEl = document.getElementById('addressInput');
+    if(addrInputEl){
+      addrInputEl.addEventListener('input', ()=>{
+        document.getElementById('addressError').style.display = 'none';
+        addrInputEl.style.borderColor = 'var(--line)';
+      });
+    }
+    modalFoot.innerHTML = `<button class="btn btn-dark" style="width:100%;" id="toStep2">Weiter</button>`;
+    document.getElementById('toStep2').addEventListener('click', ()=>{
+      if(checkoutState.type==='lieferung'){
+        if(subtotalValue() < MIN_ORDER_DELIVERY){
+          document.getElementById('minOrderNote').style.display = 'block';
+          return;
+        }
+        const addr = document.getElementById('addressInput').value.trim();
+        const looksValid = addr.length >= 8 && /\d/.test(addr);
+        if(!looksValid){
+          document.getElementById('addressError').style.display = 'block';
+          document.getElementById('addressInput').style.borderColor = 'var(--tomato)';
+          document.getElementById('addressInput').focus();
+          return;
+        }
+        checkoutState.address = addr;
+      }
+      step=2; renderStep();
+    });
+  }
+  else if(step===2){
+    modalTitle.textContent = 'Eure Kontaktdaten';
+    modalBody.innerHTML = `
+      <div class="steps-dots"><span class="on"></span><span class="on"></span><span></span><span></span></div>
+      <div class="field">
+        <label>Name *</label>
+        <input type="text" id="cName" value="${checkoutState.name}" placeholder="Vor- und Nachname">
+        <div id="nameError" style="display:none; color:var(--tomato); font-size:.8rem; font-weight:700; margin-top:6px;">Bitte gebt euren Namen ein, damit wir die Bestellung zuordnen können.</div>
+      </div>
+      <div class="field">
+        <label>Telefon *</label>
+        <input type="tel" id="cPhone" value="${checkoutState.phone}" placeholder="0151 1234567">
+        <div id="phoneError" style="display:none; color:var(--tomato); font-size:.8rem; font-weight:700; margin-top:6px;">Bitte gebt eine Telefonnummer ein, falls wir euch kurz erreichen müssen.</div>
+      </div>
+      <div class="field">
+        <label>Anmerkungen zur Bestellung (optional)</label>
+        <textarea id="cNote" rows="3" placeholder="z. B. ohne Zwiebeln, extra scharf, an der Rezeption abgeben …">${checkoutState.note}</textarea>
+      </div>
+    `;
+    modalFoot.innerHTML = `<button class="btn btn-outline" id="back1">Zurück</button><button class="btn btn-dark" id="toStep3">Weiter</button>`;
+    document.getElementById('back1').addEventListener('click', ()=>{ step=1; renderStep(); });
+    const nameInputEl = document.getElementById('cName');
+    const phoneInputEl = document.getElementById('cPhone');
+    nameInputEl.addEventListener('input', ()=>{
+      document.getElementById('nameError').style.display = 'none';
+      nameInputEl.style.borderColor = 'var(--line)';
+    });
+    phoneInputEl.addEventListener('input', ()=>{
+      document.getElementById('phoneError').style.display = 'none';
+      phoneInputEl.style.borderColor = 'var(--line)';
+    });
+    document.getElementById('toStep3').addEventListener('click', ()=>{
+      const nameVal = nameInputEl.value.trim();
+      if(nameVal.length < 2){
+        document.getElementById('nameError').style.display = 'block';
+        nameInputEl.style.borderColor = 'var(--tomato)';
+        nameInputEl.focus();
+        return;
+      }
+      const phoneVal = phoneInputEl.value.trim();
+      const phoneDigits = phoneVal.replace(/\D/g,'');
+      if(phoneDigits.length < 6){
+        document.getElementById('phoneError').style.display = 'block';
+        phoneInputEl.style.borderColor = 'var(--tomato)';
+        phoneInputEl.focus();
+        return;
+      }
+      checkoutState.name = nameVal;
+      checkoutState.phone = phoneVal;
+      checkoutState.note = document.getElementById('cNote').value.trim();
+      step=3; renderStep();
+    });
+  }
+  else if(step===3){
+    modalTitle.textContent = 'Zahlungsart';
+    modalBody.innerHTML = `
+      <div class="steps-dots"><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+      <div class="radio-group">
+        <label class="radio-card"><input type="radio" name="pay" value="karte" ${checkoutState.payment==='karte'?'checked':''}> 💳 Kartenzahlung</label>
+        <label class="radio-card"><input type="radio" name="pay" value="paypal" ${checkoutState.payment==='paypal'?'checked':''}> 🅿️ PayPal</label>
+        <label class="radio-card"><input type="radio" name="pay" value="bar" ${checkoutState.payment==='bar'?'checked':''}> 💶 Barzahlung bei Übergabe</label>
+      </div>
+      <div id="payNote" style="margin-top:16px; ${checkoutState.payment==='bar'?'display:none;':''}">
+        <div class="demo-note" style="background:#eef6ff; border-color:#c8dff5; color:#2a5a8a;">🔒 Ihr werdet im nächsten Schritt sicher zu Stripe weitergeleitet, um zu bezahlen. Wir sehen und speichern eure Kartendaten nie selbst.</div>
+      </div>
+    `;
+    document.querySelectorAll('input[name="pay"]').forEach(r=>r.addEventListener('change', e=>{
+      checkoutState.payment = e.target.value;
+      document.getElementById('payNote').style.display = checkoutState.payment==='bar' ? 'none' : '';
+    }));
+    modalFoot.innerHTML = `<button class="btn btn-outline" id="back2">Zurück</button><button class="btn btn-dark" id="toStep4">Weiter</button>`;
+    document.getElementById('back2').addEventListener('click', ()=>{ step=2; renderStep(); });
+    document.getElementById('toStep4').addEventListener('click', ()=>{ step=4; renderStep(); });
+  }
+  else if(step===4){
+    modalTitle.textContent = 'Bestellübersicht';
+    const sub = subtotalValue();
+    const deliveryFee = checkoutState.type==='lieferung' ? 1 : 0;
+    const total = sub + deliveryFee;
+    let itemsHtml = Object.values(cart).map(it=>`<div style="display:flex; justify-content:space-between; padding:6px 0; font-size:.88rem;"><span>${it.qty}× ${it.name}</span><span>${fmt(it.price*it.qty)}</span></div>`).join('');
+    const closedNotice = !isOpenNow() ? `<div class="demo-note" style="background:#fff6e9; border-color:#f0dcae; color:#8a6a1f; margin-bottom:14px;">🕒 Wir sind aktuell geschlossen. Eure Bestellung geht trotzdem raus und wird bearbeitet, sobald wir wieder öffnen (${todayInfo.closed ? 'siehe Öffnungszeiten' : todayInfo.open + ' Uhr'}).</div>` : '';
+    modalBody.innerHTML = `
+      <div class="steps-dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
+      ${closedNotice}
+      <div style="background:var(--white); border:1px solid var(--line); border-radius:12px; padding:16px;">
+        ${itemsHtml}
+        ${deliveryFee?`<div style="display:flex; justify-content:space-between; padding:6px 0; font-size:.88rem; color:var(--gray);"><span>Lieferpauschale</span><span>${fmt(deliveryFee)}</span></div>`:''}
+        <div style="display:flex; justify-content:space-between; padding:10px 0 0; margin-top:6px; border-top:1px solid var(--line); font-weight:800;"><span>Gesamt</span><span>${fmt(total)}</span></div>
+      </div>
+      <div class="field" style="margin-top:16px;"><label>Bestellart</label><input disabled value="${checkoutState.type==='lieferung'?'Lieferung an: '+checkoutState.address:checkoutState.type==='abholung'?'Abholung im Restaurant':'Vor Ort essen'}"></div>
+      <div class="field"><label>Kontakt</label><input disabled value="${checkoutState.name}${checkoutState.phone ? ' · '+checkoutState.phone : ''}"></div>
+      <div class="field"><label>Zahlung</label><input disabled value="${checkoutState.payment==='karte'?'Kartenzahlung':checkoutState.payment==='paypal'?'PayPal':'Barzahlung bei Übergabe'}"></div>
+      ${checkoutState.note ? `<div class="field"><label>Anmerkung</label><textarea disabled rows="2" style="resize:none;">${checkoutState.note}</textarea></div>` : ''}
+      <label class="radio-card" style="margin-top:16px; align-items:flex-start;">
+        <input type="checkbox" id="agbCheck" style="margin-top:3px;">
+        <span style="font-size:.85rem; font-weight:500;">Ich akzeptiere die <a href="agb.html" target="_blank" style="color:var(--tomato);">AGB &amp; Widerrufsbelehrung</a> sowie die <a href="datenschutz.html" target="_blank" style="color:var(--tomato);">Datenschutzerklärung</a>.</span>
+      </label>
+      <div id="agbError" style="display:none; color:var(--tomato); font-size:.8rem; font-weight:700; margin-top:8px;">Bitte akzeptiert die AGB, um fortzufahren.</div>
+    `;
+    modalFoot.innerHTML = `<button class="btn btn-outline" id="back3">Zurück</button><button class="btn btn-primary" id="placeOrder">Jetzt kostenpflichtig bestellen</button>`;
+    document.getElementById('back3').addEventListener('click', ()=>{ step=3; renderStep(); });
+    document.getElementById('placeOrder').addEventListener('click', async ()=>{
+      const placeBtn = document.getElementById('placeOrder');
+
+      if(!document.getElementById('agbCheck').checked){
+        document.getElementById('agbError').style.display = 'block';
+        return;
+      }
+
+      if(!API_BASE){
+        modalBody.innerHTML = `<div class="demo-note">⚠️ Das Backend ist noch nicht verbunden (API_BASE ist leer). Diese Bestellung kann aktuell nicht wirklich verarbeitet werden. Sobald das Backend online ist, trägt Claude die Adresse ein — siehe README im Backend-Projekt.</div>`;
+        modalFoot.innerHTML = `<button class="btn btn-dark" style="width:100%;" id="closeNoBackend">Schließen</button>`;
+        document.getElementById('closeNoBackend').addEventListener('click', closeModal);
+        return;
+      }
+
+      placeBtn.disabled = true;
+      placeBtn.textContent = 'Einen Moment …';
+      // Render's kostenloser Tarif "schläft" nach Inaktivität ein und
+      // braucht dann bis zu ~50 Sek. zum Aufwachen — freundlich informieren,
+      // statt den Kunden im Unklaren zu lassen.
+      const slowHintTimer = setTimeout(()=>{
+        placeBtn.textContent = 'Fast fertig, Server startet …';
+      }, 4000);
+
+      const payload = {
+        items: Object.values(cart),
+        type: checkoutState.type,
+        address: checkoutState.address,
+        name: checkoutState.name,
+        phone: checkoutState.phone,
+        email: checkoutState.email,
+        note: checkoutState.note,
+        payment: checkoutState.payment,
+        acceptedTerms: true,
+        successUrl: window.location.origin + window.location.pathname,
+        cancelUrl: window.location.origin + window.location.pathname,
+      };
+
+      try {
+        const res = await fetch(API_BASE + '/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        clearTimeout(slowHintTimer);
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.error || 'Unbekannter Fehler');
+
+        // Egal ob Bar oder Karte/PayPal: sobald der Server die Bestellung
+        // bestätigt hat, merken wir sie uns für "Meine Bestellungen".
+        saveOrderToHistory({
+          orderNumber: data.orderNumber,
+          items: payload.items,
+          type: payload.type,
+          total: subtotalValue() + (payload.type === 'lieferung' ? 1 : 0),
+          createdAt: new Date().toISOString(),
+        });
+
+        if(data.checkoutUrl){
+          // Karte/PayPal: weiter zu Stripe. Warenkorb bleibt in localStorage
+          // erhalten, falls die Zahlung abgebrochen wird.
+          window.location.href = data.checkoutUrl;
+          return;
+        }
+
+        // Barzahlung: sofort bestätigt.
+        showOrderSuccess(data.orderNumber);
+      } catch(err){
+        clearTimeout(slowHintTimer);
+        placeBtn.disabled = false;
+        placeBtn.textContent = 'Jetzt kostenpflichtig bestellen';
+        modalBody.insertAdjacentHTML('afterbegin', `<div class="demo-note" style="margin-bottom:16px;">❌ Bestellung konnte nicht übermittelt werden: ${err.message}. Bitte versucht es erneut oder ruft uns an: <a href="tel:+4924028644984">02402 86 44 984</a>.</div>`);
+      }
+    });
+  }
+}
+
+function showOrderSuccess(orderNumber){
+  modalTitle.textContent = 'Bestellung aufgegeben!';
+  modalBody.innerHTML = `
+    <div class="success-wrap">
+      <div class="ico">✅</div>
+      <h2>Danke euch, ${checkoutState.name || 'liebe Gäste'}!</h2>
+      <p>Eure Bestellung ist bei uns eingegangen und wird direkt bearbeitet. Den aktuellen Stand seht ihr live über "Bestellung verfolgen".</p>
+      <div class="order-num">Bestellnummer ${orderNumber}</div>
+      <a href="order-status.html?order=${encodeURIComponent(orderNumber)}" class="btn btn-outline" style="margin-top:18px; justify-content:center;">📦 Bestellung verfolgen</a>
+    </div>`;
+  modalFoot.innerHTML = `<button class="btn btn-dark" style="width:100%;" id="doneBtn">Schließen</button>`;
+  document.getElementById('doneBtn').addEventListener('click', ()=>{
+    Object.keys(cart).forEach(k=>delete cart[k]);
+    saveCartToStorage();
+    updateCartUI();
+    closeModal();
+    closeCart();
+  });
+}
+
+/* ================= Rückkehr von Stripe (Erfolg/Abbruch) ================= */
+(function handleStripeRedirect(){
+  const params = new URLSearchParams(window.location.search);
+  const orderNumber = params.get('order');
+  const status = params.get('status');
+  if(!orderNumber || !status) return;
+
+  // URL wieder aufräumen, damit ein Neuladen die Meldung nicht wiederholt
+  window.history.replaceState({}, '', window.location.pathname);
+
+  if(status === 'success'){
+    Object.keys(cart).forEach(k=>delete cart[k]);
+    saveCartToStorage();
+    window.addEventListener('DOMContentLoaded', ()=>{
+      updateCartUI();
+      window.location.href = 'order-status.html?order=' + encodeURIComponent(orderNumber);
+    });
+  } else if(status === 'cancelled'){
+    window.addEventListener('DOMContentLoaded', ()=>{
+      alert('Die Zahlung wurde abgebrochen. Euer Warenkorb ist noch gefüllt — ihr könnt es jederzeit erneut versuchen.');
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
