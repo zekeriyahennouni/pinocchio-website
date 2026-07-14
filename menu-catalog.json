@@ -1,0 +1,586 @@
+{
+  "beilagen::Broccoli": {
+    "name": "Broccoli",
+    "price": 3.5
+  },
+  "beilagen::Brötchen": {
+    "name": "Brötchen",
+    "price": 3.5
+  },
+  "beilagen::Gemischter Salat": {
+    "name": "Gemischter Salat",
+    "price": 3.5
+  },
+  "beilagen::Kroketten": {
+    "name": "Kroketten",
+    "price": 3.5
+  },
+  "beilagen::Pommes frites": {
+    "name": "Pommes frites",
+    "price": 3.5
+  },
+  "beilagen::Spinat": {
+    "name": "Spinat",
+    "price": 3.5
+  },
+  "fisch::194": {
+    "name": "Gamberoni alla Griglia",
+    "price": 21.5
+  },
+  "fisch::195": {
+    "name": "Gamberoni alla Provinciale",
+    "price": 21.5
+  },
+  "fisch::196": {
+    "name": "Gamberoni al Pepe Verde",
+    "price": 22.5
+  },
+  "fisch::197": {
+    "name": "Gamberoni Aglio e Peperoncino",
+    "price": 21.5
+  },
+  "fisch::198": {
+    "name": "Salmone alla Griglia",
+    "price": 20.5
+  },
+  "fisch::228": {
+    "name": "Salmone alla Provinciale",
+    "price": 21.0
+  },
+  "fisch::240": {
+    "name": "Salmone al Vino Bianco",
+    "price": 21.0
+  },
+  "fisch::241": {
+    "name": "Salmone al Pepe Verde",
+    "price": 20.5
+  },
+  "fisch::350": {
+    "name": "Crema di Pomodoro",
+    "price": 6.5
+  },
+  "fisch::351": {
+    "name": "Tortellini in Brodo",
+    "price": 6.5
+  },
+  "fisch::353": {
+    "name": "Minestrone all'Italiana",
+    "price": 6.5
+  },
+  "getraenke::Bitburger": {
+    "name": "Bitburger",
+    "price": 3.0
+  },
+  "getraenke::Coca-Cola": {
+    "name": "Coca-Cola",
+    "price": 2.5
+  },
+  "getraenke::Coca-Cola Light": {
+    "name": "Coca-Cola Light",
+    "price": 2.5
+  },
+  "getraenke::Coca-Cola Zero": {
+    "name": "Coca-Cola Zero",
+    "price": 2.5
+  },
+  "getraenke::Fanta": {
+    "name": "Fanta",
+    "price": 2.5
+  },
+  "getraenke::Lambrusco": {
+    "name": "Lambrusco",
+    "price": 8.0
+  },
+  "getraenke::Rotwein": {
+    "name": "Rotwein",
+    "price": 8.0
+  },
+  "getraenke::San Pellegrino": {
+    "name": "San Pellegrino",
+    "price": 2.5
+  },
+  "getraenke::Sprite": {
+    "name": "Sprite",
+    "price": 2.5
+  },
+  "getraenke::Weißbier": {
+    "name": "Weißbier",
+    "price": 3.0
+  },
+  "getraenke::Weißwein": {
+    "name": "Weißwein",
+    "price": 8.0
+  },
+  "pasta::187": {
+    "name": "Napoli",
+    "price": 7.5
+  },
+  "pasta::188": {
+    "name": "Bolognese",
+    "price": 9.0
+  },
+  "pasta::189": {
+    "name": "Chef",
+    "price": 10.0
+  },
+  "pasta::190": {
+    "name": "Carbonara",
+    "price": 9.0
+  },
+  "pasta::191": {
+    "name": "Amatriciana",
+    "price": 9.0
+  },
+  "pasta::192": {
+    "name": "Diavolo",
+    "price": 9.5
+  },
+  "pasta::193": {
+    "name": "Marinara",
+    "price": 12.5
+  },
+  "pasta::194": {
+    "name": "Gorgonzola",
+    "price": 9.0
+  },
+  "pasta::195": {
+    "name": "Bella Italia",
+    "price": 9.0
+  },
+  "pasta::196": {
+    "name": "Tonno",
+    "price": 9.0
+  },
+  "pasta::197": {
+    "name": "Mare e Monti",
+    "price": 12.5
+  },
+  "pasta::198": {
+    "name": "alla Zingara",
+    "price": 9.0
+  },
+  "pasta::199": {
+    "name": "Alfredo",
+    "price": 9.0
+  },
+  "pasta::200": {
+    "name": "Bucco",
+    "price": 9.0
+  },
+  "pasta::202": {
+    "name": "Mirto",
+    "price": 9.0
+  },
+  "pasta::203": {
+    "name": "Roseanne",
+    "price": 9.0
+  },
+  "pasta::204": {
+    "name": "Longobucco",
+    "price": 9.0
+  },
+  "pasta::205": {
+    "name": "Roseamare",
+    "price": 12.5
+  },
+  "pasta::206": {
+    "name": "all'Uovo",
+    "price": 8.5
+  },
+  "pasta::207": {
+    "name": "Aglio e Olio",
+    "price": 7.5
+  },
+  "pasta::208": {
+    "name": "Arrabiata",
+    "price": 8.0
+  },
+  "pasta::209": {
+    "name": "Gamberoni",
+    "price": 12.5
+  },
+  "pasta::210": {
+    "name": "Gratinati",
+    "price": 8.5
+  },
+  "pasta::211": {
+    "name": "Bolognese",
+    "price": 7.5
+  },
+  "pasta::212": {
+    "name": "Napoli",
+    "price": 7.5
+  },
+  "pasta::213": {
+    "name": "Gorgonzola",
+    "price": 8.5
+  },
+  "pasta::214": {
+    "name": "Bella Italia",
+    "price": 9.0
+  },
+  "pasta::215": {
+    "name": "4 Formaggi",
+    "price": 9.5
+  },
+  "pasta::216": {
+    "name": "Broccoli",
+    "price": 9.0
+  },
+  "pasta::217": {
+    "name": "Tonno",
+    "price": 9.0
+  },
+  "pasta::218": {
+    "name": "Mare e Monti",
+    "price": 12.5
+  },
+  "pasta::219": {
+    "name": "alla Zingara",
+    "price": 9.0
+  },
+  "pasta::220": {
+    "name": "Alfredo",
+    "price": 9.0
+  },
+  "pasta::221": {
+    "name": "Longobucco",
+    "price": 9.0
+  },
+  "pasta::223": {
+    "name": "Napoli",
+    "price": 7.5
+  },
+  "pasta::224": {
+    "name": "Gorgonzola",
+    "price": 8.5
+  },
+  "pasta::225": {
+    "name": "Gamberoni",
+    "price": 12.5
+  },
+  "pasta::226": {
+    "name": "Funghi",
+    "price": 8.0
+  },
+  "pasta::227": {
+    "name": "Alfredo",
+    "price": 9.5
+  },
+  "pasta::228": {
+    "name": "Panna e Prosciutto",
+    "price": 9.5
+  },
+  "pasta::229": {
+    "name": "Mirto",
+    "price": 9.0
+  },
+  "pasta::230": {
+    "name": "Longobucco",
+    "price": 9.0
+  },
+  "pasta::231": {
+    "name": "Carbonara",
+    "price": 9.5
+  },
+  "pizza::1": {
+    "name": "Margherita",
+    "price": 6.5
+  },
+  "pizza::10": {
+    "name": "Funghi",
+    "price": 7.0
+  },
+  "pizza::11": {
+    "name": "Roma",
+    "price": 8.0
+  },
+  "pizza::12": {
+    "name": "Calzone",
+    "price": 9.5
+  },
+  "pizza::13": {
+    "name": "Quattro Stagioni",
+    "price": 9.5
+  },
+  "pizza::14": {
+    "name": "Tonno",
+    "price": 8.0
+  },
+  "pizza::15": {
+    "name": "Esmeralda",
+    "price": 9.0
+  },
+  "pizza::16": {
+    "name": "Valentino",
+    "price": 9.0
+  },
+  "pizza::17": {
+    "name": "Pizzabrötchen gefüllt",
+    "price": 6.5
+  },
+  "pizza::18": {
+    "name": "Cortadina",
+    "price": 7.5
+  },
+  "pizza::19": {
+    "name": "Marinara",
+    "price": 9.5
+  },
+  "pizza::2": {
+    "name": "Napoletana",
+    "price": 8.0
+  },
+  "pizza::20": {
+    "name": "Sardegna",
+    "price": 8.0
+  },
+  "pizza::21": {
+    "name": "Grandiosa",
+    "price": 7.5
+  },
+  "pizza::22": {
+    "name": "Deliziosa",
+    "price": 10.0
+  },
+  "pizza::23": {
+    "name": "Scampi",
+    "price": 10.0
+  },
+  "pizza::24": {
+    "name": "Caserreccia",
+    "price": 9.5
+  },
+  "pizza::25": {
+    "name": "Miete",
+    "price": 9.5
+  },
+  "pizza::26": {
+    "name": "Italia",
+    "price": 8.5
+  },
+  "pizza::27": {
+    "name": "Campagnola",
+    "price": 8.5
+  },
+  "pizza::28": {
+    "name": "Vesuvio",
+    "price": 8.0
+  },
+  "pizza::29": {
+    "name": "Del Sud",
+    "price": 9.5
+  },
+  "pizza::3": {
+    "name": "Salami",
+    "price": 7.0
+  },
+  "pizza::30": {
+    "name": "Hawaii",
+    "price": 8.5
+  },
+  "pizza::31": {
+    "name": "Pirata",
+    "price": 9.0
+  },
+  "pizza::32": {
+    "name": "Rustica",
+    "price": 8.5
+  },
+  "pizza::33": {
+    "name": "Pinocchio",
+    "price": 9.5
+  },
+  "pizza::34": {
+    "name": "Olivella",
+    "price": 7.5
+  },
+  "pizza::36": {
+    "name": "La Grotta",
+    "price": 9.5
+  },
+  "pizza::37": {
+    "name": "Antonio",
+    "price": 8.0
+  },
+  "pizza::4": {
+    "name": "Mario",
+    "price": 9.5
+  },
+  "pizza::40": {
+    "name": "Primavera",
+    "price": 9.5
+  },
+  "pizza::43": {
+    "name": "Emilio",
+    "price": 9.5
+  },
+  "pizza::44": {
+    "name": "Matta",
+    "price": 9.5
+  },
+  "pizza::45": {
+    "name": "Bolognese",
+    "price": 9.5
+  },
+  "pizza::46": {
+    "name": "Mare",
+    "price": 9.5
+  },
+  "pizza::47": {
+    "name": "Verdura",
+    "price": 8.5
+  },
+  "pizza::48": {
+    "name": "Casa",
+    "price": 8.5
+  },
+  "pizza::49": {
+    "name": "Rucola",
+    "price": 9.5
+  },
+  "pizza::5": {
+    "name": "Inferno",
+    "price": 8.0
+  },
+  "pizza::50": {
+    "name": "Magica",
+    "price": 9.5
+  },
+  "pizza::51": {
+    "name": "Pescatore",
+    "price": 10.0
+  },
+  "pizza::52": {
+    "name": "Pugliese",
+    "price": 9.5
+  },
+  "pizza::53": {
+    "name": "Zingara",
+    "price": 9.5
+  },
+  "pizza::54": {
+    "name": "Cosenza",
+    "price": 9.5
+  },
+  "pizza::55": {
+    "name": "Kaiser",
+    "price": 9.5
+  },
+  "pizza::56": {
+    "name": "Rimini",
+    "price": 9.5
+  },
+  "pizza::57": {
+    "name": "Andrea",
+    "price": 9.5
+  },
+  "pizza::58": {
+    "name": "4 Formaggi",
+    "price": 9.5
+  },
+  "pizza::59": {
+    "name": "Famiglia",
+    "price": 19.0
+  },
+  "pizza::6": {
+    "name": "Bendito",
+    "price": 8.0
+  },
+  "pizza::7": {
+    "name": "Prosciutto e Peperoni",
+    "price": 8.5
+  },
+  "pizza::8": {
+    "name": "Spinaci",
+    "price": 8.0
+  },
+  "pizza::9": {
+    "name": "Prosciutto",
+    "price": 7.5
+  },
+  "salate::163": {
+    "name": "Lena",
+    "price": 11.0
+  },
+  "salate::164": {
+    "name": "Bella Italia",
+    "price": 9.5
+  },
+  "salate::165": {
+    "name": "Eva",
+    "price": 9.0
+  },
+  "salate::166": {
+    "name": "Verde",
+    "price": 7.0
+  },
+  "salate::167": {
+    "name": "Pomodori",
+    "price": 7.5
+  },
+  "salate::168": {
+    "name": "Fantasia",
+    "price": 11.5
+  },
+  "salate::170": {
+    "name": "Pinocchio-Salat",
+    "price": 12.5
+  },
+  "salate::171": {
+    "name": "Tonno Fagioli",
+    "price": 10.5
+  },
+  "salate::172": {
+    "name": "di Pollo",
+    "price": 12.0
+  },
+  "salate::173": {
+    "name": "Niçoise",
+    "price": 10.5
+  },
+  "salate::174": {
+    "name": "Caprigiosa",
+    "price": 9.5
+  },
+  "salate::175": {
+    "name": "Marinara",
+    "price": 9.0
+  },
+  "salate::176": {
+    "name": "Formaggio",
+    "price": 8.5
+  },
+  "salate::177": {
+    "name": "Tonno",
+    "price": 8.5
+  },
+  "salate::178": {
+    "name": "Bizzarella",
+    "price": 7.0
+  },
+  "salate::179": {
+    "name": "Speciale",
+    "price": 8.5
+  },
+  "salate::180": {
+    "name": "Contadina",
+    "price": 8.0
+  },
+  "salate::181": {
+    "name": "Algerina",
+    "price": 8.0
+  },
+  "salate::182": {
+    "name": "Gamberetti",
+    "price": 9.0
+  },
+  "salate::183": {
+    "name": "Hawaii",
+    "price": 7.0
+  },
+  "salate::184": {
+    "name": "Mirto",
+    "price": 7.5
+  }
+}

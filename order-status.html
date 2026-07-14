@@ -38,6 +38,8 @@
   .status-banner{margin-top:26px; background:var(--paper); border-radius:12px; padding:16px 18px; text-align:center; font-weight:700;}
   .status-banner.cancelled{background:#fdeceb; color:var(--tomato);}
   .status-banner.completed{background:#e9f7ec; color:var(--green);}
+  .eta-box{text-align:center; margin-top:12px; font-size:.88rem; color:var(--gray);}
+  .eta-box strong{color:var(--ink);}
 
   .items-box{margin-top:24px; border-top:1px solid var(--line); padding-top:18px;}
   .item-row{display:flex; justify-content:space-between; font-size:.9rem; padding:6px 0; color:#4a453a;}
@@ -113,6 +115,15 @@ async function lookupOrder(orderNumber) {
 
 const homeBtnHtml = `<a href="index.html" class="home-btn">🏠 Zurück zur Startseite</a>`;
 
+const ESTIMATED_MINUTES = { lieferung: 45, abholung: 20, vorort: 25 };
+
+function calcEta(order) {
+  const created = new Date(order.createdAt);
+  const minutes = ESTIMATED_MINUTES[order.type] || 30;
+  const eta = new Date(created.getTime() + minutes * 60000);
+  return eta.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+}
+
 function renderOrder(order) {
   const resultWrap = document.getElementById('resultWrap');
   document.getElementById('lookupBox').style.display = 'none';
@@ -163,6 +174,10 @@ function renderOrder(order) {
     completed: '🎉 Abgeschlossen — guten Appetit!',
   }[order.status] || '';
 
+  const etaText = ['received', 'preparing'].includes(order.status)
+    ? `<div class="eta-box">⏱️ Voraussichtlich ${order.type === 'lieferung' ? 'bei euch' : 'fertig'} um <strong>${calcEta(order)} Uhr</strong></div>`
+    : '';
+
   resultWrap.innerHTML = `
     <div class="card">
       <div class="order-head">
@@ -178,6 +193,7 @@ function renderOrder(order) {
       </div>
 
       <div class="status-banner ${order.status === 'completed' ? 'completed' : ''}">${bannerText}</div>
+      ${etaText}
 
       <div class="items-box">
         ${itemsHtml}

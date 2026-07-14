@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bestellübersicht · Pinocchio</title>
+<style>
+  :root{ --ink:#191512; --paper:#faf7f1; --tomato:#e2452b; --gray:#726c60; --line:#e7e0d1; --white:#fff; --green:#3f9d55; }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:-apple-system,Segoe UI,Roboto,Manrope,sans-serif;}
+  header{background:var(--ink); color:#fff; padding:18px clamp(16px,4vw,40px); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;}
+  header h1{font-size:1.2rem; margin:0;}
+  main{max-width:1100px; margin:0 auto; padding:24px clamp(16px,4vw,40px) 60px;}
+  .login-box{max-width:380px; margin:80px auto; background:var(--white); border:1px solid var(--line); border-radius:14px; padding:30px; text-align:center;}
+  .login-box input{width:100%; padding:12px 14px; border-radius:10px; border:1px solid var(--line); font-size:1rem; margin-top:14px;}
+  .login-box button{width:100%; margin-top:14px; background:var(--tomato); color:#fff; border:none; padding:12px; border-radius:10px; font-weight:700; font-size:.95rem; cursor:pointer;}
+  .refresh-btn{background:var(--white); border:1px solid var(--line); color:var(--ink); padding:9px 16px; border-radius:10px; font-weight:700; font-size:.85rem; cursor:pointer;}
+  table{width:100%; border-collapse:collapse; margin-top:20px; background:var(--white); border:1px solid var(--line); border-radius:12px; overflow:hidden;}
+  .table-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; border-radius:12px;}
+  @media(max-width:820px){ table{min-width:900px;} }
+  th, td{padding:12px 14px; text-align:left; font-size:.85rem; border-bottom:1px solid var(--line);}
+  th{background:var(--paper); text-transform:uppercase; letter-spacing:.5px; font-size:.7rem; color:var(--gray);}
+  tr:last-child td{border-bottom:none;}
+  .status{display:inline-block; padding:3px 10px; border-radius:10px; font-size:.72rem; font-weight:700; white-space:nowrap;}
+  .status.received{background:#fff2ec; color:var(--tomato);}
+  .status.preparing{background:#fff8e1; color:#b7860b;}
+  .status.ready{background:#e8f0fe; color:#2a5a8a;}
+  .status.completed{background:#e7f6ea; color:var(--green);}
+  .status.cancelled{background:#f3f0f0; color:#8a7a7a;}
+  .status.pending{background:#f3f0f0; color:var(--gray);}
+  .action-btns{display:flex; gap:6px; flex-wrap:wrap;}
+  .action-btn{background:var(--white); border:1px solid var(--line); color:var(--ink); padding:6px 10px; border-radius:8px; font-size:.72rem; font-weight:700; cursor:pointer; white-space:nowrap;}
+  .action-btn:hover{background:var(--ink); color:#fff;}
+  .action-btn.cancel{border-color:#e3b3a8; color:var(--tomato);}
+  .action-btn.cancel:hover{background:var(--tomato); color:#fff;}
+  .items-list{font-size:.8rem; color:var(--gray);}
+  .empty{text-align:center; padding:60px 10px; color:var(--gray);}
+  .error{color:var(--tomato); text-align:center; margin-top:20px; font-weight:600;}
+  .note-badge{background:#fff6e9; color:#8a6a1f; padding:2px 8px; border-radius:8px; font-size:.72rem;}
+
+  .tabs-row{display:flex; gap:10px; margin-bottom:20px;}
+  .tab-btn{background:var(--white); border:1px solid var(--line); color:var(--ink); padding:10px 18px; border-radius:10px; font-weight:700; font-size:.9rem; cursor:pointer;}
+  .tab-btn.active{background:var(--ink); color:#fff;}
+  .report-controls{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:24px;}
+  .quick-btn{background:var(--white); border:1px solid var(--line); padding:9px 14px; border-radius:8px; font-size:.85rem; font-weight:700; cursor:pointer;}
+  .quick-btn:hover{background:var(--paper-2);}
+  .custom-range{display:flex; gap:10px; align-items:center; background:var(--white); border:1px solid var(--line); border-radius:8px; padding:8px 12px; font-size:.82rem;}
+  .custom-range input{border:1px solid var(--line); border-radius:6px; padding:5px 8px; font-size:.82rem;}
+  .report-summary{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; margin-bottom:24px;}
+  .report-card{background:var(--white); border:1px solid var(--line); border-radius:12px; padding:16px;}
+  .report-card .label{font-size:.72rem; text-transform:uppercase; letter-spacing:.5px; color:var(--gray); font-weight:700;}
+  .report-card .value{font-size:1.5rem; font-weight:800; margin-top:6px;}
+  .print-btn{background:var(--ink); color:#fff; border:none; padding:10px 16px; border-radius:8px; font-weight:700; font-size:.85rem; cursor:pointer; margin-bottom:16px;}
+  @media print{ .tabs-row, .report-controls, .print-btn, header button{ display:none !important; } }
+</style>
+</head>
+<body>
+
+<div id="loginView" class="login-box">
+  <h2 style="margin:0;">🍕 Bestellübersicht</h2>
+  <p style="color:var(--gray); font-size:.85rem;">Gib euren Admin-Schlüssel ein (aus der .env-Datei, ADMIN_KEY).</p>
+  <input type="password" id="keyInput" placeholder="Admin-Schlüssel">
+  <input type="text" id="apiBaseInput" placeholder="Backend-Adresse, z.B. https://pinocchio-backend.onrender.com">
+  <button id="loginBtn">Anmelden</button>
+  <div class="error" id="loginError" style="display:none;"></div>
+</div>
+
+<div id="dashboardView" style="display:none;">
+  <header>
+    <h1>🍕 Pinocchio — Bestellübersicht</h1>
+    <button class="refresh-btn" id="refreshBtn">↻ Aktualisieren</button>
+  </header>
+  <main>
+    <div class="tabs-row">
+      <button class="tab-btn active" id="tabOrdersBtn" onclick="switchTab('orders')">📋 Bestellungen</button>
+      <button class="tab-btn" id="tabReportBtn" onclick="switchTab('report')">📊 Berichte</button>
+    </div>
+
+    <div id="ordersTab">
+      <div id="ordersTableWrap"></div>
+    </div>
+
+    <div id="reportTab" style="display:none;">
+      <div class="report-controls">
+        <button class="quick-btn" onclick="setReportRange('today')">📅 Heute (Z-Bericht)</button>
+        <button class="quick-btn" onclick="setReportRange('month')">🗓️ Dieser Monat</button>
+        <button class="quick-btn" onclick="setReportRange('year')">📆 Dieses Jahr</button>
+        <div class="custom-range">
+          <label>Von <input type="date" id="reportFrom"></label>
+          <label>Bis <input type="date" id="reportTo"></label>
+          <button class="action-btn" onclick="loadReport()">Bericht abrufen</button>
+        </div>
+      </div>
+      <div id="reportResult"></div>
+    </div>
+  </main>
+</div>
+
+<script>
+let ADMIN_KEY = '';
+let API_BASE = '';
+
+document.getElementById('loginBtn').addEventListener('click', async () => {
+  ADMIN_KEY = document.getElementById('keyInput').value.trim();
+  API_BASE = document.getElementById('apiBaseInput').value.trim().replace(/\/$/, '');
+  const errEl = document.getElementById('loginError');
+  errEl.style.display = 'none';
+
+  if (!ADMIN_KEY || !API_BASE) {
+    errEl.textContent = 'Bitte beides ausfüllen.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_BASE}/api/admin/orders?key=${encodeURIComponent(ADMIN_KEY)}`);
+    if (!res.ok) throw new Error('Falscher Schlüssel oder Backend nicht erreichbar.');
+    document.getElementById('loginView').style.display = 'none';
+    document.getElementById('dashboardView').style.display = 'block';
+    renderOrders(await res.json());
+  } catch (err) {
+    errEl.textContent = err.message;
+    errEl.style.display = 'block';
+  }
+});
+
+document.getElementById('refreshBtn').addEventListener('click', loadOrders);
+
+async function loadOrders() {
+  const res = await fetch(`${API_BASE}/api/admin/orders?key=${encodeURIComponent(ADMIN_KEY)}`);
+  renderOrders(await res.json());
+}
+
+function fmt(n) { return n.toFixed(2).replace('.', ',') + ' €'; }
+
+const STATUS_LABELS = {
+  pending: 'Zahlung offen', received: 'Eingegangen', preparing: 'Wird zubereitet',
+  ready: 'Fertig', completed: 'Abgeschlossen', cancelled: 'Storniert',
+};
+const NEXT_ACTION = {
+  received: { next: 'preparing', label: '👨‍🍳 Zubereitung starten' },
+  preparing: { next: 'ready', label: '✅ Als fertig markieren' },
+  ready: { next: 'completed', label: '🏁 Abschließen' },
+};
+
+async function setStatus(orderNumber, status) {
+  await fetch(`${API_BASE}/api/admin/orders/${orderNumber}?key=${encodeURIComponent(ADMIN_KEY)}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status }),
+  });
+  loadOrders();
+}
+
+async function reprintOrder(orderNumber, btn) {
+  btn.disabled = true;
+  btn.textContent = '⏳ Drucke …';
+  try {
+    const res = await fetch(`${API_BASE}/api/admin/orders/${orderNumber}/reprint?key=${encodeURIComponent(ADMIN_KEY)}`, { method: 'POST' });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Unbekannter Fehler');
+    btn.textContent = '✅ Gedruckt';
+  } catch (err) {
+    alert('Nachdruck fehlgeschlagen: ' + err.message);
+    btn.textContent = '🖨️ Erneut drucken';
+  } finally {
+    btn.disabled = false;
+    setTimeout(() => { btn.textContent = '🖨️ Erneut drucken'; }, 3000);
+  }
+}
+
+function renderOrders(data) {
+  const wrap = document.getElementById('ordersTableWrap');
+  const orders = data.orders || [];
+  if (orders.length === 0) {
+    wrap.innerHTML = '<div class="empty">Noch keine Bestellungen eingegangen.</div>';
+    return;
+  }
+  let html = `<div class="table-scroll"><table><thead><tr>
+    <th>Bestellnr.</th><th>Zeit</th><th>Kunde</th><th>Art</th><th>Artikel</th><th>Summe</th><th>Zahlung</th><th>Status</th><th>Aktion</th>
+  </tr></thead><tbody>`;
+  orders.forEach(o => {
+    const time = new Date(o.createdAt).toLocaleString('de-DE');
+    const itemsStr = o.items.map(it => `${it.qty}× ${it.name}`).join(', ');
+    const action = NEXT_ACTION[o.status];
+    let actionsHtml = '<div class="action-btns">';
+    if (action) {
+      actionsHtml += `<button class="action-btn" onclick="setStatus('${o.orderNumber}','${action.next}')">${action.label}</button>
+        <button class="action-btn cancel" onclick="if(confirm('Bestellung ${o.orderNumber} wirklich stornieren?')) setStatus('${o.orderNumber}','cancelled')">✕ Stornieren</button>`;
+    }
+    actionsHtml += `<button class="action-btn" onclick="reprintOrder('${o.orderNumber}', this)">🖨️ Erneut drucken</button></div>`;
+    html += `<tr>
+      <td><strong>${o.orderNumber}</strong></td>
+      <td>${time}</td>
+      <td>${o.name}${o.phone ? '<br><span class="items-list">' + o.phone + '</span>' : ''}</td>
+      <td>${o.type === 'lieferung' ? '🛵 Lieferung' : o.type === 'abholung' ? '🥡 Abholung' : '🍽️ Vor Ort'}${o.address ? '<br><span class="items-list">' + o.address + '</span>' : ''}</td>
+      <td class="items-list">${itemsStr}${o.note ? '<br><span class="note-badge">Notiz: ' + o.note + '</span>' : ''}</td>
+      <td><strong>${fmt(o.total)}</strong></td>
+      <td>${o.payment === 'karte' ? 'Karte' : o.payment === 'paypal' ? 'PayPal' : 'Bar'}</td>
+      <td><span class="status ${o.status}">${STATUS_LABELS[o.status] || o.status}</span></td>
+      <td>${actionsHtml}</td>
+    </tr>`;
+  });
+  html += '</tbody></table></div>';
+  wrap.innerHTML = html;
+}
+
+// Alle 30 Sekunden automatisch aktualisieren, wenn eingeloggt
+setInterval(() => {
+  if (API_BASE && ADMIN_KEY && document.getElementById('ordersTab').style.display !== 'none') loadOrders();
+}, 30000);
+
+/* ================= Tabs & Berichte (Z-Bericht / Jahresbericht) ================= */
+function switchTab(tab) {
+  document.getElementById('ordersTab').style.display = tab === 'orders' ? '' : 'none';
+  document.getElementById('reportTab').style.display = tab === 'report' ? '' : 'none';
+  document.getElementById('tabOrdersBtn').classList.toggle('active', tab === 'orders');
+  document.getElementById('tabReportBtn').classList.toggle('active', tab === 'report');
+}
+
+function toDateInputValue(d) {
+  return d.toISOString().slice(0, 10);
+}
+
+function setReportRange(kind) {
+  const now = new Date();
+  let from, to;
+  if (kind === 'today') {
+    from = to = now;
+  } else if (kind === 'month') {
+    from = new Date(now.getFullYear(), now.getMonth(), 1);
+    to = now;
+  } else if (kind === 'year') {
+    from = new Date(now.getFullYear(), 0, 1);
+    to = now;
+  }
+  document.getElementById('reportFrom').value = toDateInputValue(from);
+  document.getElementById('reportTo').value = toDateInputValue(to);
+  loadReport();
+}
+
+async function loadReport() {
+  const from = document.getElementById('reportFrom').value;
+  const to = document.getElementById('reportTo').value;
+  if (!from || !to) return;
+  const resultEl = document.getElementById('reportResult');
+  resultEl.innerHTML = '<div class="empty">Lädt …</div>';
+
+  try {
+    const res = await fetch(`${API_BASE}/api/admin/report?from=${from}&to=${to}&key=${encodeURIComponent(ADMIN_KEY)}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Fehler beim Laden');
+    renderReport(data);
+  } catch (err) {
+    resultEl.innerHTML = `<div class="error">Bericht konnte nicht geladen werden: ${err.message}</div>`;
+  }
+}
+
+const PAYMENT_LABELS = { karte: 'Karte', paypal: 'PayPal', bar: 'Barzahlung' };
+const TYPE_LABELS = { lieferung: '🛵 Lieferung', abholung: '🥡 Abholung', vorort: '🍽️ Vor Ort' };
+
+function renderReport(data) {
+  const paymentRows = Object.entries(data.revenueByPayment)
+    .map(([k, v]) => `<div class="report-card"><div class="label">${PAYMENT_LABELS[k] || k}</div><div class="value">${fmt(v)}</div></div>`).join('');
+  const typeRows = Object.entries(data.revenueByType)
+    .map(([k, v]) => `<div class="report-card"><div class="label">${TYPE_LABELS[k] || k}</div><div class="value">${fmt(v)}</div></div>`).join('');
+
+  const orderRows = data.orders.map(o => `
+    <tr>
+      <td><strong>${o.orderNumber}</strong></td>
+      <td>${new Date(o.createdAt).toLocaleString('de-DE')}</td>
+      <td>${o.name}</td>
+      <td>${TYPE_LABELS[o.type] || o.type}</td>
+      <td>${PAYMENT_LABELS[o.payment] || o.payment}</td>
+      <td><strong>${fmt(o.total)}</strong></td>
+    </tr>`).join('');
+
+  document.getElementById('reportResult').innerHTML = `
+    <button class="print-btn" onclick="window.print()">🖨️ Bericht drucken / als PDF speichern</button>
+    <h3 style="margin:0 0 4px;">Zeitraum: ${data.from} bis ${data.to}</h3>
+    <p style="color:var(--gray); font-size:.85rem; margin:0 0 20px;">${data.orderCount} abgeschlossene Bestellungen${data.cancelledCount ? `, ${data.cancelledCount} storniert (nicht mitgezählt)` : ''}</p>
+    <div class="report-summary">
+      <div class="report-card"><div class="label">Gesamtumsatz</div><div class="value">${fmt(data.revenue)}</div></div>
+      <div class="report-card"><div class="label">Bestellungen</div><div class="value">${data.orderCount}</div></div>
+      <div class="report-card"><div class="label">Website-Rabatt gesamt</div><div class="value">−${fmt(data.totalDiscount)}</div></div>
+      <div class="report-card"><div class="label">Liefergebühren gesamt</div><div class="value">${fmt(data.totalDeliveryFees)}</div></div>
+    </div>
+    <h3 style="font-size:1rem;">Umsatz nach Zahlungsart</h3>
+    <div class="report-summary">${paymentRows || '<div class="empty">Keine Daten</div>'}</div>
+    <h3 style="font-size:1rem;">Umsatz nach Bestellart</h3>
+    <div class="report-summary">${typeRows || '<div class="empty">Keine Daten</div>'}</div>
+    <h3 style="font-size:1rem;">Einzelne Bestellungen im Zeitraum</h3>
+    <div class="table-scroll"><table><thead><tr>
+      <th>Bestellnr.</th><th>Zeit</th><th>Kunde</th><th>Art</th><th>Zahlung</th><th>Summe</th>
+    </tr></thead><tbody>${orderRows || '<tr><td colspan="6" class="empty">Keine Bestellungen in diesem Zeitraum</td></tr>'}</tbody></table></div>
+  `;
+}
+</script>
+</body>
+</html>
