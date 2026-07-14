@@ -46,10 +46,10 @@
     display:flex; align-items:center; justify-content:space-between; gap:16px;
     padding:12px clamp(18px,4vw,50px); border-bottom:1px solid var(--line);
   }
-  .brand{display:flex; align-items:center; gap:10px; min-width:0;}
+  .brand{display:flex; align-items:center; gap:10px; min-width:0; flex:1 1 auto; overflow:hidden;}
   .brand img{height:38px; width:auto; border-radius:8px; flex:0 0 auto;}
-  .brand-name{font-family:'Fraunces',serif; font-weight:700; font-size:1.1rem; white-space:nowrap;}
-  .brand-name span{display:block; font-family:'Manrope',sans-serif; font-weight:600; font-size:.6rem; letter-spacing:1.5px; color:var(--tomato); text-transform:uppercase;}
+  .brand-name{font-family:'Fraunces',serif; font-weight:700; font-size:1.1rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0;}
+  .brand-name span{display:block; font-family:'Manrope',sans-serif; font-weight:600; font-size:.6rem; letter-spacing:1.5px; color:var(--tomato); text-transform:uppercase; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
   .nav-links{display:flex; gap:22px; list-style:none; margin:0; padding:0;}
   .nav-links a{text-decoration:none; font-size:.88rem; font-weight:600; color:var(--ink); opacity:.75; transition:opacity .2s;}
   .nav-links a:hover{opacity:1;}
@@ -153,6 +153,13 @@
   .item-foot{display:flex; align-items:center; justify-content:space-between; margin-top:auto; padding-top:10px;}
   .item-price{font-family:'Fraunces',serif; font-weight:700; font-size:1.05rem;}
   .add-btn{background:var(--ink); color:#fff; border:none; border-radius:10px; padding:9px 14px; font-size:.8rem; font-weight:700; display:flex; align-items:center; gap:6px;}
+  .add-btn:hover{background:var(--tomato);}
+  .extras-toggle{background:none; border:none; color:var(--tomato); font-size:.76rem; font-weight:700; padding:8px 0 0; text-align:left; text-decoration:underline;}
+  .extras-panel{margin-top:8px; background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:10px 12px;}
+  .extras-option{display:flex; align-items:center; gap:8px; font-size:.82rem; padding:5px 0; cursor:pointer;}
+  .extras-option input{width:15px; height:15px; flex:0 0 auto;}
+  .extras-option span:nth-child(2){flex:1;}
+  .extras-price{color:var(--gray); font-weight:600;}
   .add-btn:hover{background:var(--tomato);}
   .qty-ctrl{display:flex; align-items:center; gap:6px; background:var(--ink); border-radius:10px; padding:4px;}
   .qty-ctrl button{background:none; border:none; color:#fff; font-size:1.05rem; font-weight:800; width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:8px;}
@@ -375,7 +382,15 @@
   <div class="order-wrap">
     <div class="tabs" id="tabs"></div>
     <div id="menuPanels"></div>
-    <p class="menu-note">Alle Preise in €, inkl. MwSt. Angaben zu Zusatzstoffen &amp; Allergenen auf Anfrage. Fotos folgen in Kürze — Platzhalter markieren, wo eure Bilder später hinkommen.</p>
+    <p class="menu-note">Alle Preise in €, inkl. MwSt. und Bedienung. Fotos folgen in Kürze — Platzhalter markieren, wo eure Bilder später hinkommen.</p>
+
+    <div style="max-width:700px; margin:24px auto 0; background:var(--white); border:1px solid var(--line); border-radius:14px; padding:20px 24px; font-size:.78rem; color:var(--gray); line-height:1.7;">
+      <strong style="color:var(--ink); display:block; margin-bottom:8px;">Zusatzstoffe &amp; Allergene</strong>
+      <p style="margin:0 0 8px;">Schinken = Formfleisch-Hinterschinken</p>
+      <p style="margin:0 0 8px;">1 = Phosphat · 2 = mit Konservierungsstoffen · 3 = mit Farbstoff · 4 = mit Süßungsmittel · 5 = enthält eine Phenylalaninquelle · 6 = mit Antioxidationsmitteln · 7 = Geschmacksverstärker · 8 = geschwärzt · 9 = koffeinhaltig · 10 = mit Milcheiweiß</p>
+      <p style="margin:0;">A = Glutenhaltiges Getreide · B = Ei · C = Milch/Laktose · D = Senfsaat · E = Sellerie · F = Sulfite · G = Fisch · H = Krebstiere · I = Weichtiere · K = Lupinen · L = Soja · M = Sesam · O = Schalenfrüchte · P = Erdnüsse</p>
+      <p style="margin:10px 0 0; font-weight:600;">Die genaue Kennzeichnung je Gericht erfahrt ihr gerne bei unserem Personal — sagt uns einfach Bescheid.</p>
+    </div>
   </div>
 </section>
 
@@ -485,13 +500,13 @@
 <script>
 /* ================= Öffnungsstatus ================= */
 const hours = {
-  1:{name:"Montag", open:"08:00", close:"22:00"},
-  2:{name:"Dienstag", open:"08:00", close:"22:00"},
+  1:{name:"Montag", open:"11:00", close:"22:00"},
+  2:{name:"Dienstag", open:"11:00", close:"22:00"},
   3:{name:"Mittwoch", closed:true},
-  4:{name:"Donnerstag", open:"08:00", close:"22:00"},
-  5:{name:"Freitag", open:"08:00", close:"22:00"},
-  6:{name:"Samstag", open:"08:00", close:"22:00"},
-  0:{name:"Sonntag", open:"08:00", close:"22:00"}
+  4:{name:"Donnerstag", open:"11:00", close:"22:00"},
+  5:{name:"Freitag", open:"11:00", close:"22:00"},
+  6:{name:"Samstag", open:"11:00", close:"22:00"},
+  0:{name:"Sonntag", open:"11:00", close:"22:00"}
 };
 const order = [1,2,3,4,5,6,0];
 const now = new Date();
@@ -502,7 +517,7 @@ order.forEach(d=>{
   const h = hours[d];
   const tr = document.createElement('tr');
   if(d===day) tr.classList.add('today');
-  const label = h.closed ? "Geschlossen (Ruhetag)" : h.open + "–" + h.close;
+  const label = h.closed ? "Geschlossen (Ruhetag, außer Feiertage)" : h.open + "–" + h.close;
   tr.innerHTML = `<td>${h.name}</td><td>${label}</td>`;
   tbl.appendChild(tr);
 });
@@ -538,191 +553,271 @@ pBtn.addEventListener('click', () => { pResult.textContent = phrases[pi % phrase
 /* ================= Menü-Daten ================= */
 const menuData = {
   pizza: { label:"🍕 Pizza", groups:[
-    {title:"Pizza Classica — Grundbelag: Tomatensoße, Käse, Oregano", items:[
-      [1,"Margherita","Tomatensoße, Käse","6,50",false,true],
-      [2,"Napoletana","Oliven, Kapern, Sardellen, Knoblauch","8,00"],
-      [3,"Salami","Salami","7,00",false,true],
-      [4,"Mario","Scampi, Spinat","9,50"],
-      [5,"Inferno","Peperoni, Salami (scharf)","8,00"],
-      [6,"Bendito","Zwiebeln, Peperoni (scharf), Knoblauch","8,00"],
-      [7,"Prosciutto e Peperoni","Hinterschinken, Peperoni","8,50"],
-      [8,"Spinaci","Spinat, Knoblauch","8,00"],
-      [9,"Prosciutto","Hinterschinken","7,50"],
-      [10,"Funghi","Champignons","7,00"],
-      [11,"Roma","Champignons, Hinterschinken","8,00"],
-      [12,"Calzone","gefüllt: Hinterschinken, Tomate, Knoblauch (scharf)","9,50"],
-      [13,"Quattro Stagioni","Spinat, Artischocken, Hinterschinken, Thunfisch","9,50"],
-      [14,"Tonno","Thunfisch","8,00"],
-      [15,"Esmeralda","Broccoli, Mais, Zwiebeln, Schafskäse","9,00"],
-      [16,"Valentino","Champignons, Artischocken","9,00"],
-      [17,"Pizzabrötchen gefüllt","Hinterschinken, Salami, Spinat","6,50"],
-      [18,"Cortadina","Champignons, Knoblauch","7,50"],
-      [19,"Marinara","gemischte Meeresfrüchte","9,50"],
-      [20,"Sardegna","Zwiebeln, Champignons, Paprika","8,00"],
+    {title:"Pizza — Grundbelag: Tomatensauce, Käse und Oregano", items:[
+      [1,"Margherita","Tomatensauce, Käse & Oregano","8,50",false,true],
+      [2,"Napoletana","Oliven, Kapern, Sardellen & Knoblauch","10,00"],
+      [3,"Salami","","10,00",false,true],
+      [4,"Mario","Scampis & Spinat","12,00"],
+      [5,"Inferno","Peperoni & Salami","10,50"],
+      [6,"Bandito","Zwiebeln, Oliven & Knoblauch (scharf)","10,00"],
+      [7,"Prosciutto e Peperoni","Schinken & Peperoni","10,50"],
+      [8,"Spinaci","Spinat & Knoblauch","10,00"],
+      [9,"Prosciutto","Schinken","10,00"],
+      [10,"Funghi","","10,00"],
+      [11,"Roma","Champignons & Schinken","11,50"],
+      [12,"Calzone","gefüllte Pizza: Champignons, Schinken, Thunfisch, Spinat, Knoblauch (scharf)","12,50"],
+      [13,"Quattro Stagioni","Spinat, Champignons, Schinken & Thunfisch","12,00"],
+      [14,"Tonno","Thunfisch","11,00"],
+      [15,"Esmeralda","Thunfisch, Mais, Zwiebeln & Schafskäse","12,00"],
+      [16,"Valentino","Thunfisch, Schinken, Champignons & Artischocken","12,00"],
+      [17,"Contadina","Champignons, Artischocken & Knoblauch","10,50"],
+      [18,"Marinara","Meeresfrüchte & Knoblauch","12,00"],
+      [19,"Sardegna","Spinat, Champignons & Knoblauch","10,50"],
+      [20,"Grandiosa","Zwiebeln, Champignons & Paprika","11,50"],
     ]},
     {title:"Weitere Pizza-Spezialitäten", items:[
-      [21,"Grandiosa","Zwiebeln, Peperoni","7,50"],
-      [22,"Deliziosa","Salami","10,00"],
-      [23,"Scampi","Scampi, Sardellen","10,00"],
-      [24,"Caserreccia","Spinat, Knoblauch, Schafskäse","9,50"],
-      [25,"Miete","Paprika, Salami, Sardellen","9,50"],
-      [26,"Italia","Spinat, Zwiebeln, Paprika","8,50"],
-      [27,"Campagnola","Sardellen, Zwiebeln, Champignons","8,50"],
-      [28,"Vesuvio","Paprika, Zwiebeln","8,00"],
-      [29,"Del Sud","Hinterschinken, Artischocken, Knoblauch","9,50"],
-      [30,"Hawaii","Hinterschinken, Ananas","8,50"],
-      [31,"Pirata","Paprika, Artischocken, Oliven (scharf), Knoblauch","9,00"],
-      [32,"Rustica","Paprika, Zwiebeln, Sardellen","8,50"],
-      [33,"Pinocchio","Frühlingszwiebeln, Hinterschinken, Salami, Spinat, Knoblauch","9,50",true,true],
-      [34,"Olivella","Champignons, Hinterschinken","7,50"],
-      [36,"La Grotta","Spinat, Hinterschinken, Krabben","9,50"],
-      [37,"Antonio","Champignons, Ei","8,00"],
-      [40,"Primavera","Thunfisch, Hinterschinken, zwei Käsesorten (scharf)","9,50"],
-      [43,"Emilio","Thunfisch, Sardellen","9,50"],
-      [44,"Matta","Peperoni, Salami, Sardellen","9,50"],
-      [45,"Bolognese","Rindfleischsoße","9,50"],
+      [21,"Deliziosa","Schinken & Salami","11,50"],
+      [22,"Scampi","Krabben & Knoblauch","12,00"],
+      [23,"Milano","Champignons, Salami (scharf)","11,50"],
+      [24,"Casereccia","Spinat, Zwiebeln, Knoblauch & Schafskäse","11,00"],
+      [25,"Mista","Champignons, Thunfisch, Schinken & Salami","12,00"],
+      [26,"Italia","Spinat, Zwiebeln & Paprika","10,50"],
+      [27,"Campagnola","Sardellen, Kapern & Salami","11,50"],
+      [28,"Vesuvio","Paprika & Zwiebeln","10,50"],
+      [29,"Del Sud","Schinken, Artischocken, Krabben & Knoblauch","12,00"],
+      [30,"Hawaii","Schinken & Ananas","10,50"],
+      [31,"Pirata","Paprika, Artischocken, Kapern, Sardellen, Oliven, Knoblauch (scharf)","12,00"],
+      [32,"Rustica","Schinken, Champignons & Paprika","11,50"],
+      [33,"Pinocchio","Thunfisch, Champignons, Schinken, Spinat, Knoblauch (scharf)","12,00",true,true],
+      [34,"Diavolo","Thunfisch, Schinken (scharf)","11,50"],
+      [35,"Capricciosa","Champignons, Schinken, Artischocken, Zwiebeln & Paprika","12,00"],
+      [36,"Antonio","Spinat, Schinken & Spiegelei","11,50"],
+      [37,"Paesana","Thunfisch, Champignons, Sardellen","11,50"],
+      [38,"Primavera","Thunfisch, Schinken, Zwiebeln (scharf)","11,50"],
+      [39,"La Grotta","Spinat, Schinken, Krabben, Champignons & Knoblauch","12,00"],
+      [40,"La Strada","Paprika, Schinken, Krabben, Champignons & Knoblauch","12,00"],
     ]},
     {title:"Pizza — Hausklassiker", items:[
-      [46,"Mare","Champignons, Krabben, Thunfisch","9,50"],
-      [47,"Verdura","Gemüse, Knoblauch","8,50"],
-      [48,"Casa","Champignons, Thunfisch","8,50"],
-      [49,"Rucola","Parmaschinken, Kirschtomaten, Rucola, Parmesan","9,50"],
-      [50,"Magica","Hinterschinken, Kirschtomaten, überbacken","9,50"],
-      [51,"Pescatore","Thunfisch, Meeresfrüchte, Sardellen, Knoblauch","10,00"],
-      [52,"Pugliese","Thunfisch, Zwiebeln","9,50"],
-      [53,"Zingara","Thunfisch, Champignons, Paprika, Knoblauch","9,50"],
-      [54,"Cosenza","Champignons, Oliven","9,50"],
-      [55,"Kaiser","frische Tomaten, Oliven, Basilikum, Mozzarella","9,50"],
-      [56,"Rimini","Champignons, Paprika, Spinat, Zwiebeln","9,50"],
-      [57,"Andrea","Parmaschinken, Gorgonzola","9,50"],
-      [58,"4 Formaggi","vier verschiedene Käsesorten","9,50"],
-      [59,"Famiglia","Familienpizza Ø 40 cm für 2 Pers.","19,00"],
+      [41,"Rami","Champignons, Thunfisch & Ananas","11,50"],
+      [42,"Emilio","Champignons, Thunfisch, Mais","11,50"],
+      [43,"Matta","Peperoni, Salami, Sardellen & Knoblauch","11,50"],
+      [44,"Bolognese","Rindfleischsauce & Spaghetti","12,50"],
+      [45,"Mare","Thunfisch, Krabben & Knoblauch","12,50"],
+      [46,"Verdura","Gemüse & Knoblauch","12,00"],
+      [47,"Casa","Champignons, Thunfisch","11,50"],
+      [48,"Rucola","Parmaschinken, Kirschtomaten, Rucola, Parmesan","12,00"],
+      [49,"Magica","Schinken, Kirschtomaten & Käse","11,50"],
+      [50,"Pescatore","Thunfisch, Meeresfrüchte, Sardellen & Knoblauch","12,50"],
+      [51,"Pollo","Hähnchenfleisch, Peperoni & Broccoli","12,00"],
+      [52,"Pugliese","Thunfisch & Paprika","12,00"],
+      [53,"Zingara","Thunfisch, Schinken, Paprika & Artischocken","12,00"],
+      [54,"Cosenza","Thunfisch & Zwiebeln","11,50"],
+      [55,"Kaiser","frische Tomaten, Oliven, frischer Basilikum, Mozzarella","11,50"],
+      [56,"Rimini","Champignons, Paprika, Spinat & Zwiebeln","11,50"],
+      [57,"Andrea","Parmaschinken & Gorgonzola","11,50"],
+      [58,"4 Formaggi","vier verschiedene Käsesorten","11,50"],
+      [59,"Famiglia 40cm","Familienpizza für 2 Personen — Thunfisch, Champignons, Schinken & Salami","24,00"],
       [60,"Pizzablech 40×60 cm","für 4 Personen — auf Anfrage","auf Anfrage"],
     ]},
+    {title:"Pizzabrötchen gefüllt", items:[
+      [null,"Pizzabrötchen gefüllt","mit Thunfisch, Schinken, Spinat, Schafskäse, Hähnchenbrust & Peperoni — je Sorte","8,50"],
+    ]},
   ]},
-  salate:{ label:"🥗 Salate", groups:[
-    {title:"Salate", items:[
-      [163,"Lena","grüner Salat, Gurken, Tomaten, Zwiebeln, Lachs, Thunfisch, Oliven","11,00"],
-      [164,"Bella Italia","grüner Salat, Tomaten, Schafskäse, Zwiebeln","9,50",false,true],
-      [165,"Eva","grüner Salat, Gurken, Tomaten, Rucola, Parmesan","9,00",false,true],
-      [166,"Verde","grüner Salat","7,00"],
-      [167,"Pomodori","grüner Salat, Tomaten, Zwiebeln","7,50"],
-      [168,"Fantasia","Hähnchensalat, Rucola, Parmesan, Tomaten, Speck, Champignons","11,50"],
-      [170,"Pinocchio-Salat","grüner Salat, Rotkohl, Tomaten, Schafskäse, Rucola","12,50",true,true],
-      [171,"Tonno Fagioli","grüner Salat, Tomaten, Thunfisch, Bohnen","10,50"],
-      [172,"di Pollo","grüner Salat, Hähnchenbrust, Tomaten, Meeresfrüchte","12,00"],
-      [173,"Niçoise","grüner Salat, Tomaten, Thunfisch, Ei, Oliven","10,50"],
-      [174,"Caprigiosa","grüner Salat, Gurken, Tomaten, Mais, Knoblauch, Thunfisch","9,50"],
-      [175,"Marinara","grüner Salat, Gurken, Tomaten, Meeresfrüchte","9,00"],
-      [176,"Formaggio","grüner Salat, Gurken, Tomaten, Käse, Ei","8,50"],
-      [177,"Tonno","grüner Salat, Gurken, Tomaten, Thunfisch","8,50"],
-      [178,"Bizzarella","grüner Salat, Gurken, Zwiebeln, Tomaten","7,00"],
-      [179,"Speciale","grüner Salat, Gurken, Tomaten, Zwiebeln, Schafskäse, Ei","8,50"],
-      [180,"Contadina","grüner Salat, Gurken, Tomaten, Schafskäse","8,00"],
-      [181,"Algerina","grüner Salat, Gurken, Tomaten, Artischocken","8,00"],
-      [182,"Gamberetti","grüner Salat, Krabben, Knoblauch","9,00"],
-      [183,"Hawaii","grüner Salat, Gurken, Tomaten, Ananas","7,00"],
-      [184,"Mirto","grüner Salat, Gurken, Tomaten, Bohnen, Mais","7,50"],
-    ]}
+  salate: { label:"🥗 Salate", groups:[
+    {title:"Salate — mit Essig-Öl oder Joghurtdressing", items:[
+      [163,"Lena","grüner Salat, Gurken, Tomaten, Zwiebeln, Lachs, Rucola & Oliven","12,50",false,true],
+      [164,"Bella Italia","grüner Salat, Gurken, Tomaten, Rucola, Schafskäse & Zwiebeln","10,50"],
+      [165,"Eva","grüner Salat, Gurken, Tomaten, Rucola, Zwiebeln & Parmesankäse","10,00",false,true],
+      [166,"Verde","grüner Salat & Zwiebeln","8,00"],
+      [167,"Pomodori","grüner Salat, Tomaten & Zwiebeln","8,50"],
+      [168,"Fantasia","Hähnchensalat mit Rucola, Parmesan, Tomaten, Speck & Champignons","12,50"],
+      [169,"Mista","grüner Salat, Gurken, Tomaten & Zwiebeln","8,00"],
+      [170,"Pinocchio-Salat","grüner Salat, Rindfleischstreifen, Schafskäse & Peperoni","12,50",false,true],
+      [171,"Tonno Fagiolo","grüner Salat, Gurken, Tomaten, Zwiebeln, Thunfisch & Bohnen","11,50"],
+      [172,"Niçoise","grüner Salat, Gurken, Tomaten, Zwiebeln, Thunfisch & Sardellen","11,50"],
+      [173,"Capricciosa","grüner Salat, Gurken, Tomaten, Zwiebeln, Käse, Schinken & Thunfisch","12,00"],
+      [174,"Marinara","grüner Salat, Gurken, Tomaten, Zwiebeln & Meeresfrüchte","12,00"],
+      [175,"Formaggio","grüner Salat, Gurken, Tomaten, Zwiebeln, Käse & gekochte Eier","11,50"],
+      [176,"Tonno","grüner Salat, Gurken, Tomaten, Zwiebeln & Thunfisch","11,00"],
+      [177,"Mais","grüner Salat, Gurken, Tomaten, Zwiebeln & Mais","9,50"],
+      [178,"Mozzarella","Weichkäse, Tomaten, grüner Salat, Oliven & Zwiebeln","11,50"],
+      [179,"Speciale","grüner Salat, Gurken, Tomaten, Zwiebeln, Thunfisch & Ei","12,00"],
+      [180,"Contadina","grüner Salat, Gurken, Tomaten, Zwiebeln, Schafskäse, Artischocken, Thunfisch & Oliven","11,00"],
+      [181,"Argentina","grüner Salat, Gurken, Tomaten, Zwiebeln, Artischocken & Mais","9,00"],
+      [182,"Gamberetti","grüner Salat, Gurken, Tomaten, Zwiebeln, Krabben & Knoblauch","12,00"],
+      [183,"Mirto","grüner Salat, Gurken, Tomaten, Käse, Zwiebeln, Bohnen, Oliven & Mais","11,00"],
+      [184,"Hawaii","grüner Salat, Schinken, Ananas, Gurken, Tomaten & Zwiebeln","10,50"],
+      [185,"Mare","grüner Salat, Gurken, Tomaten, Zwiebeln, Thunfisch & Krabben","12,50"],
+      [186,"Rossano","grüner Salat, Gurken, Tomaten, Zwiebeln, Thunfisch, Käse & Mais","11,50"],
+      [187,"Di Pollo","grüner Salat, Gurken, Tomaten, Zwiebeln, Hähnchenfleisch, Parmesankäse & Champignons","12,50"],
+    ]},
   ]},
-  pasta:{ label:"🍝 Pasta", groups:[
+  pasta: { label:"🍝 Pasta", groups:[
     {title:"Spaghetti", items:[
-      [187,"Napoli","Tomatensoße","7,50"],
-      [188,"Bolognese","Fleischsoße","9,00",false,true],
-      [189,"Chef","Hähnchenbrust, Broccoli, Champignons, Sahnesoße","10,00"],
-      [190,"Carbonara","Hinterschinken, Sahne, Ei, Parmesan","9,00",false,true],
-      [191,"Amatriciana","Zwiebeln, Hinterschinken, Tomatensoße","9,00"],
-      [192,"Diavolo","scharf: Hinterschinken, Tomatensoße, Paprika","9,50"],
-      [193,"Marinara","gemischte Meeresfrüchte, Knoblauch","12,50"],
-      [194,"Gorgonzola","Sahnesoße, Gorgonzola","9,00"],
-      [195,"Bella Italia","Sahne, Champignons, Hinterschinken","9,00"],
-      [196,"Tonno","Thunfisch, Sahnesoße","9,00"],
-      [197,"Mare e Monti","Broccoli, Krabben, Champignons","12,50"],
-      [198,"alla Zingara","Tomatensoße, Champignons, Paprika, Knoblauch","9,00"],
-      [199,"Alfredo","Sahne, Champignons, Parmesan","9,00"],
-      [200,"Bucco","Tomatensoße, Hinterschinken (scharf)","9,00"],
-      [202,"Mirto","Tomaten-Sahnesoße, Hinterschinken, Erbsen, Knoblauch, Champignons","9,00"],
-      [203,"Roseanne","Tomaten-Sahnesoße, Hinterschinken, Champignons","9,00"],
-      [204,"Longobucco","Tomaten-Sahnesoße, Hinterschinken (scharf)","9,00"],
-      [205,"Roseamare","Tomaten-Sahnesoße, Champignons, Krabben","12,50"],
-      [206,"all'Uovo","Tomatensoße mit Ei","8,50"],
-      [207,"Aglio e Olio","Knoblauch, Olivenöl (scharf)","7,50"],
-      [208,"Arrabiata","Tomatensoße, Oliven, Peperoni (scharf)","8,00"],
-      [209,"Gamberoni","Tomatensoße, Knoblauch","12,50"],
+      [188,"Napoli","mit Tomatensauce","10,00"],
+      [189,"Bolognese","mit Fleischsauce","11,00",false,true],
+      [190,"Chef","mit Hähnchenstreifen, Broccoli, Champignons, in Sahnesauce","11,50"],
+      [191,"Carbonara","mit Schinken, Sahne, Eigelb & Parmesan","11,00",false,true],
+      [192,"Amatriciana","mit Zwiebeln, Schinken, Tomatensauce","11,00"],
+      [193,"Diavolo","scharf: mit Zwiebeln, Tomatensauce, Schinken, Paprika","11,00"],
+      [194,"Marinara","mit Meeresfrüchten, Tomatensauce & Knoblauch","12,00"],
+      [196,"Gorgonzola","mit Sahne & Gorgonzolakäse","10,50"],
+      [197,"Bella Italia","mit Sahne, Schinken, Champignons & mit Käse überbacken","11,00"],
+      [198,"Tonno","mit Thunfisch & Tomatensauce","11,00"],
+      [199,"Mari e Monti","mit Broccoli & Krabben in Sahnesauce","12,50"],
+      [200,"Alla Zingara","mit Tomatensauce, frischen Champignons, Paprika & Knoblauch","11,00"],
+      [201,"Alfredo","Schinken, Sahne, Erbsen & Parmesan","11,00"],
     ]},
     {title:"Maccheroni", items:[
-      [210,"Gratinati","Tomaten-Sahnesoße, Käse, überbacken","8,50"],
-      [211,"Bolognese","Fleischsoße","7,50"],
-      [212,"Napoli","Tomatensoße","7,50"],
-      [213,"Gorgonzola","Sahne, Gorgonzola","8,50"],
-      [214,"Bella Italia","Sahne, Champignons, Hinterschinken","9,00"],
-      [215,"4 Formaggi","vier Käsesorten","9,50"],
-      [216,"Broccoli","Broccoli in Sahnesoße, überbacken","9,00"],
-      [217,"Tonno","Thunfisch, Sahnesoße","9,00"],
-      [218,"Mare e Monti","Broccoli, Krabben, Champignons","12,50"],
-      [219,"alla Zingara","Tomatensoße, Champignons, Paprika, Knoblauch","9,00"],
-      [220,"Alfredo","Sahne, Champignons, Parmesan","9,00"],
-      [221,"Longobucco","Tomatensoße, Hinterschinken (scharf), Knoblauch","9,00"],
+      [202,"Mirto","Tomaten-Sahnesauce, Schinken, Erbsen, Knoblauch, Krabben & Käse überbacken","12,50"],
+      [203,"Longobucco","Tomaten-Sahnesauce, Schinken, Käse, überbacken (scharf)","11,50"],
+      [204,"Rossano","Tomaten-Sahnesauce, Champignons, Krabben, Artischocken & Käse überbacken","12,50"],
+      [205,"All'Uovo","gekochtes Ei, Tomatensauce, Schinken, Sahne überbacken mit Knoblauch (scharf)","10,00"],
+      [206,"Aglio e Olio","mit Knoblauch, Olivenöl (scharf)","10,00"],
+      [207,"Arrabiata","mit Tomatensauce, Oliven & Peperoni (scharf)","13,50"],
+      [240,"Gamberoni","Tomatensauce & Gambas","13,50"],
     ]},
     {title:"Tortellini", items:[
-      [223,"Napoli","Tomatensoße","7,50"],
-      [224,"Gorgonzola","Gorgonzola, Sahne","8,50"],
-      [225,"Gamberoni","Krabben, Sahnesoße","12,50"],
-      [226,"Funghi","Champignons in Sahnesoße","8,00"],
-      [227,"Alfredo","Sahne, Erbsen, Parmesan","9,50",false,true],
-      [228,"Panna e Prosciutto","Sahnesoße, Hinterschinken","9,50"],
-      [229,"Mirto","Tomaten-Sahnesoße, Hinterschinken, Champignons","9,00"],
-      [230,"Longobucco","Tomatensoße, Hinterschinken (scharf), Knoblauch","9,00"],
-      [231,"Carbonara","Hinterschinken, Ei, Sahnesoße, Parmesan","9,50"],
-    ]}
+      [218,"Mirto","Tomaten-Sahnesauce, Schinken, Erbsen, Knoblauch, Krabben & Käse überbacken","12,50"],
+      [219,"All'Uovo","Schinken, gek. Ei, Tomatensauce, Sahne & Käse überbacken","11,00"],
+      [220,"Arrabiata","mit Tomatensauce, Oliven & Peperoni (scharf)","10,50"],
+      [223,"Napoli","mit Tomatensauce","11,00"],
+      [224,"Bolognese","mit Fleischsauce","12,00"],
+      [225,"Gorgonzola","mit Gorgonzolasauce und Sahne","10,50"],
+      [226,"Koch","Schinken, Tomatensauce, Sahne mit Käse überbacken","11,00"],
+      [227,"Bella Italia","Sahne, Champignons, Schinken & Käse überbacken","11,50"],
+      [228,"Gamberetti","Krabben & Sahnesauce","12,50"],
+      [229,"Funghi","Champignons & Sahnesauce","10,00"],
+      [230,"Alfredo","Schinken, Sahne, Erbsen, Parmesankäse","12,00"],
+      [231,"Panna e Prosciutto","Sahnesauce & Schinken","11,00"],
+      [232,"Mirto Tortellini","Tomaten-Sahnesauce, Schinken, Erbsen, Knoblauch, Krabben, Käse überbacken","12,50"],
+      [233,"Longobucco Tortellini","Tomaten-Sahnesauce, Schinken, Käse, überbacken (scharf)","11,50"],
+      [234,"All'Uovo Tortellini","Schinken, gek. Ei, Tomatensauce, Sahne mit Käse überbacken","11,00"],
+      [235,"Carbonara Tortellini","Schinken, Sahne, Eigelb, Parmesan","11,50"],
+    ]},
+    {title:"Überbackene Nudeln", items:[
+      [236,"Cannelloni","","12,00"],
+      [237,"Lasagne","","12,00"],
+      [238,"Tris al Forno","3 verschiedene Nudelsorten: Spaghetti/Rigatoni/Tortellini","12,00"],
+      [239,"Tris Speciale","3 verschiedene Nudelsorten: Lasagne/Cannelloni/Tortellini mit Käse überbacken","12,00"],
+    ]},
+    {title:"Tagliatelle", items:[
+      [255,"Rimini","Champignons, Schinken, Sahnesauce","11,00"],
+      [256,"Bologna","Fleischsauce","11,00"],
+      [257,"Napoli","Tomatensauce","10,00"],
+      [258,"Alfredo","Schinken, Erbsen, Sahnesauce, Parmesankäse","11,50"],
+      [259,"Bella Italia","Käse, Schinken, Champignons, Sahnesauce & mit Käse überbacken","12,00"],
+      [260,"Panna e Prosciutto","Schinken, Sahnesauce","11,00"],
+      [261,"Carbonara","Schinken, Sahne, Eigelb, Parmesan","11,00"],
+      [262,"Mirto","Tomaten-Sahnesauce, Schinken, Krabben, Erbsen, Knoblauch & Käse überbacken","12,50"],
+      [263,"All'Uovo","Schinken, gek. Ei, Sahne & mit Käse überbacken","11,50"],
+      [264,"Salmone","mit Lachs in Sahnesauce","13,50"],
+    ]},
+    {title:"Gnocchi", items:[
+      [270,"Napoletana","Tomatensauce & Basilikum","11,00"],
+      [271,"Gorgonzola","Sahne & Gorgonzolakäse","11,50"],
+      [272,"Panna e Prosciutto","Sahne & Schinken","11,50"],
+      [273,"Della Casa","Mozzarellakäse, Tomaten & Basilikum","11,50"],
+      [274,"Bolognese","mit Bolognesesauce","11,50"],
+    ]},
   ]},
-  fisch:{ label:"🐟 Fisch & Meer", groups:[
-    {title:"Pesce", items:[
-      [194,"Gamberoni alla Griglia","vom Grill, mit Beilage","21,50",false,true],
-      [195,"Gamberoni alla Provinciale","Tomaten-Sahnesoße, Knoblauch","21,50"],
-      [196,"Gamberoni al Pepe Verde","grüne Pfeffersoße","22,50"],
-      [197,"Gamberoni Aglio e Peperoncino","Knoblauch, Peperoncino","21,50"],
-      [198,"Salmone alla Griglia","gegrilltes Lachsfilet","20,50",false,true],
-      [228,"Salmone alla Provinciale","Tomaten-Sahnesoße, Knoblauch","21,00"],
-      [240,"Salmone al Vino Bianco","Weißwein, Sahne","21,00"],
-      [241,"Salmone al Pepe Verde","grüne Pfeffersoße","20,50"],
+  antipasti: { label:"🍆 Antipasti", groups:[
+    {title:"Antipasti", items:[
+      [284,"Prosciutto di Parma","Parmaschinken","13,50"],
+      [286,"Mozzarella Caprese","Mozzarellakäse mit Tomaten und Basilikum","10,00",false,true],
+      [287,"Antipasto Italiano Misto","gemischte Vorspeisen","13,50"],
+      [288,"Carpaccio di Filetto","dünn geschnittenes Rinderfilet","13,50"],
+      [289,"Bruschetta","","7,00",false,true],
+      [290,"Bruschetta Spezial","mit Parmesan","8,00"],
+    ]},
+    {title:"Überbackenes Gemüse", items:[
+      [245,"Broccoli al Forno","Broccoli in Sahnesauce, Tomatensauce, Knoblauch, mit Käse überbacken","12,00"],
+      [246,"Petti di Pollo","Hähnchenbruststreifen mit versch. Gemüse, Tomatensauce & Käse überbacken","12,00",false,true],
+      [247,"Spinaci al Forno","Spinat, Sahne, Tomaten, Knoblauch & Käse überbacken","12,00"],
+      [248,"Combinazione di Verdura","Gemüsekombination: Broccoli, Spinat, Artischocken, Champignons, Tomatensauce, Knoblauch & Käse überbacken","12,00"],
+      [249,"Funghi al Forno","Champignons, Sahne, Tomaten, Knoblauch & Käse überbacken","12,00"],
+    ]},
+  ]},
+  fleisch: { label:"🥩 Fleisch", groups:[
+    {title:"Carne — mit Beilage nach Wahl (Pommes, Kroketten, Bratkartoffeln, Beilagensalat oder Spaghetti)", items:[
+      [300,"Scaloppine alla Milanese","Schweineschnitzel paniert","13,90",false,true],
+      [301,"Scaloppine al Vino Bianco","Schweineschnitzel in Weißwein","13,90"],
+      [302,"Scaloppine al Marsala","Schweineschnitzel in Marsalasauce","14,90"],
+      [303,"Scaloppine al Limone","Schweineschnitzel in Weißwein & Zitrone","14,90"],
+      [304,"Scaloppine alla Pizzaiola","Schweineschnitzel in Tomatensauce, Kapern, Oliven","14,90"],
+      [305,"Scaloppine al Funghi e Gorgonzola","Schweineschnitzel in Sahnesauce, Champignons, Gorgonzolakäse","14,90"],
+      [306,"Scaloppine Mari e Monti","Schweineschnitzel in Sahnesauce, Scampi, Broccoli","16,90"],
+      [307,"Scaloppine alla Paesana","Schweineschnitzel in Sahnesauce, Champignons, Paprika & Artischocken","14,90"],
+      [308,"Scaloppine Hawaii","Schweineschnitzel mit Weißwein, Sahne, Ananas & Käse","14,90"],
+      [309,"Scaloppine al Pepe Verde","Schweineschnitzel mit Pfeffersauce","14,90"],
+    ]},
+    {title:"Bistecche Argentina — mit Beilage nach Wahl", items:[
+      [310,"Bistecca alla Griglia","Arg. Rumpsteak gegrillt mit Kräuterbutter","23,90",false,true],
+      [311,"Bistecca ai Funghi","Arg. Rumpsteak in Sahnesauce mit Champignons","24,90"],
+      [312,"Bistecca al Pepe Verde","Arg. Rumpsteak in Pfefferrahmsauce","24,90"],
+      [313,"Bistecca alla Paesana","Arg. Rumpsteak in Sahnesauce, Champignons, Paprika & Artischocken","24,90"],
+      [314,"Bistecca al Gorgonzola","Arg. Rumpsteak in Sahnesauce","24,90"],
+      [315,"Bistecca Diavolo","Arg. Rumpsteak in Tomatensauce, Paprika, Shrimps, Champignons (scharf)","24,90"],
+      [316,"Bistecca Mare e Monti","Arg. Rumpsteak in Tomaten-Sahnesauce, Shrimps & Broccoli","25,90"],
+    ]},
+    {title:"Pollo — mit Beilage nach Wahl", items:[
+      [401,"Pollo al Pepe Verde","Gegrillte Hähnchenbrust in grüner Pfeffer-Sahnesauce","16,90"],
+      [402,"Pollo ai Funghi","Gegrillte Hähnchenbrust in Champignonrahmsauce","16,90",false,true],
+      [403,"Pollo alla Griglia","Gegrillte Hähnchenbrust","14,90"],
+      [404,"Pollo ai Funghi & Gorgonzola","Gegrillte Hähnchenbrust mit Champignons, Gorgonzola & Sahnesauce","16,90"],
+    ]},
+  ]},
+  risotto: { label:"🍚 Risotto", groups:[
+    {title:"Risotto", items:[
+      [406,"Risotto alle Verdure","Reis mit versch. Gemüse","12,50",false,true],
+      [407,"Risotto Pollo e Verdure","Reis, Hähnchenfleisch & versch. Gemüse","13,50",false,true],
+    ]},
+  ]},
+  fisch: { label:"🐟 Fisch & Suppen", groups:[
+    {title:"Pesce — mit Beilage nach Wahl", items:[
+      [334,"Gamberoni alla Griglia","Gambas vom Grill","23,50",false,true],
+      [335,"Gamberoni alla Provinciale","Gambas in Tomaten-Sahnesauce, Weißwein & Knoblauch","24,50"],
+      [336,"Gamberoni al Pepe Verde","Gambas in grüner Pfefferrahmsauce","24,50"],
+      [337,"Gamberoni Aglio e Peperoncino","Gambas, Weißwein, Peperoni & Knoblauch","24,50"],
+      [338,"Salmone alla Griglia","gegrillter Lachs","22,50",false,true],
+      [339,"Salmone alla Provinciale","Lachs in Tomaten-Sahnesauce, Weißwein & Knoblauch","23,00"],
+      [340,"Salmone al Vino Bianco","Lachs in Weißweinsauce","23,00"],
+      [341,"Salmone al Pepe Verde","Lachs in Sahnesauce mit grünem Pfeffer","23,00"],
     ]},
     {title:"Zuppe", items:[
-      [350,"Crema di Pomodoro","Tomatencremesuppe","6,50"],
-      [351,"Tortellini in Brodo","Fleischbrühe mit gefüllten Nudeln","6,50"],
-      [353,"Minestrone all'Italiana","italienische Gemüsesuppe","6,50",false,true],
-    ]}
+      [350,"Crema di Pomodoro","Tomatencremesuppe","7,50"],
+      [351,"Tortellini in Brodo","Fleischbrühe mit gefüllten Nudeln","8,00"],
+      [353,"Minestrone all'Italiana","Gemüsesuppe","8,00"],
+    ]},
   ]},
-  beilagen:{ label:"🍟 Beilagen & Dessert", groups:[
+  beilagen: { label:"🍟 Beilagen & Dessert", groups:[
     {title:"Beilagen", items:[
-      [null,"Pommes frites","",  "3,50",false,true],
-      [null,"Kroketten","","3,50"],
-      [null,"Broccoli","","3,50"],
-      [null,"Spinat","","3,50"],
-      [null,"Gemischter Salat","","3,50",false,true],
-      [null,"Tagesbeilage","","3,50"],
-      [null,"Brötchen","mit Kräutercreme","3,50"],
+      [null,"Pommes frites","","4,50",false,true],
+      [null,"Kroketten","","4,50"],
+      [null,"Bratkartoffeln","","4,50"],
+      [null,"Broccoli","","4,50"],
+      [null,"Spinat","","4,50"],
+      [null,"Gemischter Salat","","4,50"],
+      [null,"Tagesbeilage","","4,50"],
+      [null,"Brötchen","mit Kräuterbutter","3,50"],
     ]},
     {title:"Dessert", items:[
-      [null,"Auswahl an Desserts","fragen Sie uns bitte","auf Anfrage",false,true],
-      [null,"Flaschenweine","fragen Sie uns bitte","auf Anfrage"],
-    ]}
+      [null,"Tiramisu","","4,90",false,true],
+    ]},
   ]},
-  getraenke:{ label:"🥤 Getränke", groups:[
+  getraenke: { label:"🥤 Getränke", groups:[
     {title:"Getränke zum Mitnehmen", items:[
-      [null,"Coca-Cola","0,5 l","2,50"],
-      [null,"Coca-Cola Light","0,5 l","2,50"],
-      [null,"Coca-Cola Zero","0,5 l","2,50"],
-      [null,"Fanta","0,5 l","2,50"],
-      [null,"Sprite","0,5 l","2,50"],
-      [null,"San Pellegrino","0,5 l","2,50"],
-      [null,"Bitburger","0,5 l","3,00"],
+      [null,"Coca-Cola","1,0 l","3,50"],
+      [null,"Coca-Cola Zero","1,0 l","3,50"],
+      [null,"Fanta","1,0 l","3,50"],
+      [null,"Sprite","1,0 l","3,50"],
+      [null,"Bitburger","0,5 l","2,50"],
       [null,"Weißbier","0,5 l","3,00"],
-      [null,"Rotwein","0,7 l","8,00"],
-      [null,"Weißwein","0,7 l","8,00"],
-      [null,"Lambrusco","0,7 l","8,00"],
-    ]}
-  ]}
+      [null,"Rotwein","0,7 l","13,00"],
+      [null,"Weißwein","0,7 l","13,00"],
+      [null,"Lambrusco","0,7 l","13,00"],
+    ]},
+  ]},
 };
 
 /* ================= Backend-Verbindung ================= */
@@ -730,6 +825,7 @@ const menuData = {
 // hier die echte Adresse eintragen, z. B. "https://pinocchio-backend.onrender.com"
 const API_BASE = "https://pinocchio-backend.onrender.com";
 const MIN_ORDER_DELIVERY = 15.0; // € – muss zum Wert in server.js passen
+const WEBSITE_DISCOUNT_RATE = 0.10; // 10% Rabatt exklusiv für Online-Bestellungen
 
 /* ================= Warenkorb-Status ================= */
 // Der Warenkorb wird im Browser gespeichert (localStorage), damit er auch
@@ -774,6 +870,18 @@ function priceToNumber(p){
 }
 function fmt(n){ return n.toFixed(2).replace('.', ',') + ' €'; }
 
+function getDrinkNames(){
+  return menuData.getraenke.groups.flatMap(g=>g.items.map(it=>it[1]));
+}
+function cartHasDrinks(){
+  const drinkNames = getDrinkNames();
+  return Object.values(cart).some(it => drinkNames.includes(it.name));
+}
+function cartDrinkItems(){
+  const drinkNames = getDrinkNames();
+  return Object.entries(cart).filter(([id,it]) => drinkNames.includes(it.name));
+}
+
 function updateCartUI(){
   const ids = Object.keys(cart);
   const count = ids.reduce((s,id)=>s+cart[id].qty,0);
@@ -809,8 +917,7 @@ function updateCartUI(){
     });
   }
   document.getElementById('cartSubtotal').textContent = fmt(subtotal);
-  const drinkNames = menuData.getraenke.groups.flatMap(g=>g.items.map(it=>it[1]));
-  const hasDrink = Object.values(cart).some(it => drinkNames.includes(it.name));
+  const hasDrink = cartHasDrinks();
   const nudgeEl = document.getElementById('crossSellNudge');
   if(nudgeEl) nudgeEl.style.display = (ids.length > 0 && !hasDrink) ? 'flex' : 'none';
   document.querySelectorAll('.item-card').forEach(card=>{
@@ -858,8 +965,46 @@ const keys = Object.keys(menuData);
 const EXPAND_LIMIT = 6;
 
 const CATEGORY_ICON = {
-  pizza: '🍕', salate: '🥗', pasta: '🍝', fisch: '🐟', beilagen: '🍟', getraenke: '🥤'
+  pizza: '🍕', salate: '🥗', pasta: '🍝', antipasti: '🍆', fleisch: '🥩', risotto: '🍚', fisch: '🐟', beilagen: '🍟', getraenke: '🥤'
 };
+
+const EXTRAS = [
+  {id:'kaese', label:'Extra Käse', price:1.50},
+  {id:'schinken', label:'Extra Schinken', price:2.00},
+  {id:'peperoni', label:'Extra Peperoni', price:1.50},
+  {id:'oliven', label:'Extra Oliven', price:1.00},
+];
+
+function domSafe(id){ return id.replace(/[^a-zA-Z0-9]/g, '_'); }
+
+function toggleExtras(cardId){
+  const panel = document.getElementById('extras-' + domSafe(cardId));
+  if(panel) panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+}
+
+function addWithExtras(cardId){
+  const panel = document.getElementById('extras-' + domSafe(cardId));
+  const checked = Array.from(panel.querySelectorAll('input[type="checkbox"]:checked')).map(cb=>cb.value);
+  const base = CATALOG_LOOKUP[cardId];
+  if(!base) return;
+  if(checked.length === 0){ addToCart(cardId); return; }
+  const extrasSorted = checked.slice().sort();
+  const combinedKey = cardId + '+' + extrasSorted.join('+');
+  const extraPrice = extrasSorted.reduce((s,id)=>{
+    const ex = EXTRAS.find(e=>e.id===id);
+    return s + (ex ? ex.price : 0);
+  }, 0);
+  const extraLabels = extrasSorted.map(id => EXTRAS.find(e=>e.id===id)?.label).filter(Boolean);
+  const combinedName = base.name + ' (' + extraLabels.join(', ') + ')';
+  const combinedPrice = base.price + extraPrice;
+
+  if(cart[combinedKey]) cart[combinedKey].qty++;
+  else cart[combinedKey] = { catalogKey: cardId, name: combinedName, price: combinedPrice, qty: 1, extras: extrasSorted };
+  saveCartToStorage();
+  updateCartUI();
+  panel.style.display = 'none';
+  panel.querySelectorAll('input[type="checkbox"]').forEach(cb=>cb.checked=false);
+}
 
 function buildItemCard(item, categoryKey){
   const [num, name, desc, price, star, bestseller] = item;
@@ -874,6 +1019,19 @@ function buildItemCard(item, categoryKey){
   card.dataset.id = cardId;
   card.dataset.priceless = priceNum===null ? '1' : '0';
   const icon = CATEGORY_ICON[categoryKey] || '🍽️';
+  const canCustomize = categoryKey === 'pizza' && priceNum !== null;
+  const extrasHtml = canCustomize ? `
+    <button type="button" class="extras-toggle" onclick="toggleExtras('${cardId}')">+ Extras hinzufügen</button>
+    <div class="extras-panel" id="extras-${domSafe(cardId)}" style="display:none;">
+      ${EXTRAS.map(ex=>`
+        <label class="extras-option">
+          <input type="checkbox" value="${ex.id}">
+          <span>${ex.label}</span>
+          <span class="extras-price">+${fmt(ex.price)}</span>
+        </label>
+      `).join('')}
+      <button type="button" class="add-btn" style="width:100%; justify-content:center; margin-top:8px;" onclick="addWithExtras('${cardId}')">Mit Extras hinzufügen</button>
+    </div>` : '';
   card.innerHTML = `
     <div class="ph" style="font-size:2.2rem;">${icon}</div>
     <div class="item-body">
@@ -885,6 +1043,7 @@ function buildItemCard(item, categoryKey){
           ${priceNum!==null ? `<button class="add-btn" onclick="addToCart('${cardId}')">+ Hinzufügen</button>` : `<span style="font-size:.75rem; color:var(--gray);">Bitte anrufen</span>`}
         </div>
       </div>
+      ${extrasHtml}
     </div>`;
   return card;
 }
@@ -1055,13 +1214,66 @@ const modalTitle = document.getElementById('modalTitle');
 let checkoutState = { type:'lieferung', name:'', phone:'', email:'', address:'', payment:'karte', note:'' };
 let step = 1;
 
+const UPSELL_KEYS = ['getraenke::Coca-Cola', 'getraenke::Fanta', 'getraenke::Sprite', 'beilagen::Pommes frites'];
+
+function shouldShowUpsell(){
+  const drinkNames = getDrinkNames();
+  const hasDrink = Object.values(cart).some(it => drinkNames.includes(it.name));
+  const hasFries = Object.values(cart).some(it => it.name === 'Pommes frites');
+  return !hasDrink || !hasFries;
+}
+
+function renderUpsell(){
+  modalTitle.textContent = 'Bevor es weitergeht …';
+  const cards = UPSELL_KEYS.map(key=>{
+    const info = CATALOG_LOOKUP[key];
+    if(!info) return '';
+    const inCart = cart[key];
+    return `
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; background:var(--white); border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin-bottom:10px;">
+        <div>
+          <div style="font-weight:700; font-size:.92rem;">${info.name}</div>
+          <div style="font-size:.82rem; color:var(--gray);">${fmt(info.price)}</div>
+        </div>
+        <div id="upsell-slot-${key.replace(/[^a-zA-Z0-9]/g,'')}">
+          ${inCart
+            ? `<div class="qty-ctrl" style="background:var(--ink);"><button onclick="changeQty('${key}',-1); refreshUpsellSlots();">–</button><span>${inCart.qty}</span><button onclick="addToCart('${key}'); refreshUpsellSlots();">+</button></div>`
+            : `<button class="add-btn" onclick="addToCart('${key}'); refreshUpsellSlots();">+ Hinzufügen</button>`}
+        </div>
+      </div>`;
+  }).join('');
+
+  modalBody.innerHTML = `
+    <p style="color:var(--gray); font-size:.9rem; margin-bottom:16px;">🥤🍟 Lust auf ein Getränk oder Pommes dazu? Einfach hinzufügen — ihr bleibt genau hier, keine Weiterleitung zur Speisekarte.</p>
+    ${cards}
+  `;
+  modalFoot.innerHTML = `<button class="btn btn-primary" style="width:100%; justify-content:center;" id="upsellContinue">Weiter zur Kasse</button>`;
+  document.getElementById('upsellContinue').addEventListener('click', ()=>{ step = 1; renderStep(); });
+}
+
+function refreshUpsellSlots(){
+  UPSELL_KEYS.forEach(key=>{
+    const slotId = 'upsell-slot-' + key.replace(/[^a-zA-Z0-9]/g,'');
+    const slot = document.getElementById(slotId);
+    if(!slot) return;
+    const inCart = cart[key];
+    slot.innerHTML = inCart
+      ? `<div class="qty-ctrl" style="background:var(--ink);"><button onclick="changeQty('${key}',-1); refreshUpsellSlots();">–</button><span>${inCart.qty}</span><button onclick="addToCart('${key}'); refreshUpsellSlots();">+</button></div>`
+      : `<button class="add-btn" onclick="addToCart('${key}'); refreshUpsellSlots();">+ Hinzufügen</button>`;
+  });
+}
+
 function openModal(){
   if(Object.keys(cart).length===0){ return; }
-  step = 1;
   modal.classList.add('show');
   overlay.classList.add('show');
   lockBodyScroll();
-  renderStep();
+  if(shouldShowUpsell()){
+    renderUpsell();
+  } else {
+    step = 1;
+    renderStep();
+  }
 }
 function closeModal(){
   modal.classList.remove('show');
@@ -1093,11 +1305,15 @@ function renderStep(){
         <div id="addressError" style="display:none; color:var(--tomato); font-size:.8rem; font-weight:700; margin-top:6px;">Bitte gebt eine vollständige Adresse mit Hausnummer und PLZ ein (z. B. Musterstr. 5, 52222 Stolberg).</div>
         <div id="minOrderNote" style="display:${belowMin > 0 ? 'block' : 'none'}; color:var(--tomato); font-size:.8rem; font-weight:700; margin-top:6px;">Noch ${fmt(Math.max(belowMin,0))} bis zum Mindestbestellwert von ${fmt(MIN_ORDER_DELIVERY)} für die Lieferung.</div>
       </div>
+      <div id="dineInDrinkNote" style="display:${checkoutState.type==='vorort' && cartHasDrinks() ? 'block' : 'none'}; margin-top:16px;" class="demo-note">
+        🍽️ Für "Vor Ort" gelten unsere normalen Restaurant-Getränkepreise — Getränke aus dem Online-Menü könnt ihr dafür leider nicht mitbestellen. Bitte entfernt sie aus dem Warenkorb und bestellt sie direkt bei uns am Tisch.
+      </div>
     `;
     document.querySelectorAll('input[name="otype"]').forEach(r=>r.addEventListener('change', e=>{
       checkoutState.type = e.target.value;
       document.getElementById('addressField').style.display = checkoutState.type==='lieferung' ? '' : 'none';
       document.getElementById('addressError').style.display = 'none';
+      document.getElementById('dineInDrinkNote').style.display = (checkoutState.type==='vorort' && cartHasDrinks()) ? 'block' : 'none';
     }));
     const addrInputEl = document.getElementById('addressInput');
     if(addrInputEl){
@@ -1108,6 +1324,10 @@ function renderStep(){
     }
     modalFoot.innerHTML = `<button class="btn btn-dark" style="width:100%;" id="toStep2">Weiter</button>`;
     document.getElementById('toStep2').addEventListener('click', ()=>{
+      if(checkoutState.type==='vorort' && cartHasDrinks()){
+        document.getElementById('dineInDrinkNote').style.display = 'block';
+        return;
+      }
       if(checkoutState.type==='lieferung'){
         if(subtotalValue() < MIN_ORDER_DELIVERY){
           document.getElementById('minOrderNote').style.display = 'block';
@@ -1184,9 +1404,27 @@ function renderStep(){
     modalBody.innerHTML = `
       <div class="steps-dots"><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
       <div class="radio-group">
-        <label class="radio-card"><input type="radio" name="pay" value="karte" ${checkoutState.payment==='karte'?'checked':''}> 💳 Kartenzahlung</label>
-        <label class="radio-card"><input type="radio" name="pay" value="paypal" ${checkoutState.payment==='paypal'?'checked':''}> 🅿️ PayPal</label>
-        <label class="radio-card"><input type="radio" name="pay" value="bar" ${checkoutState.payment==='bar'?'checked':''}> 💶 Barzahlung bei Übergabe</label>
+        <label class="radio-card">
+          <input type="radio" name="pay" value="karte" ${checkoutState.payment==='karte'?'checked':''}>
+          <span style="display:inline-flex; align-items:center; gap:8px;">
+            <svg width="28" height="20" viewBox="0 0 28 20" style="flex:0 0 auto;"><rect x="0.5" y="0.5" width="27" height="19" rx="3" fill="#2d3a4f" stroke="#1c2534"/><rect x="0.5" y="5" width="27" height="3.5" fill="#0f1620"/><rect x="3" y="13" width="8" height="2" rx="1" fill="#e3b23c"/></svg>
+            Kartenzahlung
+          </span>
+        </label>
+        <label class="radio-card">
+          <input type="radio" name="pay" value="paypal" ${checkoutState.payment==='paypal'?'checked':''}>
+          <span style="display:inline-flex; align-items:center; gap:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:20px; background:#ffffff; border:1px solid var(--line); border-radius:4px; font-family:'Fraunces',serif; font-weight:700; font-style:italic; font-size:.72rem; color:#003087; letter-spacing:-0.5px;">Pay</span>
+            PayPal
+          </span>
+        </label>
+        <label class="radio-card">
+          <input type="radio" name="pay" value="bar" ${checkoutState.payment==='bar'?'checked':''}>
+          <span style="display:inline-flex; align-items:center; gap:8px;">
+            <svg width="22" height="20" viewBox="0 0 22 20" style="flex:0 0 auto;"><circle cx="11" cy="10" r="9" fill="#d9a441" stroke="#b8842a"/><text x="11" y="14" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">€</text></svg>
+            Barzahlung bei Übergabe
+          </span>
+        </label>
       </div>
       <div id="payNote" style="margin-top:16px; ${checkoutState.payment==='bar'?'display:none;':''}">
         <div class="demo-note" style="background:#eef6ff; border-color:#c8dff5; color:#2a5a8a;">🔒 Ihr werdet im nächsten Schritt sicher zu Stripe weitergeleitet, um zu bezahlen. Wir sehen und speichern eure Kartendaten nie selbst.</div>
@@ -1203,8 +1441,10 @@ function renderStep(){
   else if(step===4){
     modalTitle.textContent = 'Bestellübersicht';
     const sub = subtotalValue();
-    const deliveryFee = checkoutState.type==='lieferung' ? 1 : 0;
-    const total = sub + deliveryFee;
+    const deliveryFee = checkoutState.type==='lieferung' ? 2 : 0;
+    const preDiscountTotal = sub + deliveryFee;
+    const discount = preDiscountTotal * WEBSITE_DISCOUNT_RATE;
+    const total = preDiscountTotal - discount;
     let itemsHtml = Object.values(cart).map(it=>`<div style="display:flex; justify-content:space-between; padding:6px 0; font-size:.88rem;"><span>${it.qty}× ${it.name}</span><span>${fmt(it.price*it.qty)}</span></div>`).join('');
     const closedNotice = !isOpenNow() ? `<div class="demo-note" style="background:#fff6e9; border-color:#f0dcae; color:#8a6a1f; margin-bottom:14px;">🕒 Wir sind aktuell geschlossen. Eure Bestellung geht trotzdem raus und wird bearbeitet, sobald wir wieder öffnen (${todayInfo.closed ? 'siehe Öffnungszeiten' : todayInfo.open + ' Uhr'}).</div>` : '';
     modalBody.innerHTML = `
@@ -1213,6 +1453,7 @@ function renderStep(){
       <div style="background:var(--white); border:1px solid var(--line); border-radius:12px; padding:16px;">
         ${itemsHtml}
         ${deliveryFee?`<div style="display:flex; justify-content:space-between; padding:6px 0; font-size:.88rem; color:var(--gray);"><span>Lieferpauschale</span><span>${fmt(deliveryFee)}</span></div>`:''}
+        <div style="display:flex; justify-content:space-between; padding:6px 0; font-size:.88rem; color:var(--basil); font-weight:700;"><span>🎉 Website-Rabatt (10%)</span><span>−${fmt(discount)}</span></div>
         <div style="display:flex; justify-content:space-between; padding:10px 0 0; margin-top:6px; border-top:1px solid var(--line); font-weight:800;"><span>Gesamt</span><span>${fmt(total)}</span></div>
       </div>
       <div class="field" style="margin-top:16px;"><label>Bestellart</label><input disabled value="${checkoutState.type==='lieferung'?'Lieferung an: '+checkoutState.address:checkoutState.type==='abholung'?'Abholung im Restaurant':'Vor Ort essen'}"></div>
