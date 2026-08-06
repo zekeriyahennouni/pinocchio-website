@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pinocchio · Pizza, Pasta &amp; mehr in Stolberg — online bestellen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#191512;
+    --ink-fixed:#191512;
+    --paper:#faf7f1;
+    --paper-rgb:250,247,241;
+    --paper-2:#f1ece1;
+    --tomato:#e2452b;
+    --tomato-dark:#b8341e;
+    --basil:#3f6b45;
+    --gold:#d9a441;
+    --gray:#726c60;
+    --line:#e7e0d1;
+    --white:#ffffff;
+    --radius:18px;
+    --shadow: 0 10px 30px rgba(25,21,18,.08);
+  }
+  :root[data-theme="dark"]{
+    --ink:#f5f0e6;
+    --ink-fixed:#2a2119;
+    --paper:#15110d;
+    --paper-rgb:21,17,13;
+    --paper-2:#1e1812;
+    --tomato:#e2452b;
+    --tomato-dark:#ff6b4a;
+    --basil:#6fae76;
+    --gold:#e3b23c;
+    --gray:#a89a86;
+    --line:rgba(255,255,255,.12);
+    --white:#211a14;
+    --shadow: 0 10px 30px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{transition:background-color .25s ease, color .25s ease;}
+  body, .item-card, .card, .contact-card, .modal-card, .drawer, .review-card, .trust-card{transition:background-color .25s ease, color .25s ease, border-color .25s ease;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:'Manrope', sans-serif; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:'Fraunces', serif; margin:0; color:var(--ink); font-weight:600;}
+  a{color:inherit;}
+  img,svg{max-width:100%; display:block;}
+  button{font-family:inherit; cursor:pointer;}
+  ::selection{background:var(--tomato); color:#fff;}
+
+  /* ---------- Image placeholder ---------- */
+  .ph{
+    position:relative; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:6px;
+    background:repeating-linear-gradient(135deg, #efe8d8, #efe8d8 10px, #e8e0cc 10px, #e8e0cc 20px);
+    border:2px dashed #d6c9a3; border-radius:14px; color:#8f8365; overflow:hidden;
+  }
+  :root[data-theme="dark"] .ph{
+    background:repeating-linear-gradient(135deg, #241d16, #241d16 10px, #2c2319 10px, #2c2319 20px);
+    border-color:#4a3d2c; color:#a8987a;
+  }
+  .ph svg{width:28px; height:28px; opacity:.55;}
+  .ph span{font-size:.72rem; font-weight:600; text-align:center; padding:0 10px; opacity:.75;}
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:sticky; top:0; z-index:80; background:rgba(var(--paper-rgb),.92);
+    -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    padding:12px clamp(18px,4vw,50px); border-bottom:1px solid var(--line);
+  }
+  .brand{display:flex; align-items:center; gap:10px; min-width:0; flex:1 1 auto; overflow:hidden;}
+  .brand img{height:38px; width:auto; border-radius:8px; flex:0 0 auto;}
+  .brand-name{font-family:'Fraunces',serif; font-weight:700; font-size:1.1rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0;}
+  .brand-name span{display:block; font-family:'Manrope',sans-serif; font-weight:600; font-size:.6rem; letter-spacing:1.5px; color:var(--tomato); text-transform:uppercase; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .nav-links{display:flex; gap:22px; list-style:none; margin:0; padding:0;}
+  .nav-links a{text-decoration:none; font-size:.88rem; font-weight:600; color:var(--ink); opacity:.75; transition:opacity .2s;}
+  .nav-links a:hover{opacity:1;}
+  .nav-right{display:flex; align-items:center; gap:8px; flex:0 0 auto;}
+  .icon-btn{
+    position:relative; display:flex; align-items:center; justify-content:center; width:44px; height:44px;
+    background:var(--white); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); flex:0 0 auto;
+  }
+  .icon-btn svg{width:20px; height:20px;}
+  .cart-badge{
+    position:absolute; top:-6px; right:-6px; background:var(--tomato); color:#fff; font-size:.68rem; font-weight:700;
+    min-width:18px; height:18px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px;
+  }
+  .nav-call{background:var(--ink-fixed); color:#fff; padding:10px 14px; border-radius:12px; font-weight:700; font-size:.85rem; text-decoration:none; white-space:nowrap;}
+  .nav-toggle{display:none; background:var(--white); border:1px solid var(--line); border-radius:12px; width:44px; height:44px; align-items:center; justify-content:center; flex:0 0 auto;}
+  .nav-toggle svg{width:20px; height:20px;}
+  @media(max-width:860px){
+    .nav-links{
+      display:none; position:fixed; top:66px; left:0; right:0; z-index:70;
+      background:var(--paper); border-bottom:1px solid var(--line); box-shadow:var(--shadow);
+      flex-direction:column; gap:0; padding:6px clamp(18px,4vw,50px) 12px;
+    }
+    .nav-links.open{display:flex;}
+    .nav-links a{display:block; padding:14px 4px; border-bottom:1px solid var(--line); font-size:.98rem;}
+    .nav-call{display:none;}
+    .nav-right .btn{display:none;}
+    .brand-name{max-width:130px;}
+    .nav-toggle{display:flex;}
+  }
+  @media(min-width:861px){ .nav-toggle{display:none !important;} }
+
+  /* ---------- HERO ---------- */
+  .hero{padding:50px clamp(18px,5vw,60px) 30px; display:grid; grid-template-columns:1.05fr .95fr; gap:44px; align-items:center; position:relative; overflow:hidden;}
+  .hero-bg-deco{position:absolute; inset:0; pointer-events:none; z-index:0; overflow:hidden;}
+  .hero-bg-deco svg{position:absolute; opacity:.06; color:var(--basil);}
+  .hero-bg-deco .deco-leaf{width:220px; height:220px; top:-40px; left:-40px; transform:rotate(-15deg);}
+  .hero-bg-deco .deco-tomato{width:160px; height:160px; bottom:-30px; left:38%; color:var(--tomato);}
+  .hero-copy, .hero-photo{position:relative; z-index:1;}
+  .feature-row{display:flex; gap:24px; margin:22px 0; flex-wrap:wrap;}
+  .feature-item{display:flex; align-items:center; gap:10px;}
+  .feature-item .ico{font-size:1.3rem; width:42px; height:42px; flex:0 0 auto; background:var(--paper-2); border-radius:12px; display:flex; align-items:center; justify-content:center;}
+  .feature-item h3{font-size:.86rem; font-weight:800; margin:0;}
+  .feature-item p{font-size:.74rem; color:var(--gray); margin:2px 0 0;}
+  @media(max-width:640px){ .feature-row{gap:16px;} .feature-item .ico{width:36px; height:36px; font-size:1.1rem;} }
+  @media(max-width:430px){ .brand-name span{display:none;} .brand-name{max-width:none;} .icon-btn{width:36px; height:36px;} }
+  .badge-row{display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap;}
+  .pill{display:inline-flex; align-items:center; gap:6px; background:var(--white); border:1px solid var(--line); padding:7px 13px; border-radius:20px; font-size:.78rem; font-weight:700; box-shadow:var(--shadow);}
+  .pill .g{color:var(--gold);}
+  .hero h1{font-size:clamp(2.1rem,4.4vw,3.5rem); line-height:1.05;}
+  .hero h1 em{font-style:italic; color:var(--tomato); font-weight:500;}
+  .hero p.lead{color:var(--gray); font-size:1.05rem; max-width:50ch; margin-top:16px; line-height:1.6;}
+  .hero-actions{display:flex; gap:12px; margin-top:26px; flex-wrap:wrap;}
+  .btn{display:inline-flex; align-items:center; gap:8px; padding:14px 22px; border-radius:14px; font-weight:700; font-size:.92rem; text-decoration:none; transition:transform .15s, box-shadow .15s; border:none;}
+  .btn-primary{background:var(--tomato); color:#fff; box-shadow:0 10px 22px rgba(226,69,43,.35);}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-dark{background:var(--ink-fixed); color:#fff;}
+  .btn-dark:hover{transform:translateY(-2px);}
+  .btn-outline{border:1.5px solid var(--ink); color:var(--ink); background:transparent;}
+  .btn-outline:hover{background:var(--ink-fixed); color:#fff;}
+  .status-line{display:flex; align-items:center; gap:8px; margin-top:24px; font-size:.85rem; font-weight:600;}
+  .dot{width:8px; height:8px; border-radius:50%;}
+  .dot.open{background:#3f9d55;} .dot.closed{background:var(--tomato);}
+
+  .hero-photo{position:relative;}
+  .hero-photo .ph{aspect-ratio:4/4.3; width:100%;}
+  .hero-photo .rating-float{
+    position:absolute; bottom:-18px; left:-18px; background:var(--ink-fixed); color:#fff; padding:14px 18px; border-radius:16px;
+    display:flex; align-items:center; gap:10px; box-shadow:0 16px 30px rgba(0,0,0,.25);
+  }
+  .rating-float b{font-family:'Fraunces',serif; font-size:1.3rem;}
+  .rating-float small{display:block; font-size:.68rem; opacity:.7;}
+  @media(max-width:900px){ .hero{grid-template-columns:1fr;} .hero-photo{order:-1;} }
+
+  section{padding:70px clamp(18px,5vw,60px); scroll-margin-top:76px;}
+  .section-head{max-width:680px; margin:0 auto 40px;}
+  .section-head.center{text-align:center;}
+  .kicker{color:var(--tomato); text-transform:uppercase; letter-spacing:2.5px; font-size:.7rem; font-weight:800;}
+  .section-head h2{font-size:clamp(1.7rem,3.2vw,2.4rem); margin-top:10px; line-height:1.15;}
+  .section-head p{color:var(--gray); margin-top:12px; line-height:1.6; font-size:1rem;}
+
+  /* ---------- ABOUT ---------- */
+  .about{background:var(--white); border-radius:28px; margin:0 clamp(18px,5vw,60px); padding:56px clamp(20px,5vw,56px); display:grid; grid-template-columns:.85fr 1.15fr; gap:48px; align-items:center;}
+  .about .ph{aspect-ratio:1/1.05; width:100%;}
+  .quote{font-family:'Caveat',cursive; font-size:1.4rem; color:var(--tomato-dark); margin-top:18px; line-height:1.4;}
+  .quote span{display:block; font-family:'Manrope',sans-serif; font-size:.76rem; color:var(--gray); font-weight:700; margin-top:6px;}
+  .about-body p{color:var(--gray); line-height:1.75; font-size:1rem; margin:0 0 16px;}
+  .trust-strip{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:26px;}
+  .trust-card{background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:16px;}
+  .trust-card .ico{font-size:1.3rem;}
+  .trust-card h3{font-size:.92rem; margin-top:8px;}
+  .trust-card p{font-size:.8rem; color:var(--gray); margin-top:4px; line-height:1.45;}
+  .promise-toggle{margin-top:22px; display:inline-flex; align-items:center; gap:8px; background:var(--paper-2); border:1px solid var(--line); padding:11px 18px; border-radius:12px; font-weight:700; font-size:.86rem;}
+  .promise-result{margin-top:12px; font-family:'Caveat',cursive; font-size:1.25rem; color:var(--basil); min-height:1.5em;}
+  @media(max-width:900px){ .about{grid-template-columns:1fr;} }
+
+  /* ---------- MENU / ORDER ---------- */
+  .order-wrap{max-width:1200px; margin:0 auto;}
+  .tabs{position:sticky; top:66px; z-index:40; display:flex; gap:8px; overflow-x:auto; padding:14px 0 18px; background:var(--paper); scroll-margin-top:66px;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{flex:0 0 auto; background:var(--white); border:1px solid var(--line); color:var(--ink); padding:10px 18px; border-radius:20px; font-size:.85rem; font-weight:700; white-space:nowrap; box-shadow:var(--shadow);}
+  .tab-btn.active{background:var(--ink-fixed); color:#fff; border-color:var(--ink-fixed);}
+  .menu-panel{display:none;}
+  .menu-panel.active{display:block; animation:fade .3s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+  .menu-subhead{font-family:'Fraunces',serif; font-size:1.15rem; margin:36px 0 16px;}
+  .menu-subhead:first-child{margin-top:6px;}
+  .item-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:18px;}
+  .item-card{background:var(--white); border:1px solid var(--line); border-radius:16px; overflow:hidden; display:flex; flex-direction:column; box-shadow:var(--shadow);}
+  .item-card .ph{aspect-ratio:16/11; border-radius:0; border:none; background:linear-gradient(135deg, #fbeee0, #f3dcc4);}
+  :root[data-theme="dark"] .item-card .ph{background:linear-gradient(135deg, #2c2319, #3a2e1f);}
+  .item-body{padding:14px 16px 16px; display:flex; flex-direction:column; gap:6px; flex:1;}
+  .item-name{font-weight:700; font-size:.98rem; display:flex; align-items:center; gap:6px; flex-wrap:wrap;}
+  .item-name .num{color:var(--gold); font-weight:700; font-size:.75rem;}
+  .item-name .star{background:var(--tomato); color:#fff; font-size:.62rem; font-weight:800; padding:2px 7px; border-radius:8px; letter-spacing:.4px;}
+  .item-desc{font-size:.8rem; color:var(--gray); line-height:1.4; min-height:2.2em;}
+  .item-foot{display:flex; align-items:center; justify-content:space-between; margin-top:auto; padding-top:10px;}
+  .item-price{font-family:'Fraunces',serif; font-weight:700; font-size:1.05rem;}
+  .add-btn{background:var(--ink-fixed); color:#fff; border:none; border-radius:10px; padding:9px 14px; font-size:.8rem; font-weight:700; display:flex; align-items:center; gap:6px;}
+  .add-btn:hover{background:var(--tomato);}
+  .extras-toggle{background:none; border:none; color:var(--tomato); font-size:.76rem; font-weight:700; padding:8px 0 0; text-align:left; text-decoration:underline;}
+  .extras-panel{margin-top:8px; background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:10px 12px;}
+  .extras-option{display:flex; align-items:center; gap:8px; font-size:.82rem; padding:5px 0; cursor:pointer;}
+  .extras-option input{width:15px; height:15px; flex:0 0 auto;}
+  .extras-option span:nth-child(2){flex:1;}
+  .extras-price{color:var(--gray); font-weight:600;}
+  .tip-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .tip-btn{background:var(--white); border:1px solid var(--line); border-radius:10px; padding:9px 14px; font-size:.85rem; font-weight:700; color:var(--ink); cursor:pointer;}
+  .tip-btn.active{background:var(--tomato); border-color:var(--tomato); color:#fff;}
+  .extras-custom{border-top:1px solid var(--line); margin-top:8px; padding-top:10px;}
+  .extras-custom-label{display:block; font-size:.78rem; font-weight:700; margin-bottom:6px; color:var(--ink);}
+  .extras-custom-input, .extras-custom-tier{width:100%; padding:8px 10px; border:1px solid var(--line); border-radius:8px; font-size:.82rem; background:var(--white); color:var(--ink); margin-bottom:6px;}
+  .add-btn:hover{background:var(--tomato);}
+  .qty-ctrl{display:flex; align-items:center; gap:6px; background:var(--ink-fixed); border-radius:10px; padding:4px;}
+  .qty-ctrl button{background:none; border:none; color:#fff; font-size:1.05rem; font-weight:800; width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:8px;}
+  .qty-ctrl button:active{background:rgba(255,255,255,.15);}
+  .qty-ctrl span{color:#fff; font-weight:700; font-size:.85rem; min-width:16px; text-align:center;}
+  .menu-note{text-align:center; margin-top:44px; font-size:.82rem; color:var(--gray);}
+
+  /* Handy-Ansicht: horizontale Listenkarten statt vertikaler Grid-Karten —
+     gleiche Gerichte/Daten, aber platzsparender & schneller scrollbar,
+     wie man es von Lieferando/Wolt auf dem Handy kennt. */
+  @media(max-width:640px){
+    .item-grid{display:flex; flex-direction:column; gap:12px;}
+    .item-card{flex-direction:row; align-items:stretch; border-radius:14px;}
+    .item-card .ph{width:92px; flex:0 0 92px; aspect-ratio:1/1; border:none; font-size:1.5rem !important;}
+    .item-body{padding:10px 12px; gap:4px;}
+    .item-name{font-size:.9rem;}
+    .item-desc{font-size:.76rem; min-height:0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
+    .item-foot{padding-top:6px; flex-wrap:wrap; gap:6px;}
+    .item-price{font-size:.95rem;}
+    .add-btn{padding:7px 11px; font-size:.75rem;}
+  }
+
+  .more-btn{
+    display:block; margin:18px auto 6px; background:var(--white); border:1.5px solid var(--ink); color:var(--ink);
+    padding:11px 22px; border-radius:24px; font-weight:700; font-size:.85rem;
+  }
+  .more-btn:hover{background:var(--ink-fixed); color:#fff;}
+
+  /* ---------- FLOATING CART BUTTON ---------- */
+  .fab-cart{
+    position:fixed; bottom:calc(22px + env(safe-area-inset-bottom)); right:22px; z-index:90; background:var(--tomato); color:#fff; border:none;
+    border-radius:30px; padding:15px 22px; display:flex; align-items:center; gap:10px; font-weight:800; font-size:.9rem;
+    box-shadow:0 14px 30px rgba(226,69,43,.4); transition:transform .15s;
+  }
+  .fab-cart:hover{transform:translateY(-2px);}
+  .fab-cart .badge{background:#fff; color:var(--tomato); border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:.75rem;}
+
+  /* ---------- CART DRAWER ---------- */
+  .overlay{position:fixed; inset:0; background:rgba(25,21,18,.5); z-index:95; opacity:0; pointer-events:none; transition:opacity .25s;}
+  .overlay.show{opacity:1; pointer-events:auto;}
+  .drawer{
+    position:fixed; top:0; right:0; height:100%; width:min(420px,92vw); background:var(--paper); z-index:100;
+    transform:translateX(100%); transition:transform .3s ease; display:flex; flex-direction:column; box-shadow:-10px 0 30px rgba(0,0,0,.2);
+  }
+  .drawer.show{transform:translateX(0);}
+  .drawer-head{display:flex; align-items:center; justify-content:space-between; padding:20px 22px; border-bottom:1px solid var(--line);}
+  .drawer-head h3{font-size:1.2rem;}
+  .close-btn{background:none; border:none; font-size:1.3rem; color:var(--ink); width:34px; height:34px;}
+  .drawer-body{flex:1; overflow-y:auto; padding:16px 22px; -webkit-overflow-scrolling:touch; overscroll-behavior:contain;}
+  .cart-row{display:flex; gap:12px; padding:14px 0; border-bottom:1px solid var(--line);}
+  .cart-row .ph{width:56px; height:56px; flex:0 0 56px; border-radius:10px;}
+  .cart-row .ph svg{width:18px; height:18px;}
+  .cart-row .info{flex:1;}
+  .cart-row .info .n{font-weight:700; font-size:.9rem;}
+  .cart-row .info .p{font-size:.8rem; color:var(--gray); margin-top:2px;}
+  .cart-row .qty-ctrl{margin-top:8px; padding:4px 8px;}
+  .cart-empty{text-align:center; color:var(--gray); padding:60px 10px; font-size:.9rem;}
+  .drawer-foot{padding:18px 22px calc(18px + env(safe-area-inset-bottom)); border-top:1px solid var(--line); background:var(--white);}
+  .subtotal-row{display:flex; justify-content:space-between; font-weight:700; font-size:1.05rem; margin-bottom:14px;}
+
+  /* ---------- CHECKOUT MODAL ---------- */
+  .modal{
+    position:fixed; inset:0; z-index:110; display:flex; align-items:center; justify-content:center; padding:20px;
+    opacity:0; pointer-events:none; transition:opacity .25s; background:rgba(25,21,18,.55);
+  }
+  .modal.show{opacity:1; pointer-events:auto;}
+  .modal-card{background:var(--paper); border-radius:24px; width:min(560px,100%); max-height:88vh; max-height:88dvh; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; box-shadow:0 30px 60px rgba(0,0,0,.3);}
+  .modal-head{display:flex; align-items:center; justify-content:space-between; padding:22px 26px; border-bottom:1px solid var(--line);}
+  .modal-body{padding:24px 26px;}
+  .steps-dots{display:flex; gap:6px; margin-bottom:22px;}
+  .steps-dots span{height:5px; flex:1; border-radius:3px; background:var(--line);}
+  .steps-dots span.on{background:var(--tomato);}
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:.8rem; font-weight:700; margin-bottom:6px; color:var(--ink);}
+  .field input, .field select, .field textarea{
+    width:100%; padding:12px 14px; border-radius:10px; border:1px solid var(--line); background:var(--white); font-family:inherit; font-size:16px;
+  }
+  .radio-group{display:grid; gap:10px;}
+  .radio-card{display:flex; align-items:center; gap:10px; border:1.5px solid var(--line); border-radius:12px; padding:13px 14px; font-weight:600; font-size:.9rem; background:var(--white);}
+  .radio-card input{width:16px; height:16px;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .demo-note{background:#fff6e9; border:1px solid #f0dcae; color:#8a6a1f; font-size:.78rem; padding:10px 12px; border-radius:10px; margin-top:6px; line-height:1.5;}
+  :root[data-theme="dark"] .demo-note{background:#3a2e14; border-color:#5a4620; color:#e3c878;}
+  .note-info{background:#eef6ff; border:1px solid #c8dff5; color:#2a5a8a; font-size:.78rem; padding:10px 12px; border-radius:10px; line-height:1.5;}
+  :root[data-theme="dark"] .note-info{background:#132a3d; border-color:#1f4560; color:#8ec2ea;}
+  .modal-foot{padding:18px 26px calc(26px + env(safe-area-inset-bottom)); display:flex; gap:10px;}
+  .modal-foot .btn{flex:1; justify-content:center;}
+  .success-wrap{text-align:center; padding:20px 10px 6px;}
+  .success-wrap .ico{font-size:3rem;}
+  .success-wrap h2{margin-top:10px;}
+  .success-wrap p{color:var(--gray); margin-top:8px; line-height:1.6;}
+  .order-num{font-family:'Fraunces',serif; font-weight:700; font-size:1.4rem; color:var(--tomato); margin-top:14px;}
+
+  /* ---------- REVIEWS ---------- */
+  .reviews{}
+  .overall-rating{display:flex; align-items:center; gap:16px; justify-content:center; margin-bottom:40px;}
+  .overall-num{font-family:'Fraunces',serif; font-weight:700; font-size:2.8rem;}
+  .overall-meta{text-align:left;}
+  .overall-meta .stars{color:var(--gold); font-size:1.05rem;}
+  .overall-meta small{display:block; color:var(--gray); font-size:.8rem;}
+  .review-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:1150px; margin:0 auto;}
+  .review-card{background:var(--white); border:1px solid var(--line); border-radius:16px; padding:22px; box-shadow:var(--shadow);}
+  .review-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;}
+  .review-name{font-weight:700; font-size:.92rem;}
+  .review-source{font-size:.68rem; color:var(--gray); text-transform:uppercase; letter-spacing:1px;}
+  .review-stars{color:var(--gold); font-size:.88rem;}
+  .review-text{font-size:.88rem; line-height:1.55; color:var(--gray);}
+  .review-time{font-size:.74rem; color:var(--gray); margin-top:10px;}
+  @media(max-width:900px){ .review-grid{grid-template-columns:1fr;} }
+
+  /* ---------- LOCATION ---------- */
+  .location{display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start;}
+  .hours-table{width:100%; border-collapse:collapse; font-size:.9rem; margin-top:18px; background:var(--white); border-radius:14px; overflow:hidden; border:1px solid var(--line);}
+  .hours-table td{padding:11px 16px; border-bottom:1px solid var(--line);}
+  .hours-table tr:last-child td{border-bottom:none;}
+  .hours-table td:last-child{text-align:right; font-weight:700;}
+  .hours-table tr.today{background:#fff2ec;}
+  :root[data-theme="dark"] .hours-table tr.today{background:#3a2016;}
+  .hours-table tr.today td{color:var(--tomato-dark);}
+  .map-wrap{border-radius:16px; overflow:hidden; box-shadow:var(--shadow); border:1px solid var(--line); margin-top:18px;}
+  .map-wrap iframe{width:100%; height:260px; border:0; display:block;}
+  .contact-card{background:var(--ink-fixed); color:#fff; border-radius:20px; padding:30px;}
+  .contact-row{display:flex; gap:14px; padding:13px 0; border-bottom:1px solid rgba(255,255,255,.12);}
+  .contact-row:last-child{border-bottom:none;}
+  .contact-row .ico{color:var(--gold); font-size:1.1rem; width:20px;}
+  .contact-row a{text-decoration:underline; text-decoration-color:var(--gold); color:#fff;}
+  @media(max-width:900px){ .location{grid-template-columns:1fr;} }
+
+  footer{background:var(--ink-fixed); color:#c9c2b2; padding:40px clamp(18px,5vw,60px) 100px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;}
+  footer .f-brand{display:flex; align-items:center; gap:10px; color:#fff; font-family:'Fraunces',serif; font-weight:700;}
+  footer .f-brand img{height:26px; border-radius:6px;}
+  footer small{font-size:.76rem;}
+  footer .f-legal{display:flex; gap:16px; flex-wrap:wrap;}
+  footer .f-legal a{color:#c9c2b2; text-decoration:none; font-size:.78rem; font-weight:600;}
+  footer .f-legal a:hover{color:#fff;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="brand">
+    <a href="index.html" style="display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit;">
+      <img src="data:image/png;base64,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" alt="Pinocchio Logo" style="height:38px; width:auto;">
+      <div class="brand-name">Pinocchio<span>Pizza · Pasta · Stolberg</span></div>
+    </a>
+  </div>
+  <ul class="nav-links" id="navLinksEl">
+    <li><a href="index.html">← Startseite</a></li>
+    <li><a href="tel:+4924028644984">📞 02402 86 44 984</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="icon-btn" id="themeToggleBtn" aria-label="Hell/Dunkel umschalten">
+      <svg id="themeIconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+      <svg id="themeIconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg>
+    </button>
+    <button class="icon-btn" id="historyOpenBtn" aria-label="Meine Bestellungen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      <span class="cart-badge" id="historyBadge" style="display:none;">0</span>
+    </button>
+    <button class="icon-btn" id="cartOpenBtn" aria-label="Warenkorb öffnen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+      <span class="cart-badge" id="cartBadge" style="display:none;">0</span>
+    </button>
+    <a class="nav-call" href="tel:+4924028644984">📞 Anrufen</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menü öffnen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<section style="padding:40px clamp(18px,5vw,60px) 10px; text-align:center;">
+  <div class="kicker">Online bestellen</div>
+  <h1 style="font-size:clamp(1.8rem,4vw,2.6rem); margin:6px 0 10px;">Was darf's sein?</h1>
+  <div class="status-line" style="justify-content:center;"><span class="dot" id="statusDot"></span> <span id="statusText">Status wird geprüft …</span></div>
+</section>
+
+<section id="speisekarte">
+  <div class="section-head center">
+    <div class="kicker">Online bestellen</div>
+    <h2>Wählt aus, wir kümmern uns um den Rest.</h2>
+    <p>Zur Kasse geht's über den Warenkorb-Button unten rechts. Kartenzahlung, Barzahlung bei Abholung oder PayPal.</p>
+  </div>
+  <div class="order-wrap">
+    <div class="tabs" id="tabs"></div>
+    <div id="menuPanels"></div>
+    <p class="menu-note">Alle Preise in €, inkl. MwSt. und Bedienung. Fotos folgen in Kürze — Platzhalter markieren, wo eure Bilder später hinkommen.</p>
+
+    <div style="max-width:700px; margin:24px auto 0; background:var(--white); border:1px solid var(--line); border-radius:14px; padding:20px 24px; font-size:.78rem; color:var(--gray); line-height:1.7;">
+      <strong style="color:var(--ink); display:block; margin-bottom:8px;">Zusatzstoffe &amp; Allergene</strong>
+      <p style="margin:0 0 8px;">Schinken = Formfleisch-Hinterschinken</p>
+      <p style="margin:0 0 8px;">1 = Phosphat · 2 = mit Konservierungsstoffen · 3 = mit Farbstoff · 4 = mit Süßungsmittel · 5 = enthält eine Phenylalaninquelle · 6 = mit Antioxidationsmitteln · 7 = Geschmacksverstärker · 8 = geschwärzt · 9 = koffeinhaltig · 10 = mit Milcheiweiß</p>
+      <p style="margin:0;">A = Glutenhaltiges Getreide · B = Ei · C = Milch/Laktose · D = Senfsaat · E = Sellerie · F = Sulfite · G = Fisch · H = Krebstiere · I = Weichtiere · K = Lupinen · L = Soja · M = Sesam · O = Schalenfrüchte · P = Erdnüsse</p>
+      <p style="margin:10px 0 0; font-weight:600;">Die genaue Kennzeichnung je Gericht erfahrt ihr gerne bei unserem Personal — sagt uns einfach Bescheid.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-brand"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdEAAAFACAMAAADUJ7ZPAAAACXBIWXMAAAsSAAALEgHS3X78AAAAQlBMVEVHcEwAAAAAAAC3EAy3EAy3EAy3EAwAAAC3EAyaDQq3EAy3EAy3EAy3EAwAAAC3EAwAAAAAAAAAAAAAAAC3EAwAAABQh66YAAAAFHRSTlMAhEDRnLtFw+wQYDCBIF1wqTAg4YhtQuQAABPGSURBVHja7F3XYuMgELQKSKgX5/9/9ezYlii7FLdcnJmniyUhxLAV2DscAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4rzDnQ5ZleR7/hEp+AngM1ZeJasqUdel26zLtt00D/fgV2ZXObL9eDYp96TppF8/Y3jTsv2XXn26TI9//5nuRU7/nf4rR8/gOJKOZRb0KMjqszEhWgWFW24OTy+iqwGgiozfJMBmdHOJVgFHniY2fKjDOw/6rchi9KQAwmsDo6jI60LR5GJ14bex5qX19cBm9MgJGExi9jKPB6O2PKctWTX4Sx9KSfura2WDryp1g9KJ3waif0SE/wVRsOqOKUqe+sVSars0mRvpz96WOxV6IX7NkRtdMw/InGM0NY1nZjOa6HC37iM35Bbfnrn8uu5bOCOeVttAboyuhqE2eB5NRqxdfWy+2m6q/F72YtolldB3OE3w4R5jfI3aDM3CVRcikO0cmo4N16/XvyTKvmeWV5a4O/bLiLTCqspDWvWjR2WnGGTjbV1300fbL6PXvoTLNa2Z5zWA0yOg8TIbvQHpGN7M0+xnNWaFdzJa1l16bvE2eG4UTGQ8PaYySevxvRy+zfU+1xDCaOWmgnHtpZSnd7ZWKYnRVYDSe0XU+8NZux+xhNHNGLwswus5mj4bNQxrInNUERuOzgDOZBZwrjoNnMLo1tuySmRmNbk1+GZ4TGA0xWg0HJlN/yCdaTxKMDmmMTk5qqNIaWYwG7KfBKM3o6n6ww+jJaxmyior+I+xoRTBaEaOsq1rj4sbofAejeoYh/xuM5kvG5dPNB5Tal1RyltHZSdauVPSyL9BZwejXWp2w6o1sjFoWFdELG71UVoJVY1RNp/Hdx3110uhsPLrYwmK1bL90YjO+GfEQGPUyupiZcENGTfEdwoxOjMDbOSPrpYpM0E4WowsYjcsZWTnzitCTs0HXzDO6BTvTWUqXis1dmHp3oHPuymTUuA2M8oxuArIu9rhn+v6GzF3RdAdO249SVZZ7rLe8rPpLmVWUwWJUvy/Z1/1weo28rukcGeP+5Q8D3LGaSWqI3IWuGRbdL6r2qVDZjC5gNC5Tv37R2VcnY2MPDPHTwC9qGy0rzZJmtoFe9/5kTAoLjHoY1azfIW6fkYdRgtKBjIu0l642JVruyWT0MIHRGEYPupD69wJm6hBg1M4bVjOTu9heOjg7AIcvJwo9mEs0YNRCdjVY19HObwZs2C/tCaNbyP9V2Ts7rrfaCbZ5SzEZ629Wy8PtpdP+cqvhU/8Gqzu52XP9Zn1SEfjwNGAizhtAVPzt6ryr3tjtAAAAAAAAAAAAAAAAAHwArESadkZCT6plVLqt2m9y83AD84DTVLa/MXPSfIcFub1UuMnuWyqVOvZkYr/JzZVnzANUUxW9hfiMgTgODiQyelu4fh+j9Db/b6zEcXAgmdHq3YxSR3EuNuGvLJK9mFFjg/RbGKWOEp8xkRvCgRhGz9vSJ2Mjks6o7s4YxFXUhUxj1PGMtJIP2b6FP6MZXf/O8YenM3ohTv+D0XYDfSBRk6dJb8o5tBBZSMDyi8y9iUAsoyrM6EBuRNIJvTwQyejgZXQyDtDAN3oFowN5vtQgVN3D6EQxutw2yTgVyoBnad2BOl1K6mLKjrqMDj47qq5XswUh6T2M5vlgHmkgGJ1XRkJd45oxru5+FnE7nLapcFtG19u7oHYfjV5mmtE5KKG7cQ0yGixVeHvdah8HB56QYYiVUKJyYwyjdDnRaTOfM0LShxi98sIdA+YlVDd0CYxOVtUNa+t2vv8TIeldjE5XXixGdwkdOJWrM53piYQraEYrpzCv2a7W2ieEpPKEzsTpl/5VjFbVsGk2k9GFS5nPdDwTjl6GyX9gZtJqLEy/Pl3fy7EToj6yqEXZPYVY/lCtcUFVIUItXRwRjyq74kPFnDh0izL/LqkcS3GMRC3G/i2MKk7lst5STIZh9hQSUAN7HPwXQcmyOKai7vqXM5osoZE5o4kvJHBY/XWXf4Ns3sHmFUK+mNFtdCu9NHGWL/v/IZBZRYvJtZfBYnQxZU9nlD5E/mtCUtWI40Oo5UsZ/WKqUOfMhZxZH80OXCEBJws4MU0nh6TPdCOj3aCyPj4M0f9GRg/kf12hKV1PKcIoUelOQ1uXbya1Oz4Fd4rpDzOaUZe0YHQ7az7fs0oqb6Ii30loeXwWml/IKFdIwK2ptCb7Rmof2uJXEnofpT/NqF7tY2d0cWsuZKkhaat7mu8jtDkef5jST0WjOyfiba9t66cyWrdgkvRO3jfVi+NzIUClbUK/Z/rbUk3l8dmA3v0m1JKU7m1poqcTeqxB5ynAtwgtfmomPQUShDrOydvGRLyA0GMJQuufci5kutfTt7Idu04IqN14Qt/mFqlA4FKIsuuaE4UNNdXUeUkcajcmHnzbgJT8MnY36gsGBe+wtaPbyoi8ws/4uT2tWd2tJp1/rqmmhCH1pODel9F1VGZdjq2vj3zX+hJJBk7lvi+LJm3ZZN7c1zG5Az0pLUDoj3gVpS6cUoVD1iI66wVCf8CIHg71tu+rjSI+pD20NAkI/RF99f324N7MJj5fO/51RglC63fuBe2bUSZ0MuzAyiCjSp7i2489gkmkVOO9ov40NPKtnSzCW5/aAKPtRYHXzZ8hNHodqrk8W7x+tpcpHtvodaE0z6n/SEaJ/FmkV7THCS+3uk1S34SvX3p0030ioUQCrlSJo3w8vjh23Y1ozNxRvpxRX394TonYIFukE/ri4HU3DHWf9E2EDBY/FKK9C8T2u0g3t31jOkIkvUdbyJGBGfx5mfz2/i10pj/10l6OaTIlfN0yA7WP84z6+m43V74vqd+m2QPpS5PIz94t+EjcUr5t153WyzZxlo4BK/NxC+LlAztzxNsyTCLJ6hmztPeb0Y8T0fGRrVbiXXN9TOuc8H+NrnXrT7Oi8u64JWLkXmBEoxRBGZpo9f95iqJNEIqeWXAkNmulJPOa+x5LNqJ1kiIog+7aniB8EaH9uUKPTBiSdrzUgakjjErfiOKy7qgCavOOSVtEZpja0xeO8l7Sy5TAxfL0Gk/6oS5Te6Qa0QVv2Su7RJaD6Ls6WtepsfCJUffoWa7r8PlOU/fNXiBD3CUSnSFwUo6+JbC2iApN+vGOhbTvE+9eNdGPRXLUIEX8tpG29G9zlE/Y23qu/9U+9Qs9pr6oQw6qtMzIM7XqWAd2dBPVQIKOV8rmSykC+/oII/rckJL6wmTNSyVAuK9WZfg+dWfJOVkENpWOdfrRuKaOPx8pqf3lISOaROjJ+odV1INKgC5pVDShQefszNUK3WFAy4Cla5gDAWPUJAkz2tLnBTyZk8QApL3UpymagIp6gNGTi0G0UZQNI2J9GXIKtEnGuOZ98105svUq8zqWG3/SuBfxZ5gVd97Ar83iCdU60yXMvpSAXrrfUJeerS+USmg8tIzecTOFWAm/cVZsuR5+ywv/TBkvHqYdFf6WZCkEV8fI6Awx2ZV4sMQQqbHH1Ac6n2PfBeKejve27J54Skd0aQqX1mK9iGp/9GYWrluHyFG0zgvLoL+ZaqhpC+yJA+kSZaV3lo2BQLbzKDwRyqNqo9qnCSih00fPkb3Wo3N1QrUJ5I6jPSNjMsVJqSX6C9gHuQqCpS/vQIQ1TGaiLfyWTgUqRxThmNk7c5WILBsi+AHrvfl326crDgk9iFhE5Z6XTLwroqyRQ6gIEHqLspqA9IfrDDTRbjEV3vmLAUk+t6C1Y4mIOPgd5ObgH7pExcs9XztOkZKjKCJnutuqDORDG58A9gmf684dv1B3gXiEm1k15+a7Vtj/hiJlSkWsR/okvBZbZXpvfXPHxXTHXQTyocKnHTtfjiaklAJzoEggXxfnjiOUsGH+tGGTSqhf7T6nhJy9oiKCMVRDzVPGwysC7BQ+kWj9hBodCxkwTc/0DKFUE8JLmAilFUNfmCCi8cVRVEjNNf5M42VAuqBvR+aznEA6ZcrLBANWsuO2EUrOSel7hWnGyS4IJx3pY/QJRQGdkFeGY/jC/WbOh9XyUCWp7qVHyYUIbe4kVNLNdGkTwfUvSjIDK48JjD5OqLMK7CoOJxDq3AFhPbTWt3J1frnHEaFOizVcwpgYza5htCMZeNFKWxfCMZDFYb6wSLGjj2pdYgFWBAntXUI5YdIIJdytlhoF4fu6k8VnDvOMlPLpacvSUIQyFlvG54FdWfguFN8k+bqP1TMvpHd1lVvTF85XRRDqdPW6n8STXJWkxd/GrfFn3b+zT4Ic+pogVBv3mjm1FcgDc19YJK0H9I/IZxNjmV1CpdO9xgiZmG1mNZnu80UDNR1jNZR/XtIhU0sFZw3xulKf53WM8XVkzRZR0UfFO0kpRK+jIKPaI3bd1D5C9eEwut7QMWrJpyMaLsZqimNhmf+ec/dOutRZ3C3czIgulRozhsEJLSaP9Be6pkMlbOSLVrds+YY6SGjjI/Rfe2ey5DgIg+GuQlAYcPky7/+sk6XjsGiBtPswU/937E4chEAISWCq3Yskm+ok2hgnGTk16U4z8f6XkgcDWC0at6HghWSMsefj3S1GQjMJu7yUaperJFOhTcMHhdataRyXjbc7ivcYJhOnTG+W2TlAvdA3HRZBem/oZZ+V8PxX+CB1yCyeR57vGW6op87upKatWRKZeJ/fi5uFQ41qaQPRyCkPTWw1HIS9ZrYmWuKXSidm/4psfic1Gn2xKv2ynZDzmkKr9agNphShN0STRPMWt3u6cYdI6tyebpmoDPCh2PVDb4QmYXlnFcPnztHsq0bJtPepnU6htdDE51PbvXsVi82CX7T5hZWn/bCRUKZOodUu9C5ANSRJdjBYK+DYqEQQ/KLHD0kVmtWoCjmVcviTUkoKCyW4Th+GX7uLjc5yu1PJ/FK2i6tc4Kdou9mPevap3QvrCq1b4rpA7mNuF+lBxVoCEi9hFiSMSqihTObdZgrcjFY3gezSjOiHFxFZm9uFH+p/BXaKHlHLaesWSl1DQ/9KnqMbCkHwipqgNVtNRrOBw73+q7X0/bgePnFJaql1obdYgp+bFOc9M/9LbsHb72OxbrKE+KnR3uutzF1SR4LejKKEJeheFuTUKWjVja5AWnqgT67E0u1y6kDcLu+Xs6JRx92fHyYnndEHfdzW12EF6vqSWsGj/hOdFcqKRmsJ+RUiTRqnKbTbNdTUc+gDacPCFQfn3cgGThyYfM+MaGt02LbHQaGB7ctkvsunq4NykxLyCpXsxOUa1Uomnz+9M5bp/BYJF5qJEa+YVRet7UjnLQv93rNzchy9X/iOMe5WeH5Mwk1LaNjJK65HEE3dKZdy+IgGoXLV0cQP8SzXyRiX7eXaenndUFXnQRyJefM0Ss9VQnf1wecUdryEYWmG1vMiX6tRx1Z4Rycm+YcwX3V0kyqjN1W755tMeFJ11DydLf0vdehdjsoNObTtbQVI2Na9pzCtSSjFTHzlp2yXavT9Vu/qQHXMcmFV11OuO4UdWHl5cZ95RZI39M0ZrC623Nvo5jz4bWJkIYbTtuU4z549GxDYgFE1aN0eJhPxVebUyE7Tpevon8d7RkJqXvITuKqCzQpFUjOFo+w9t/u9Qyid6c4EHL3xbl4w35al0cZuJywB3N5fLUa3rjmoHSo7Y950CU0NXK1RzjyRtL5vVsWWG5Mrjk0M7dwSG+kRxdxC9xqpV0omtqn8R6PC0RUpF2ZdI2tFf35tM7KT27yErsjx2PDn4jlaLIWOnwiGA3A26z3l/P3GkH08feN8+76amVrmPF9v9VK+0GlSdPzb5EdToY2E9yEyhEpuEpa0z5d2XnDhlfZmvadkQdrRF2WAG5NYGo52Lt9v85Xop/Ij7/9Jx413uzHfC8++LKGenb5i96L0+rd13aStV1F2qnafkJ3a00bLxIR+K9/zO4io/8Qx8Wj6oUK/pBTVNWFAYYQ7YU9VNENnDeHyybLeFjLqC0btWwrpFVVqrfX0Awk1E3nNLcbJHOGHMIqKHRUpashpdZL6zaiVldzfzDfPUoM0vI4JCSdfv+HnU4ifJUhZk7EJtZuBdfpnHq4UnBRrEZjyAfrNn2Mf4Yx2Zc1venXOsoTimnfZxa7BbPXBd+pMyRsrsBoZkfaI3JekFYP4c3X9mBgySzNrQGcolu6S0pOV113sSmariZ+BXhsGfDFDbw+/5saAtEFnVcrdNEjcvAnWT4x2nYn8jBkqmnZw/Aej4AO7yxykuF9aNQ7hPBO27G7IINMcMUEXuYtGIy2UmaeS1AHBX8fYHwVhZexKqmjBYY3Xblz4PhQu1NqNQhsn24wzWupo7uLIdp/uDu1LXX1SWfL/X7qQtdA8Xv7UW8K1y1d/YRF92R//atFaPucV8yJjDcghr1SzfX3fjntrz2Gq6HWLnvuOBK55+uS9esnvmcVxektWJew1ev3t6HtI+YPrHbdc1q49Xnn0wod/kli0Wp9zCr90a/TUu5zBP0SBQv8zngu5C+iJ/4d8FOgTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/yZ/ATLXJSiY+fcpAAAAAElFTkSuQmCC" alt="Logo" style="height:34px; background:#fff; border-radius:6px; padding:2px;"> Pinocchio Stolberg</div>
+  <small>Sonnentalstraße 1 · 52222 Stolberg · Tel. 02402 86 44 984 · 4,5 ★ (288 Rezensionen)</small>
+  <div class="f-legal">
+    <a href="impressum.html">Impressum</a>
+    <a href="datenschutz.html">Datenschutz</a>
+    <a href="agb.html">AGB &amp; Widerruf</a>
+  </div>
+</footer>
+
+<!-- Floating cart button -->
+<button class="fab-cart" id="fabCart">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+  Warenkorb <span class="badge" id="fabBadge">0</span>
+</button>
+
+<!-- Cart drawer -->
+<div class="overlay" id="overlay"></div>
+<div class="drawer" id="cartDrawer">
+  <div class="drawer-head">
+    <h3>Euer Warenkorb</h3>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <button id="clearCartBtn" style="background:none; border:none; color:var(--tomato); font-size:.78rem; font-weight:700; cursor:pointer; display:none;">🗑 Leeren</button>
+      <button class="close-btn" id="cartCloseBtn">✕</button>
+    </div>
+  </div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="drawer-foot">
+    <div id="crossSellNudge" style="display:none; background:var(--paper-2); border-radius:10px; padding:10px 12px; margin-bottom:12px; font-size:.82rem; display:flex; align-items:center; justify-content:space-between; gap:8px;">
+      <span>🥤 Durst? Noch ein Getränk dazu?</span>
+      <button onclick="document.querySelector('[data-tab-key=getraenke]')?.click(); closeCart();" style="background:none; border:1px solid var(--line); border-radius:8px; padding:5px 10px; font-size:.76rem; font-weight:700; color:var(--ink);">Ansehen</button>
+    </div>
+    <div class="subtotal-row"><span>Zwischensumme</span><span id="cartSubtotal">0,00 €</span></div>
+    <button class="btn btn-primary" style="width:100%; justify-content:center;" id="checkoutBtn">Zur Kasse</button>
+  </div>
+</div>
+
+<!-- Bestellverlauf drawer -->
+<div class="drawer" id="historyDrawer">
+  <div class="drawer-head"><h3>Meine Bestellungen</h3><button class="close-btn" id="historyCloseBtn">✕</button></div>
+  <div class="drawer-body" id="historyBody"></div>
+</div>
+
+<!-- Checkout modal -->
+<div class="modal" id="checkoutModal">
+  <div class="modal-card">
+    <div class="modal-head"><h3 id="modalTitle">Bestellung abschließen</h3><button class="close-btn" id="modalCloseBtn">✕</button></div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot" id="modalFoot"></div>
+  </div>
+</div>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+/* ================= Öffnungsstatus ================= */
+const hours = {
+  1:{name:"Montag", open:"11:00", close:"22:00"},
+  2:{name:"Dienstag", open:"11:00", close:"22:00"},
+  3:{name:"Mittwoch", closed:true},
+  4:{name:"Donnerstag", open:"11:00", close:"22:00"},
+  5:{name:"Freitag", open:"11:00", close:"22:00"},
+  6:{name:"Samstag", open:"11:00", close:"22:00"},
+  0:{name:"Sonntag", open:"11:00", close:"22:00"}
+};
+const order = [1,2,3,4,5,6,0];
+const now = new Date();
+const day = now.getDay();
+const todayInfo = hours[day];
+const tbl = document.getElementById('hoursTable');
+if(tbl){
+  order.forEach(d=>{
+    const h = hours[d];
+    const tr = document.createElement('tr');
+    if(d===day) tr.classList.add('today');
+    const label = h.closed ? "Geschlossen (Ruhetag, außer Feiertage)" : h.open + "–" + h.close;
+    tr.innerHTML = `<td>${h.name}</td><td>${label}</td>`;
+    tbl.appendChild(tr);
+  });
+}
+function isOpenNow(){
+  if(todayInfo.closed) return false;
+  const [oh,om] = todayInfo.open.split(':').map(Number);
+  const [ch,cm] = todayInfo.close.split(':').map(Number);
+  const openMin = oh*60+om, closeMin = ch*60+cm;
+  const nowMin = now.getHours()*60+now.getMinutes();
+  return nowMin >= openMin && nowMin < closeMin;
+}
+const dot = document.getElementById('statusDot');
+const txt = document.getElementById('statusText');
+if(dot && txt){
+  if(isOpenNow()){ dot.classList.add('open'); txt.textContent = "Jetzt geöffnet · bis " + todayInfo.close + " Uhr — online bestellbar"; }
+  else{ dot.classList.add('closed'); txt.textContent = todayInfo.closed ? "Heute geschlossen (Ruhetag)" : "Geschlossen · öffnet um " + todayInfo.open + " Uhr"; }
+}
+
+/* ================= Google Maps erst nach Klick laden (Datenschutz) ================= */
+const loadMapBtn = document.getElementById('loadMapBtn');
+if(loadMapBtn){
+  loadMapBtn.addEventListener('click', () => {
+    const mapWrap = document.getElementById('mapWrap');
+    mapWrap.innerHTML = '<iframe src="https://www.google.com/maps?q=Sonnentalstra%C3%9Fe+1,+52222+Stolberg&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Standort Pinocchio"></iframe>';
+  });
+}
+
+/* ================= Menü-Daten ================= */
+const menuData = {
+  pizza: { label:"🍕 Pizza", groups:[
+    {title:"Pizza — Grundbelag: Tomatensauce, Käse und Oregano", items:[
+      [1,"Margherita","Tomatensauce, Käse & Oregano","8,50",false,true],
+      [2,"Napoletana","Oliven, Kapern, Sardellen & Knoblauch","10,00"],
+      [3,"Salami","","10,00",false,true],
+      [4,"Mario","Scampis & Spinat","12,00"],
+      [5,"Inferno","Peperoni & Salami","10,50"],
+      [6,"Bandito","Zwiebeln, Oliven & Knoblauch (scharf)","10,00"],
+      [7,"Prosciutto e Peperoni","Schinken & Peperoni","10,50"],
+      [8,"Spinaci","Spinat & Knoblauch","10,00"],
+      [9,"Prosciutto","Schinken","10,00"],
+      [10,"Funghi","","10,00"],
+      [11,"Roma","Champignons & Schinken","11,50"],
+      [12,"Calzone","gefüllte Pizza: Champignons, Schinken, Thunfisch, Spinat, Knoblauch (scharf)","12,50"],
+      [13,"Quattro Stagioni","Spinat, Champignons, Schinken & Thunfisch","12,00"],
+      [14,"Tonno","Thunfisch","11,00"],
+      [15,"Esmeralda","Thunfisch, Mais, Zwiebeln & Schafskäse","12,00"],
+      [16,"Valentino","Thunfisch, Schinken, Champignons & Artischocken","12,00"],
+      [17,"Contadina","Champignons, Artischocken & Knoblauch","10,50"],
+      [18,"Marinara","Meeresfrüchte & Knoblauch","12,00"],
+      [19,"Sardegna","Spinat, Champignons & Knoblauch","10,50"],
+      [20,"Grandiosa","Zwiebeln, Champignons & Paprika","11,50"],
+    ]},
+    {title:"Weitere Pizza-Spezialitäten", items:[
+      [21,"Deliziosa","Schinken & Salami","11,50"],
+      [22,"Scampi","Krabben & Knoblauch","12,00"],
+      [23,"Milano","Champignons, Salami (scharf)","11,50"],
+      [24,"Casereccia","Spinat, Zwiebeln, Knoblauch & Schafskäse","11,00"],
+      [25,"Mista","Champignons, Thunfisch, Schinken & Salami","12,00"],
+      [26,"Italia","Spinat, Zwiebeln & Paprika","10,50"],
+      [27,"Campagnola","Sardellen, Kapern & Salami","11,50"],
+      [28,"Vesuvio","Paprika & Zwiebeln","10,50"],
+      [29,"Del Sud","Schinken, Artischocken, Krabben & Knoblauch","12,00"],
+      [30,"Hawaii","Schinken & Ananas","10,50"],
+      [31,"Pirata","Paprika, Artischocken, Kapern, Sardellen, Oliven, Knoblauch (scharf)","12,00"],
+      [32,"Rustica","Schinken, Champignons & Paprika","11,50"],
+      [33,"Pinocchio","Thunfisch, Champignons, Schinken, Spinat, Knoblauch (scharf)","12,00",true,true],
+      [34,"Diavolo","Thunfisch, Schinken (scharf)","11,50"],
+      [35,"Capricciosa","Champignons, Schinken, Artischocken, Zwiebeln & Paprika","12,00"],
+      [36,"Antonio","Spinat, Schinken & Spiegelei","11,50"],
+      [37,"Paesana","Thunfisch, Champignons, Sardellen","11,50"],
+      [38,"Primavera","Thunfisch, Schinken, Zwiebeln (scharf)","11,50"],
+      [39,"La Grotta","Spinat, Schinken, Krabben, Champignons & Knoblauch","12,00"],
+      [40,"La Strada","Paprika, Schinken, Krabben, Champignons & Knoblauch","12,00"],
+    ]},
+    {title:"Pizza — Hausklassiker", items:[
+      [41,"Rami","Champignons, Thunfisch & Ananas","11,50"],
+      [42,"Emilio","Champignons, Thunfisch, Mais","11,50"],
+      [43,"Matta","Peperoni, Salami, Sardellen & Knoblauch","11,50"],
+      [44,"Bolognese","Rindfleischsauce & Spaghetti","12,50"],
+      [45,"Mare","Thunfisch, Krabben & Knoblauch","12,50"],
+      [46,"Verdura","Gemüse & Knoblauch","12,00"],
+      [47,"Casa","Champignons, Thunfisch","11,50"],
+      [48,"Rucola","Parmaschinken, Kirschtomaten, Rucola, Parmesan","12,00"],
+      [49,"Magica","Schinken, Kirschtomaten & Käse","11,50"],
+      [50,"Pescatore","Thunfisch, Meeresfrüchte, Sardellen & Knoblauch","12,50"],
+      [51,"Pollo","Hähnchenfleisch, Peperoni & Broccoli","12,00"],
+      [52,"Pugliese","Thunfisch & Paprika","12,00"],
+      [53,"Zingara","Thunfisch, Schinken, Paprika & Artischocken","12,00"],
+      [54,"Cosenza","Thunfisch & Zwiebeln","11,50"],
+      [55,"Kaiser","frische Tomaten, Oliven, frischer Basilikum, Mozzarella","11,50"],
+      [56,"Rimini","Champignons, Paprika, Spinat & Zwiebeln","11,50"],
+      [57,"Andrea","Parmaschinken & Gorgonzola","11,50"],
+      [58,"4 Formaggi","vier verschiedene Käsesorten","11,50"],
+      [59,"Famiglia 40cm","Familienpizza für 2 Personen — Thunfisch, Champignons, Schinken & Salami","24,00"],
+      [60,"Pizzablech 40×60 cm","für 4 Personen — auf Anfrage","auf Anfrage"],
+    ]},
+    {title:"Pizzabrötchen gefüllt", items:[
+      [null,"Pizzabrötchen gefüllt","mit Thunfisch, Schinken, Spinat, Schafskäse, Hähnchenbrust & Peperoni — je Sorte","8,50"],
+    ]},
+  ]},
+  salate: { label:"🥗 Salate", groups:[
+    {title:"Salate — mit Essig-Öl oder Joghurtdressing", items:[
+      [163,"Lena","grüner Salat, Gurken, Tomaten, Zwiebeln, Lachs, Rucola & Oliven","12,50",false,true],
+      [164,"Bella Italia","grüner Salat, Gurken, Tomaten, Rucola, Schafskäse & Zwiebeln","10,50"],
+      [165,"Eva","grüner Salat, Gurken, Tomaten, Rucola, Zwiebeln & Parmesankäse","10,00",false,true],
+      [166,"Verde","grüner Salat & Zwiebeln","8,00"],
+      [167,"Pomodori","grüner Salat, Tomaten & Zwiebeln","8,50"],
+      [168,"Fantasia","Hähnchensalat mit Rucola, Parmesan, Tomaten, Speck & Champignons","12,50"],
+      [169,"Mista","grüner Salat, Gurken, Tomaten & Zwiebeln","8,00"],
+      [170,"Pinocchio-Salat","grüner Salat, Rindfleischstreifen, Schafskäse & Peperoni","12,50",false,true],
+      [171,"Tonno Fagiolo","grüner Salat, Gurken, Tomaten, Zwiebeln, Thunfisch & Bohnen","11,50"],
+      [172,"Niçoise","grüner Salat, Gurken, Tomaten, Zwiebeln, Thunfisch & Sardellen","11,50"],
+      [173,"Capricciosa","grüner Salat, Gurken, Tomaten, Zwiebeln, Käse, Schinken & Thunfisch","12,00"],
+      [174,"Marinara","grüner Salat, Gurken, Tomaten, Zwiebeln & Meeresfrüchte","12,00"],
+      [175,"Formaggio","grüner Salat, Gurken, Tomaten, Zwiebeln, Käse & gekochte Eier","11,50"],
+      [176,"Tonno","grüner Salat, Gurken, Tomaten, Zwiebeln & Thunfisch","11,00"],
+      [177,"Mais","grüner Salat, Gurken, Tomaten, Zwiebeln & Mais","9,50"],
+      [178,"Mozzarella","Weichkäse, Tomaten, grüner Salat, Oliven & Zwiebeln","11,50"],
+      [179,"Speciale","grüner Salat, Gurken, Tomaten, Zwiebeln, Thunfisch & Ei","12,00"],
+      [180,"Contadina","grüner Salat, Gurken, Tomaten, Zwiebeln, Schafskäse, Artischocken, Thunfisch & Oliven","11,00"],
+      [181,"Argentina","grüner Salat, Gurken, Tomaten, Zwiebeln, Artischocken & Mais","9,00"],
+      [182,"Gamberetti","grüner Salat, Gurken, Tomaten, Zwiebeln, Krabben & Knoblauch","12,00"],
+      [183,"Mirto","grüner Salat, Gurken, Tomaten, Käse, Zwiebeln, Bohnen, Oliven & Mais","11,00"],
+      [184,"Hawaii","grüner Salat, Schinken, Ananas, Gurken, Tomaten & Zwiebeln","10,50"],
+      [185,"Mare","grüner Salat, Gurken, Tomaten, Zwiebeln, Thunfisch & Krabben","12,50"],
+      [186,"Rossano","grüner Salat, Gurken, Tomaten, Zwiebeln, Thunfisch, Käse & Mais","11,50"],
+      [187,"Di Pollo","grüner Salat, Gurken, Tomaten, Zwiebeln, Hähnchenfleisch, Parmesankäse & Champignons","12,50"],
+    ]},
+  ]},
+  pasta: { label:"🍝 Pasta", groups:[
+    {title:"Spaghetti", items:[
+      [188,"Napoli","mit Tomatensauce","10,00"],
+      [189,"Bolognese","mit Fleischsauce","11,00",false,true],
+      [190,"Chef","mit Hähnchenstreifen, Broccoli, Champignons, in Sahnesauce","11,50"],
+      [191,"Carbonara","mit Schinken, Sahne, Eigelb & Parmesan","11,00",false,true],
+      [192,"Amatriciana","mit Zwiebeln, Schinken, Tomatensauce","11,00"],
+      [193,"Diavolo","scharf: mit Zwiebeln, Tomatensauce, Schinken, Paprika","11,00"],
+      [194,"Marinara","mit Meeresfrüchten, Tomatensauce & Knoblauch","12,00"],
+      [196,"Gorgonzola","mit Sahne & Gorgonzolakäse","10,50"],
+      [197,"Bella Italia","mit Sahne, Schinken, Champignons & mit Käse überbacken","11,00"],
+      [198,"Tonno","mit Thunfisch & Tomatensauce","11,00"],
+      [199,"Mari e Monti","mit Broccoli & Krabben in Sahnesauce","12,50"],
+      [200,"Alla Zingara","mit Tomatensauce, frischen Champignons, Paprika & Knoblauch","11,00"],
+      [201,"Alfredo","Schinken, Sahne, Erbsen & Parmesan","11,00"],
+    ]},
+    {title:"Maccheroni", items:[
+      [202,"Mirto","Tomaten-Sahnesauce, Schinken, Erbsen, Knoblauch, Krabben & Käse überbacken","12,50"],
+      [203,"Longobucco","Tomaten-Sahnesauce, Schinken, Käse, überbacken (scharf)","11,50"],
+      [204,"Rossano","Tomaten-Sahnesauce, Champignons, Krabben, Artischocken & Käse überbacken","12,50"],
+      [205,"All'Uovo","gekochtes Ei, Tomatensauce, Schinken, Sahne überbacken mit Knoblauch (scharf)","10,00"],
+      [206,"Aglio e Olio","mit Knoblauch, Olivenöl (scharf)","10,00"],
+      [207,"Arrabiata","mit Tomatensauce, Oliven & Peperoni (scharf)","13,50"],
+      [240,"Gamberoni","Tomatensauce & Gambas","13,50"],
+    ]},
+    {title:"Tortellini", items:[
+      [218,"Mirto","Tomaten-Sahnesauce, Schinken, Erbsen, Knoblauch, Krabben & Käse überbacken","12,50"],
+      [219,"All'Uovo","Schinken, gek. Ei, Tomatensauce, Sahne & Käse überbacken","11,00"],
+      [220,"Arrabiata","mit Tomatensauce, Oliven & Peperoni (scharf)","10,50"],
+      [223,"Napoli","mit Tomatensauce","11,00"],
+      [224,"Bolognese","mit Fleischsauce","12,00"],
+      [225,"Gorgonzola","mit Gorgonzolasauce und Sahne","10,50"],
+      [226,"Koch","Schinken, Tomatensauce, Sahne mit Käse überbacken","11,00"],
+      [227,"Bella Italia","Sahne, Champignons, Schinken & Käse überbacken","11,50"],
+      [228,"Gamberetti","Krabben & Sahnesauce","12,50"],
+      [229,"Funghi","Champignons & Sahnesauce","10,00"],
+      [230,"Alfredo","Schinken, Sahne, Erbsen, Parmesankäse","12,00"],
+      [231,"Panna e Prosciutto","Sahnesauce & Schinken","11,00"],
+      [232,"Mirto Tortellini","Tomaten-Sahnesauce, Schinken, Erbsen, Knoblauch, Krabben, Käse überbacken","12,50"],
+      [233,"Longobucco Tortellini","Tomaten-Sahnesauce, Schinken, Käse, überbacken (scharf)","11,50"],
+      [234,"All'Uovo Tortellini","Schinken, gek. Ei, Tomatensauce, Sahne mit Käse überbacken","11,00"],
+      [235,"Carbonara Tortellini","Schinken, Sahne, Eigelb, Parmesan","11,50"],
+    ]},
+    {title:"Überbackene Nudeln", items:[
+      [236,"Cannelloni","","12,00"],
+      [237,"Lasagne","","12,00"],
+      [238,"Tris al Forno","3 verschiedene Nudelsorten: Spaghetti/Rigatoni/Tortellini","12,00"],
+      [239,"Tris Speciale","3 verschiedene Nudelsorten: Lasagne/Cannelloni/Tortellini mit Käse überbacken","12,00"],
+    ]},
+    {title:"Tagliatelle", items:[
+      [255,"Rimini","Champignons, Schinken, Sahnesauce","11,00"],
+      [256,"Bologna","Fleischsauce","11,00"],
+      [257,"Napoli","Tomatensauce","10,00"],
+      [258,"Alfredo","Schinken, Erbsen, Sahnesauce, Parmesankäse","11,50"],
+      [259,"Bella Italia","Käse, Schinken, Champignons, Sahnesauce & mit Käse überbacken","12,00"],
+      [260,"Panna e Prosciutto","Schinken, Sahnesauce","11,00"],
+      [261,"Carbonara","Schinken, Sahne, Eigelb, Parmesan","11,00"],
+      [262,"Mirto","Tomaten-Sahnesauce, Schinken, Krabben, Erbsen, Knoblauch & Käse überbacken","12,50"],
+      [263,"All'Uovo","Schinken, gek. Ei, Sahne & mit Käse überbacken","11,50"],
+      [264,"Salmone","mit Lachs in Sahnesauce","13,50"],
+    ]},
+    {title:"Gnocchi", items:[
+      [270,"Napoletana","Tomatensauce & Basilikum","11,00"],
+      [271,"Gorgonzola","Sahne & Gorgonzolakäse","11,50"],
+      [272,"Panna e Prosciutto","Sahne & Schinken","11,50"],
+      [273,"Della Casa","Mozzarellakäse, Tomaten & Basilikum","11,50"],
+      [274,"Bolognese","mit Bolognesesauce","11,50"],
+    ]},
+  ]},
+  antipasti: { label:"🍆 Antipasti", groups:[
+    {title:"Antipasti", items:[
+      [284,"Prosciutto di Parma","Parmaschinken","13,50"],
+      [286,"Mozzarella Caprese","Mozzarellakäse mit Tomaten und Basilikum","10,00",false,true],
+      [287,"Antipasto Italiano Misto","gemischte Vorspeisen","13,50"],
+      [288,"Carpaccio di Filetto","dünn geschnittenes Rinderfilet","13,50"],
+      [289,"Bruschetta","","7,00",false,true],
+      [290,"Bruschetta Spezial","mit Parmesan","8,00"],
+    ]},
+    {title:"Überbackenes Gemüse", items:[
+      [245,"Broccoli al Forno","Broccoli in Sahnesauce, Tomatensauce, Knoblauch, mit Käse überbacken","12,00"],
+      [246,"Petti di Pollo","Hähnchenbruststreifen mit versch. Gemüse, Tomatensauce & Käse überbacken","12,00",false,true],
+      [247,"Spinaci al Forno","Spinat, Sahne, Tomaten, Knoblauch & Käse überbacken","12,00"],
+      [248,"Combinazione di Verdura","Gemüsekombination: Broccoli, Spinat, Artischocken, Champignons, Tomatensauce, Knoblauch & Käse überbacken","12,00"],
+      [249,"Funghi al Forno","Champignons, Sahne, Tomaten, Knoblauch & Käse überbacken","12,00"],
+    ]},
+  ]},
+  fleisch: { label:"🥩 Fleisch", groups:[
+    {title:"Carne — mit Beilage nach Wahl (Pommes, Kroketten, Bratkartoffeln, Beilagensalat oder Spaghetti)", items:[
+      [300,"Scaloppine alla Milanese","Schweineschnitzel paniert","13,90",false,true],
+      [301,"Scaloppine al Vino Bianco","Schweineschnitzel in Weißwein","13,90"],
+      [302,"Scaloppine al Marsala","Schweineschnitzel in Marsalasauce","14,90"],
+      [303,"Scaloppine al Limone","Schweineschnitzel in Weißwein & Zitrone","14,90"],
+      [304,"Scaloppine alla Pizzaiola","Schweineschnitzel in Tomatensauce, Kapern, Oliven","14,90"],
+      [305,"Scaloppine al Funghi e Gorgonzola","Schweineschnitzel in Sahnesauce, Champignons, Gorgonzolakäse","14,90"],
+      [306,"Scaloppine Mari e Monti","Schweineschnitzel in Sahnesauce, Scampi, Broccoli","16,90"],
+      [307,"Scaloppine alla Paesana","Schweineschnitzel in Sahnesauce, Champignons, Paprika & Artischocken","14,90"],
+      [308,"Scaloppine Hawaii","Schweineschnitzel mit Weißwein, Sahne, Ananas & Käse","14,90"],
+      [309,"Scaloppine al Pepe Verde","Schweineschnitzel mit Pfeffersauce","14,90"],
+    ]},
+    {title:"Bistecche Argentina — mit Beilage nach Wahl", items:[
+      [310,"Bistecca alla Griglia","Arg. Rumpsteak gegrillt mit Kräuterbutter","23,90",false,true],
+      [311,"Bistecca ai Funghi","Arg. Rumpsteak in Sahnesauce mit Champignons","24,90"],
+      [312,"Bistecca al Pepe Verde","Arg. Rumpsteak in Pfefferrahmsauce","24,90"],
+      [313,"Bistecca alla Paesana","Arg. Rumpsteak in Sahnesauce, Champignons, Paprika & Artischocken","24,90"],
+      [314,"Bistecca al Gorgonzola","Arg. Rumpsteak in Sahnesauce","24,90"],
+      [315,"Bistecca Diavolo","Arg. Rumpsteak in Tomatensauce, Paprika, Shrimps, Champignons (scharf)","24,90"],
+      [316,"Bistecca Mare e Monti","Arg. Rumpsteak in Tomaten-Sahnesauce, Shrimps & Broccoli","25,90"],
+    ]},
+    {title:"Pollo — mit Beilage nach Wahl", items:[
+      [401,"Pollo al Pepe Verde","Gegrillte Hähnchenbrust in grüner Pfeffer-Sahnesauce","16,90"],
+      [402,"Pollo ai Funghi","Gegrillte Hähnchenbrust in Champignonrahmsauce","16,90",false,true],
+      [403,"Pollo alla Griglia","Gegrillte Hähnchenbrust","14,90"],
+      [404,"Pollo ai Funghi & Gorgonzola","Gegrillte Hähnchenbrust mit Champignons, Gorgonzola & Sahnesauce","16,90"],
+    ]},
+  ]},
+  risotto: { label:"🍚 Risotto", groups:[
+    {title:"Risotto", items:[
+      [406,"Risotto alle Verdure","Reis mit versch. Gemüse","12,50",false,true],
+      [407,"Risotto Pollo e Verdure","Reis, Hähnchenfleisch & versch. Gemüse","13,50",false,true],
+    ]},
+  ]},
+  fisch: { label:"🐟 Fisch & Suppen", groups:[
+    {title:"Pesce — mit Beilage nach Wahl", items:[
+      [334,"Gamberoni alla Griglia","Gambas vom Grill","23,50",false,true],
+      [335,"Gamberoni alla Provinciale","Gambas in Tomaten-Sahnesauce, Weißwein & Knoblauch","24,50"],
+      [336,"Gamberoni al Pepe Verde","Gambas in grüner Pfefferrahmsauce","24,50"],
+      [337,"Gamberoni Aglio e Peperoncino","Gambas, Weißwein, Peperoni & Knoblauch","24,50"],
+      [338,"Salmone alla Griglia","gegrillter Lachs","22,50",false,true],
+      [339,"Salmone alla Provinciale","Lachs in Tomaten-Sahnesauce, Weißwein & Knoblauch","23,00"],
+      [340,"Salmone al Vino Bianco","Lachs in Weißweinsauce","23,00"],
+      [341,"Salmone al Pepe Verde","Lachs in Sahnesauce mit grünem Pfeffer","23,00"],
+    ]},
+    {title:"Zuppe", items:[
+      [350,"Crema di Pomodoro","Tomatencremesuppe","7,50"],
+      [351,"Tortellini in Brodo","Fleischbrühe mit gefüllten Nudeln","8,00"],
+      [353,"Minestrone all'Italiana","Gemüsesuppe","8,00"],
+    ]},
+  ]},
+  beilagen: { label:"🍟 Beilagen & Dessert", groups:[
+    {title:"Beilagen", items:[
+      [null,"Pommes frites","","4,50",false,true],
+      [null,"Kroketten","","4,50"],
+      [null,"Bratkartoffeln","","4,50"],
+      [null,"Broccoli","","4,50"],
+      [null,"Spinat","","4,50"],
+      [null,"Gemischter Salat","","4,50"],
+      [null,"Tagesbeilage","","4,50"],
+      [null,"Brötchen","mit Kräuterbutter","3,50"],
+    ]},
+    {title:"Dessert", items:[
+      [null,"Tiramisu","","4,90",false,true],
+    ]},
+  ]},
+  getraenke: { label:"🥤 Getränke", groups:[
+    {title:"Getränke zum Mitnehmen", items:[
+      [null,"Coca-Cola","1,0 l","3,50"],
+      [null,"Coca-Cola Zero","1,0 l","3,50"],
+      [null,"Fanta","1,0 l","3,50"],
+      [null,"Sprite","1,0 l","3,50"],
+      [null,"Bitburger","0,5 l","2,50"],
+      [null,"Weißbier","0,5 l","3,00"],
+      [null,"Rotwein","0,7 l","13,00"],
+      [null,"Weißwein","0,7 l","13,00"],
+      [null,"Lambrusco","0,7 l","13,00"],
+    ]},
+  ]},
+};
+
+/* ================= Hell/Dunkel-Umschalter ================= */
+// Standard ist "dunkel" — außer der Besucher hat schon mal bewusst
+// auf "hell" umgeschaltet, das merken wir uns dauerhaft im Browser.
+function applyTheme(theme){
+  document.documentElement.setAttribute('data-theme', theme);
+  const sun = document.getElementById('themeIconSun');
+  const moon = document.getElementById('themeIconMoon');
+  if(sun && moon){
+    sun.style.display = theme === 'dark' ? '' : 'none';
+    moon.style.display = theme === 'dark' ? 'none' : '';
+  }
+  try { localStorage.setItem('pinocchio_theme', theme); } catch(e) {}
+}
+(function initTheme(){
+  let saved = null;
+  try { saved = localStorage.getItem('pinocchio_theme'); } catch(e) {}
+  applyTheme(saved || 'dark');
+})();
+document.getElementById('themeToggleBtn').addEventListener('click', ()=>{
+  const current = document.documentElement.getAttribute('data-theme');
+  applyTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+/* ================= Backend-Verbindung ================= */
+const API_BASE = "https://pinocchio-backend.onrender.com";
+const MIN_ORDER_DELIVERY = 15.0; // € – muss zum Wert in server.js passen
+const WEBSITE_DISCOUNT_RATE = 0.10; // 10% Rabatt exklusiv für Online-Bestellungen
+// Öffentlicher Stripe-Schlüssel (NICHT geheim, darf im Frontend stehen)
+const STRIPE_PUBLISHABLE_KEY = "pk_test_51U0IZVRrzvP3SOFk89J8wx6hoA8acRXSyx6KlBUFa4ORk9kQl5mgzDzF4n7XsidQ7X1aUNc2vBY3EAWIychFlJEg00HVLUXKcc";
+
+/* ================= Warenkorb-Status ================= */
+// Der Warenkorb wird im Browser gespeichert (localStorage), damit er auch
+// nach der Weiterleitung zu Stripe und zurück erhalten bleibt.
+function loadCartFromStorage(){
+  try {
+    const raw = localStorage.getItem('pinocchio_cart');
+    return raw ? JSON.parse(raw) : {};
+  } catch(e) { return {}; }
+}
+function saveCartToStorage(){
+  try { localStorage.setItem('pinocchio_cart', JSON.stringify(cart)); } catch(e) {}
+}
+const cart = loadCartFromStorage(); // id -> {name, price, qty}
+
+/* ================= Bestellverlauf (localStorage) ================= */
+function loadOrderHistory(){
+  try {
+    const raw = localStorage.getItem('pinocchio_order_history');
+    return raw ? JSON.parse(raw) : [];
+  } catch(e) { return []; }
+}
+function saveOrderToHistory(order){
+  try {
+    const history = loadOrderHistory();
+    history.unshift(order); // neueste zuerst
+    localStorage.setItem('pinocchio_order_history', JSON.stringify(history.slice(0, 10)));
+    updateHistoryBadge();
+  } catch(e) {}
+}
+function updateHistoryBadge(){
+  const count = loadOrderHistory().length;
+  const badge = document.getElementById('historyBadge');
+  if(!badge) return;
+  badge.textContent = count;
+  badge.style.display = count > 0 ? 'flex' : 'none';
+}
+
+function priceToNumber(p){
+  if(p === 'auf Anfrage') return null;
+  return parseFloat(p.replace('.','').replace(',','.'));
+}
+function fmt(n){ return n.toFixed(2).replace('.', ',') + ' €'; }
+
+function getDrinkNames(){
+  return menuData.getraenke.groups.flatMap(g=>g.items.map(it=>it[1]));
+}
+function cartHasDrinks(){
+  const drinkNames = getDrinkNames();
+  return Object.values(cart).some(it => drinkNames.includes(it.name));
+}
+function cartDrinkItems(){
+  const drinkNames = getDrinkNames();
+  return Object.entries(cart).filter(([id,it]) => drinkNames.includes(it.name));
+}
+
+function updateCartUI(){
+  const ids = Object.keys(cart);
+  const count = ids.reduce((s,id)=>s+cart[id].qty,0);
+  document.getElementById('fabBadge').textContent = count;
+  const navBadge = document.getElementById('cartBadge');
+  navBadge.textContent = count;
+  navBadge.style.display = count>0 ? 'flex':'none';
+  document.getElementById('clearCartBtn').style.display = ids.length>0 ? 'inline-block' : 'none';
+
+  const body = document.getElementById('cartBody');
+  body.innerHTML = '';
+  let subtotal = 0;
+  if(ids.length===0){
+    body.innerHTML = '<div class="cart-empty">Euer Warenkorb ist noch leer.<br>Stöbert in der Speisekarte und fügt eure Favoriten hinzu 🍕</div>';
+  } else {
+    ids.forEach(id=>{
+      const it = cart[id];
+      subtotal += it.price * it.qty;
+      const row = document.createElement('div');
+      row.className = 'cart-row';
+      row.innerHTML = `
+        <div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5L5 19"/></svg></div>
+        <div class="info">
+          <div class="n">${it.name}</div>
+          <div class="p">${fmt(it.price)} · Zwischensumme: ${fmt(it.price*it.qty)}</div>
+          <div class="qty-ctrl" style="background:var(--paper-2);">
+            <button style="color:var(--ink);" onclick="changeQty('${id}',-1)">–</button>
+            <span style="color:var(--ink);">${it.qty}</span>
+            <button style="color:var(--ink);" onclick="changeQty('${id}',1)">+</button>
+          </div>
+        </div>`;
+      body.appendChild(row);
+    });
+  }
+  document.getElementById('cartSubtotal').textContent = fmt(subtotal);
+  const hasDrink = cartHasDrinks();
+  const nudgeEl = document.getElementById('crossSellNudge');
+  if(nudgeEl) nudgeEl.style.display = (ids.length > 0 && !hasDrink) ? 'flex' : 'none';
+  document.querySelectorAll('.item-card').forEach(card=>{
+    const id = card.dataset.id;
+    const stepper = card.querySelector('.stepper-slot');
+    if(!stepper) return;
+    if(card.dataset.priceless === '1'){
+      stepper.innerHTML = `<span style="font-size:.75rem; color:var(--gray);">Bitte anrufen</span>`;
+      return;
+    }
+    if(cart[id]){
+      stepper.innerHTML = `<div class="qty-ctrl"><button onclick="changeQty('${id}',-1)">–</button><span>${cart[id].qty}</span><button onclick="changeQty('${id}',1)">+</button></div>`;
+    } else {
+      stepper.innerHTML = `<button class="add-btn" onclick="addToCart('${id}')">+ Hinzufügen</button>`;
+    }
+  });
+}
+
+// Merkt sich zu jeder Katalog-Referenz (Kategorie::Nummer/Name) die
+// Anzeige-Daten (Name, Preis) — befüllt beim Rendern der Speisekarte.
+// Der Server prüft Preise ohnehin nochmal selbst; das hier ist nur für
+// eine korrekte Anzeige im Warenkorb.
+const CATALOG_LOOKUP = {};
+
+function addToCart(catalogKey){
+  const info = CATALOG_LOOKUP[catalogKey];
+  if(!info) return;
+  if(cart[catalogKey]) cart[catalogKey].qty++;
+  else cart[catalogKey] = {catalogKey, name:info.name, price:info.price, qty:1};
+  saveCartToStorage();
+  updateCartUI();
+}
+function changeQty(id, delta){
+  if(!cart[id]) return;
+  cart[id].qty += delta;
+  if(cart[id].qty<=0) delete cart[id];
+  saveCartToStorage();
+  updateCartUI();
+}
+
+/* ================= Menü rendern ================= */
+const tabsEl = document.getElementById('tabs');
+const panelsEl = document.getElementById('menuPanels');
+const keys = Object.keys(menuData);
+const EXPAND_LIMIT = 6;
+
+const CATEGORY_ICON = {
+  pizza: '🍕', salate: '🥗', pasta: '🍝', antipasti: '🍆', fleisch: '🥩', risotto: '🍚', fisch: '🐟', beilagen: '🍟', getraenke: '🥤'
+};
+
+function buildItemCard(item, categoryKey){
+  const [num, name, desc, price, star, bestseller] = item;
+  const priceNum = priceToNumber(price);
+  // Eindeutiger Katalog-Schlüssel: Kategorie + Nummer (oder Name, falls
+  // keine Nummer vorhanden) — so werden z.B. "Bolognese" bei Spaghetti
+  // und bei Maccheroni trotz unterschiedlicher Preise korrekt getrennt.
+  const cardId = categoryKey + '::' + (num!==null ? num : name);
+  if(priceNum!==null) CATALOG_LOOKUP[cardId] = { name, price: priceNum };
+  const card = document.createElement('div');
+  card.className = 'item-card';
+  card.dataset.id = cardId;
+  card.dataset.priceless = priceNum===null ? '1' : '0';
+  const icon = CATEGORY_ICON[categoryKey] || '🍽️';
+  card.innerHTML = `
+    <div class="ph" style="font-size:2.2rem;">${icon}</div>
+    <div class="item-body">
+      <div class="item-name">${num?'<span class="num">#'+num+'</span>':''} ${name} ${bestseller?'<span class="star" style="background:var(--gold);">🏆 Bestseller</span>':''}${star?'<span class="star">Hausempfehlung</span>':''}</div>
+      <div class="item-desc">${desc||''}</div>
+      <div class="item-foot">
+        <div class="item-price">${price}${priceNum!==null?' €':''}</div>
+        <div class="stepper-slot">
+          ${priceNum!==null ? `<button class="add-btn" onclick="addToCart('${cardId}')">+ Hinzufügen</button>` : `<span style="font-size:.75rem; color:var(--gray);">Bitte anrufen</span>`}
+        </div>
+      </div>
+    </div>`;
+  return card;
+}
+
+function buildGrid(items, collapsible, categoryKey){
+  const wrap = document.createElement('div');
+  const grid = document.createElement('div');
+  grid.className = 'item-grid';
+  wrap.appendChild(grid);
+
+  items.forEach((item, i)=>{
+    const card = buildItemCard(item, categoryKey);
+    if(collapsible && i >= EXPAND_LIMIT){
+      card.classList.add('extra-item');
+      card.style.display = 'none';
+    }
+    grid.appendChild(card);
+  });
+
+  if(collapsible && items.length > EXPAND_LIMIT){
+    const moreBtn = document.createElement('button');
+    moreBtn.className = 'more-btn';
+    const hiddenCount = items.length - EXPAND_LIMIT;
+    moreBtn.textContent = `Mehr anzeigen (+${hiddenCount})`;
+    let expanded = false;
+    moreBtn.addEventListener('click', ()=>{
+      expanded = !expanded;
+      grid.querySelectorAll('.extra-item').forEach(el=>{ el.style.display = expanded ? '' : 'none'; });
+      moreBtn.textContent = expanded ? 'Weniger anzeigen' : `Mehr anzeigen (+${hiddenCount})`;
+    });
+    wrap.appendChild(moreBtn);
+  }
+  return wrap;
+}
+
+keys.forEach((key, idx)=>{
+  const btn = document.createElement('button');
+  btn.className = 'tab-btn' + (idx===0 ? ' active':'');
+  btn.textContent = menuData[key].label;
+  btn.dataset.tabKey = key;
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.menu-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+key).classList.add('active');
+    document.getElementById('tabs').scrollIntoView({behavior:'smooth', block:'start'});
+  });
+  tabsEl.appendChild(btn);
+
+  const panel = document.createElement('div');
+  panel.className = 'menu-panel' + (idx===0 ? ' active':'');
+  panel.id = 'panel-'+key;
+
+  // Bestseller-Spotlight: die 3 markierten Artikel dieser Kategorie zuerst
+  const bestsellerItems = [];
+  menuData[key].groups.forEach(group=>{
+    group.items.forEach(item=>{ if(item[5]===true) bestsellerItems.push(item); });
+  });
+  if(bestsellerItems.length){
+    const h = document.createElement('div');
+    h.className = 'menu-subhead';
+    h.innerHTML = '🏆 Beliebteste bei euch';
+    panel.appendChild(h);
+    panel.appendChild(buildGrid(bestsellerItems, false, key));
+  }
+
+  menuData[key].groups.forEach(group=>{
+    const h = document.createElement('div');
+    h.className = 'menu-subhead';
+    h.textContent = group.title;
+    panel.appendChild(h);
+    panel.appendChild(buildGrid(group.items, true, key));
+  });
+  panelsEl.appendChild(panel);
+});
+updateCartUI();
+updateHistoryBadge();
+
+/* ================= Mobiles Menü ================= */
+const navToggle = document.getElementById('navToggle');
+const navLinksEl = document.getElementById('navLinksEl');
+navToggle.addEventListener('click', ()=> navLinksEl.classList.toggle('open'));
+navLinksEl.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=> navLinksEl.classList.remove('open')));
+
+/* ================= Body-Scroll sperren, wenn Overlay offen ================= */
+function lockBodyScroll(){ document.body.style.overflow = 'hidden'; }
+function unlockBodyScroll(){
+  if(!document.getElementById('cartDrawer').classList.contains('show') && !document.getElementById('checkoutModal').classList.contains('show')){
+    document.body.style.overflow = '';
+  }
+}
+
+/* ================= Cart Drawer öffnen/schließen ================= */
+const overlay = document.getElementById('overlay');
+const drawer = document.getElementById('cartDrawer');
+function openCart(){ closeHistory(); overlay.classList.add('show'); drawer.classList.add('show'); lockBodyScroll(); }
+function closeCart(){ overlay.classList.remove('show'); drawer.classList.remove('show'); unlockBodyScroll(); }
+document.getElementById('fabCart').addEventListener('click', openCart);
+document.getElementById('cartOpenBtn').addEventListener('click', openCart);
+document.getElementById('cartCloseBtn').addEventListener('click', closeCart);
+document.getElementById('clearCartBtn').addEventListener('click', ()=>{
+  if(confirm('Warenkorb wirklich komplett leeren?')){
+    Object.keys(cart).forEach(k=>delete cart[k]);
+    saveCartToStorage();
+    updateCartUI();
+  }
+});
+overlay.addEventListener('click', ()=>{ closeCart(); closeHistory(); closeModal(); });
+
+/* ================= Verlauf-Drawer öffnen/schließen ================= */
+const historyDrawer = document.getElementById('historyDrawer');
+function openHistory(){ closeCart(); renderHistory(); overlay.classList.add('show'); historyDrawer.classList.add('show'); lockBodyScroll(); }
+function closeHistory(){ overlay.classList.remove('show'); historyDrawer.classList.remove('show'); unlockBodyScroll(); }
+document.getElementById('historyOpenBtn').addEventListener('click', openHistory);
+document.getElementById('historyCloseBtn').addEventListener('click', closeHistory);
+
+function renderHistory(){
+  const body = document.getElementById('historyBody');
+  const history = loadOrderHistory();
+  if(history.length === 0){
+    body.innerHTML = '<div class="cart-empty">Noch keine Bestellungen aufgegeben.<br>Eure erste Bestellung erscheint hier — inklusive "Nochmal bestellen" 🍕</div>';
+    return;
+  }
+  body.innerHTML = history.map(o => {
+    const itemsStr = o.items.map(it => `${it.qty}× ${it.name}`).join(', ');
+    const dateStr = new Date(o.createdAt).toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    return `
+      <div class="cart-row" style="flex-direction:column; align-items:stretch; gap:8px;">
+        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+          <strong style="font-size:.92rem;">${o.orderNumber}</strong>
+          <span style="font-size:.74rem; color:var(--gray);">${dateStr}</span>
+        </div>
+        <div class="items-list" style="font-size:.85rem; color:var(--gray);">${itemsStr}</div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <strong style="font-size:.9rem;">${fmt(o.total)}</strong>
+          <div style="display:flex; gap:8px;">
+            <a href="order-status.html?order=${encodeURIComponent(o.orderNumber)}" class="add-btn" style="background:var(--white); color:var(--ink); border:1px solid var(--line); text-decoration:none;">📦 Verfolgen</a>
+            <button class="add-btn" onclick="reorder('${o.orderNumber}')">🔁 Nochmal bestellen</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function reorder(orderNumber){
+  const history = loadOrderHistory();
+  const order = history.find(o => o.orderNumber === orderNumber);
+  if(!order) return;
+  order.items.forEach(it => {
+    // Ältere Verlaufseinträge (vor diesem Update) haben evtl. noch keinen
+    // catalogKey gespeichert — in dem Fall überspringen wir sie sicherheitshalber,
+    // statt mit falschen/veralteten Preisen weiterzumachen.
+    if(!it.catalogKey || !CATALOG_LOOKUP[it.catalogKey]) return;
+    if(cart[it.catalogKey]) cart[it.catalogKey].qty += it.qty;
+    else cart[it.catalogKey] = { catalogKey: it.catalogKey, name: it.name, price: it.price, qty: it.qty };
+  });
+  saveCartToStorage();
+  updateCartUI();
+  closeHistory();
+  openCart();
+}
+
+/* ================= Checkout-Flow ================= */
+const modal = document.getElementById('checkoutModal');
+const modalBody = document.getElementById('modalBody');
+const modalFoot = document.getElementById('modalFoot');
+const modalTitle = document.getElementById('modalTitle');
+let checkoutState = { type:'lieferung', name:'', phone:'', email:'', address:'', payment:'online', note:'', tip:0 };
+let step = 1;
+
+const UPSELL_KEYS = ['getraenke::Coca-Cola', 'getraenke::Fanta', 'getraenke::Sprite', 'beilagen::Pommes frites'];
+
+function shouldShowUpsell(){
+  const drinkNames = getDrinkNames();
+  const hasDrink = Object.values(cart).some(it => drinkNames.includes(it.name));
+  const hasFries = Object.values(cart).some(it => it.name === 'Pommes frites');
+  return !hasDrink || !hasFries;
+}
+
+function renderUpsell(){
+  modalTitle.textContent = 'Bevor es weitergeht …';
+  const cards = UPSELL_KEYS.map(key=>{
+    const info = CATALOG_LOOKUP[key];
+    if(!info) return '';
+    const inCart = cart[key];
+    return `
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; background:var(--white); border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin-bottom:10px;">
+        <div>
+          <div style="font-weight:700; font-size:.92rem;">${info.name}</div>
+          <div style="font-size:.82rem; color:var(--gray);">${fmt(info.price)}</div>
+        </div>
+        <div id="upsell-slot-${key.replace(/[^a-zA-Z0-9]/g,'')}">
+          ${inCart
+            ? `<div class="qty-ctrl" style="background:var(--ink-fixed);"><button onclick="changeQty('${key}',-1); refreshUpsellSlots();">–</button><span>${inCart.qty}</span><button onclick="addToCart('${key}'); refreshUpsellSlots();">+</button></div>`
+            : `<button class="add-btn" onclick="addToCart('${key}'); refreshUpsellSlots();">+ Hinzufügen</button>`}
+        </div>
+      </div>`;
+  }).join('');
+
+  modalBody.innerHTML = `
+    <p style="color:var(--gray); font-size:.9rem; margin-bottom:16px;">🥤🍟 Lust auf ein Getränk oder Pommes dazu? Einfach hinzufügen — ihr bleibt genau hier, keine Weiterleitung zur Speisekarte.</p>
+    ${cards}
+  `;
+  modalFoot.innerHTML = `<button class="btn btn-primary" style="width:100%; justify-content:center;" id="upsellContinue">Weiter zur Kasse</button>`;
+  document.getElementById('upsellContinue').addEventListener('click', ()=>{ step = 1; renderStep(); });
+}
+
+function refreshUpsellSlots(){
+  UPSELL_KEYS.forEach(key=>{
+    const slotId = 'upsell-slot-' + key.replace(/[^a-zA-Z0-9]/g,'');
+    const slot = document.getElementById(slotId);
+    if(!slot) return;
+    const inCart = cart[key];
+    slot.innerHTML = inCart
+      ? `<div class="qty-ctrl" style="background:var(--ink-fixed);"><button onclick="changeQty('${key}',-1); refreshUpsellSlots();">–</button><span>${inCart.qty}</span><button onclick="addToCart('${key}'); refreshUpsellSlots();">+</button></div>`
+      : `<button class="add-btn" onclick="addToCart('${key}'); refreshUpsellSlots();">+ Hinzufügen</button>`;
+  });
+}
+
+function openModal(){
+  if(Object.keys(cart).length===0){ return; }
+  modal.classList.add('show');
+  overlay.classList.add('show');
+  lockBodyScroll();
+  if(shouldShowUpsell()){
+    renderUpsell();
+  } else {
+    step = 1;
+    renderStep();
+  }
+}
+function closeModal(){
+  modal.classList.remove('show');
+  if(!drawer.classList.contains('show')) overlay.classList.remove('show');
+  unlockBodyScroll();
+}
+document.getElementById('checkoutBtn').addEventListener('click', openModal);
+document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+
+function subtotalValue(){
+  return Object.values(cart).reduce((s,it)=>s+it.price*it.qty,0);
+}
+
+function renderStep(){
+  modalFoot.innerHTML = '';
+  if(step===1){
+    modalTitle.textContent = 'Wie möchtet ihr bestellen?';
+    const belowMin = MIN_ORDER_DELIVERY - subtotalValue();
+    modalBody.innerHTML = `
+      <div class="steps-dots"><span class="on"></span><span></span><span></span><span></span></div>
+      <div class="radio-group">
+        <label class="radio-card"><input type="radio" name="otype" value="lieferung" ${checkoutState.type==='lieferung'?'checked':''}> 🛵 Lieferung nach Hause</label>
+        <label class="radio-card"><input type="radio" name="otype" value="abholung" ${checkoutState.type==='abholung'?'checked':''}> 🥡 Selbst abholen</label>
+        <label class="radio-card"><input type="radio" name="otype" value="vorort" ${checkoutState.type==='vorort'?'checked':''}> 🍽️ Vor Ort essen</label>
+      </div>
+      <div class="field" id="addressField" style="margin-top:16px; ${checkoutState.type!=='lieferung'?'display:none;':''}">
+        <label>Lieferadresse</label>
+        <input type="text" id="addressInput" placeholder="Straße, Hausnummer, PLZ Stolberg" value="${checkoutState.address}">
+        <div id="addressError" style="display:none; color:var(--tomato); font-size:.8rem; font-weight:700; margin-top:6px;">Bitte gebt eine vollständige Adresse mit Hausnummer und PLZ ein (z. B. Musterstr. 5, 52222 Stolberg).</div>
+        <div id="minOrderNote" style="display:${belowMin > 0 ? 'block' : 'none'}; color:var(--tomato); font-size:.8rem; font-weight:700; margin-top:6px;">Noch ${fmt(Math.max(belowMin,0))} bis zum Mindestbestellwert von ${fmt(MIN_ORDER_DELIVERY)} für die Lieferung.</div>
+      </div>
+      <div id="dineInDrinkNote" style="display:${checkoutState.type==='vorort' && cartHasDrinks() ? 'block' : 'none'}; margin-top:16px;" class="demo-note">
+        🍽️ Für "Vor Ort" gelten unsere normalen Restaurant-Getränkepreise — Getränke aus dem Online-Menü könnt ihr dafür leider nicht mitbestellen. Bitte entfernt sie aus dem Warenkorb und bestellt sie direkt bei uns am Tisch.
+      </div>
+    `;
+    document.querySelectorAll('input[name="otype"]').forEach(r=>r.addEventListener('change', e=>{
+      checkoutState.type = e.target.value;
+      document.getElementById('addressField').style.display = checkoutState.type==='lieferung' ? '' : 'none';
+      document.getElementById('addressError').style.display = 'none';
+      document.getElementById('dineInDrinkNote').style.display = (checkoutState.type==='vorort' && cartHasDrinks()) ? 'block' : 'none';
+    }));
+    const addrInputEl = document.getElementById('addressInput');
+    if(addrInputEl){
+      addrInputEl.addEventListener('input', ()=>{
+        document.getElementById('addressError').style.display = 'none';
+        addrInputEl.style.borderColor = 'var(--line)';
+      });
+    }
+    modalFoot.innerHTML = `<button class="btn btn-dark" style="width:100%;" id="toStep2">Weiter</button>`;
+    document.getElementById('toStep2').addEventListener('click', ()=>{
+      if(checkoutState.type==='vorort' && cartHasDrinks()){
+        document.getElementById('dineInDrinkNote').style.display = 'block';
+        return;
+      }
+      if(checkoutState.type==='lieferung'){
+        if(subtotalValue() < MIN_ORDER_DELIVERY){
+          document.getElementById('minOrderNote').style.display = 'block';
+          return;
+        }
+        const addr = document.getElementById('addressInput').value.trim();
+        const looksValid = addr.length >= 8 && /\d/.test(addr);
+        if(!looksValid){
+          document.getElementById('addressError').style.display = 'block';
+          document.getElementById('addressInput').style.borderColor = 'var(--tomato)';
+          document.getElementById('addressInput').focus();
+          return;
+        }
+        checkoutState.address = addr;
+      }
+      step=2; renderStep();
+    });
+  }
+  else if(step===2){
+    modalTitle.textContent = 'Eure Kontaktdaten';
+    modalBody.innerHTML = `
+      <div class="steps-dots"><span class="on"></span><span class="on"></span><span></span><span></span></div>
+      <div class="field">
+        <label>Name *</label>
+        <input type="text" id="cName" value="${checkoutState.name}" placeholder="Vor- und Nachname">
+        <div id="nameError" style="display:none; color:var(--tomato); font-size:.8rem; font-weight:700; margin-top:6px;">Bitte gebt euren Namen ein, damit wir die Bestellung zuordnen können.</div>
+      </div>
+      <div class="field">
+        <label>Telefon *</label>
+        <input type="tel" id="cPhone" value="${checkoutState.phone}" placeholder="0151 1234567">
+        <div id="phoneError" style="display:none; color:var(--tomato); font-size:.8rem; font-weight:700; margin-top:6px;">Bitte gebt eine Telefonnummer ein, falls wir euch kurz erreichen müssen.</div>
+      </div>
+      <div class="field">
+        <label>Anmerkungen zur Bestellung (optional)</label>
+        <textarea id="cNote" rows="3" placeholder="z. B. ohne Zwiebeln, extra scharf, an der Rezeption abgeben …">${checkoutState.note}</textarea>
+      </div>
+    `;
+    modalFoot.innerHTML = `<button class="btn btn-outline" id="back1">Zurück</button><button class="btn btn-dark" id="toStep3">Weiter</button>`;
+    document.getElementById('back1').addEventListener('click', ()=>{ step=1; renderStep(); });
+    const nameInputEl = document.getElementById('cName');
+    const phoneInputEl = document.getElementById('cPhone');
+    nameInputEl.addEventListener('input', ()=>{
+      document.getElementById('nameError').style.display = 'none';
+      nameInputEl.style.borderColor = 'var(--line)';
+    });
+    phoneInputEl.addEventListener('input', ()=>{
+      document.getElementById('phoneError').style.display = 'none';
+      phoneInputEl.style.borderColor = 'var(--line)';
+    });
+    document.getElementById('toStep3').addEventListener('click', ()=>{
+      const nameVal = nameInputEl.value.trim();
+      if(nameVal.length < 2){
+        document.getElementById('nameError').style.display = 'block';
+        nameInputEl.style.borderColor = 'var(--tomato)';
+        nameInputEl.focus();
+        return;
+      }
+      const phoneVal = phoneInputEl.value.trim();
+      const phoneDigits = phoneVal.replace(/\D/g,'');
+      if(phoneDigits.length < 6){
+        document.getElementById('phoneError').style.display = 'block';
+        phoneInputEl.style.borderColor = 'var(--tomato)';
+        phoneInputEl.focus();
+        return;
+      }
+      checkoutState.name = nameVal;
+      checkoutState.phone = phoneVal;
+      checkoutState.note = document.getElementById('cNote').value.trim();
+      step=3; renderStep();
+    });
+  }
+  else if(step===3){
+    modalTitle.textContent = 'Zahlungsart';
+    modalBody.innerHTML = `
+      <div class="steps-dots"><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+      <div class="radio-group">
+        <label class="radio-card">
+          <input type="radio" name="pay" value="online" ${checkoutState.payment!=='bar'?'checked':''}>
+          <span style="display:inline-flex; align-items:center; gap:8px;">
+            <svg width="28" height="20" viewBox="0 0 28 20" style="flex:0 0 auto;"><rect x="0.5" y="0.5" width="27" height="19" rx="3" fill="#2d3a4f" stroke="#1c2534"/><rect x="0.5" y="5" width="27" height="3.5" fill="#0f1620"/><rect x="3" y="13" width="8" height="2" rx="1" fill="#e3b23c"/></svg>
+            Online bezahlen (Karte oder PayPal)
+          </span>
+        </label>
+        <label class="radio-card">
+          <input type="radio" name="pay" value="bar" ${checkoutState.payment==='bar'?'checked':''}>
+          <span style="display:inline-flex; align-items:center; gap:8px;">
+            <svg width="22" height="20" viewBox="0 0 22 20" style="flex:0 0 auto;"><circle cx="11" cy="10" r="9" fill="#d9a441" stroke="#b8842a"/><text x="11" y="14" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">€</text></svg>
+            Barzahlung bei Übergabe
+          </span>
+        </label>
+      </div>
+      <div id="payNote" style="margin-top:16px; ${checkoutState.payment==='bar'?'display:none;':''}">
+        <div class="demo-note note-info">🔒 Die Zahlung passiert direkt hier auf unserer Seite (Stripe-Eingabefeld) — ihr verlasst die Seite nicht. Wir sehen und speichern eure Kartendaten nie selbst. Bei PayPal öffnet sich kurz ein PayPal-Fenster zur Bestätigung.</div>
+      </div>
+    `;
+    document.querySelectorAll('input[name="pay"]').forEach(r=>r.addEventListener('change', e=>{
+      checkoutState.payment = e.target.value;
+      document.getElementById('payNote').style.display = checkoutState.payment==='bar' ? 'none' : '';
+    }));
+    if(checkoutState.payment !== 'bar') checkoutState.payment = 'online';
+    modalFoot.innerHTML = `<button class="btn btn-outline" id="back2">Zurück</button><button class="btn btn-dark" id="toStep4">Weiter</button>`;
+    document.getElementById('back2').addEventListener('click', ()=>{ step=2; renderStep(); });
+    document.getElementById('toStep4').addEventListener('click', ()=>{ step=4; renderStep(); });
+  }
+  else if(step===4){
+    modalTitle.textContent = 'Bestellübersicht';
+    const sub = subtotalValue();
+    const deliveryFee = checkoutState.type==='lieferung' ? 2 : 0;
+    const preDiscountTotal = sub + deliveryFee;
+    const discount = preDiscountTotal * WEBSITE_DISCOUNT_RATE;
+    const tip = Number(checkoutState.tip) || 0;
+    const total = preDiscountTotal - discount + tip;
+    let itemsHtml = Object.values(cart).map(it=>`<div style="display:flex; justify-content:space-between; padding:6px 0; font-size:.88rem;"><span>${it.qty}× ${it.name}</span><span>${fmt(it.price*it.qty)}</span></div>`).join('');
+    const closedNotice = !isOpenNow() ? `<div class="demo-note" style="margin-bottom:14px;">🕒 Wir sind aktuell geschlossen. Eure Bestellung geht trotzdem raus und wird bearbeitet, sobald wir wieder öffnen (${todayInfo.closed ? 'siehe Öffnungszeiten' : todayInfo.open + ' Uhr'}).</div>` : '';
+    const tipOptions = [0, 1, 2, 5];
+    modalBody.innerHTML = `
+      <div class="steps-dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
+      ${closedNotice}
+      <div style="background:var(--white); border:1px solid var(--line); border-radius:12px; padding:16px;">
+        ${itemsHtml}
+        ${deliveryFee?`<div style="display:flex; justify-content:space-between; padding:6px 0; font-size:.88rem; color:var(--gray);"><span>Lieferpauschale</span><span>${fmt(deliveryFee)}</span></div>`:''}
+        <div style="display:flex; justify-content:space-between; padding:6px 0; font-size:.88rem; color:var(--basil); font-weight:700;"><span>🎉 Website-Rabatt (10%)</span><span>−${fmt(discount)}</span></div>
+        ${tip>0?`<div style="display:flex; justify-content:space-between; padding:6px 0; font-size:.88rem; color:var(--gray);"><span>Trinkgeld</span><span>${fmt(tip)}</span></div>`:''}
+        <div style="display:flex; justify-content:space-between; padding:10px 0 0; margin-top:6px; border-top:1px solid var(--line); font-weight:800;"><span>Gesamt</span><span>${fmt(total)}</span></div>
+      </div>
+      <div class="field" style="margin-top:16px;">
+        <label>Trinkgeld (freiwillig) 💛</label>
+        <div class="tip-row">
+          ${tipOptions.map(v=>`<button type="button" class="tip-btn ${tip===v?'active':''}" data-tip="${v}">${v===0?'Kein Trinkgeld':fmt(v)}</button>`).join('')}
+        </div>
+        <input type="number" min="0" step="0.5" id="customTipInput" placeholder="Eigener Betrag in €" value="${!tipOptions.includes(tip) && tip>0 ? tip : ''}" style="margin-top:8px;">
+      </div>
+      <div class="field" style="margin-top:16px;"><label>Bestellart</label><input disabled value="${checkoutState.type==='lieferung'?'Lieferung an: '+checkoutState.address:checkoutState.type==='abholung'?'Abholung im Restaurant':'Vor Ort essen'}"></div>
+      <div class="field"><label>Kontakt</label><input disabled value="${checkoutState.name}${checkoutState.phone ? ' · '+checkoutState.phone : ''}"></div>
+      <div class="field"><label>Zahlung</label><input disabled value="${checkoutState.payment==='bar'?'Barzahlung bei Übergabe':'Online bezahlen (Karte oder PayPal)'}"></div>
+      ${checkoutState.note ? `<div class="field"><label>Anmerkung</label><textarea disabled rows="2" style="resize:none;">${checkoutState.note}</textarea></div>` : ''}
+      <label class="radio-card" style="margin-top:16px; align-items:flex-start;">
+        <input type="checkbox" id="agbCheck" style="margin-top:3px;">
+        <span style="font-size:.85rem; font-weight:500;">Ich akzeptiere die <a href="agb.html" target="_blank" style="color:var(--tomato);">AGB &amp; Widerrufsbelehrung</a> sowie die <a href="datenschutz.html" target="_blank" style="color:var(--tomato);">Datenschutzerklärung</a>.</span>
+      </label>
+      <div id="agbError" style="display:none; color:var(--tomato); font-size:.8rem; font-weight:700; margin-top:8px;">Bitte akzeptiert die AGB, um fortzufahren.</div>
+    `;
+    document.querySelectorAll('.tip-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        checkoutState.tip = Number(btn.dataset.tip);
+        renderStep();
+      });
+    });
+    const customTipEl = document.getElementById('customTipInput');
+    customTipEl.addEventListener('input', ()=>{
+      const val = parseFloat(customTipEl.value.replace(',','.'));
+      checkoutState.tip = (!isNaN(val) && val >= 0) ? Math.min(val, 200) : 0;
+    });
+    customTipEl.addEventListener('change', ()=>{ renderStep(); });
+    modalFoot.innerHTML = `<button class="btn btn-outline" id="back3">Zurück</button><button class="btn btn-primary" id="placeOrder">${checkoutState.payment==='bar' ? 'Jetzt bestellen' : 'Weiter zur Zahlung'}</button>`;
+    document.getElementById('back3').addEventListener('click', ()=>{ step=3; renderStep(); });
+    document.getElementById('placeOrder').addEventListener('click', async ()=>{
+      const placeBtn = document.getElementById('placeOrder');
+
+      if(!document.getElementById('agbCheck').checked){
+        document.getElementById('agbError').style.display = 'block';
+        return;
+      }
+
+      if(!API_BASE){
+        modalBody.innerHTML = `<div class="demo-note">⚠️ Das Backend ist noch nicht verbunden (API_BASE ist leer). Diese Bestellung kann aktuell nicht wirklich verarbeitet werden.</div>`;
+        modalFoot.innerHTML = `<button class="btn btn-dark" style="width:100%;" id="closeNoBackend">Schließen</button>`;
+        document.getElementById('closeNoBackend').addEventListener('click', closeModal);
+        return;
+      }
+
+      placeBtn.disabled = true;
+      placeBtn.textContent = 'Einen Moment …';
+      // Render's kostenloser Tarif "schläft" nach Inaktivität ein und
+      // braucht dann bis zu ~50 Sek. zum Aufwachen — freundlich informieren,
+      // statt den Kunden im Unklaren zu lassen.
+      const slowHintTimer = setTimeout(()=>{
+        placeBtn.textContent = 'Fast fertig, Server startet …';
+      }, 4000);
+
+      const payload = {
+        items: Object.values(cart),
+        type: checkoutState.type,
+        address: checkoutState.address,
+        name: checkoutState.name,
+        phone: checkoutState.phone,
+        email: checkoutState.email,
+        note: checkoutState.note,
+        payment: checkoutState.payment,
+        tip: Number(checkoutState.tip) || 0,
+        acceptedTerms: true,
+      };
+
+      try {
+        if(checkoutState.payment === 'bar'){
+          const res = await fetch(API_BASE + '/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          clearTimeout(slowHintTimer);
+          const data = await res.json();
+          if(!res.ok) throw new Error(data.error || 'Unbekannter Fehler');
+
+          saveOrderToHistory({
+            orderNumber: data.orderNumber,
+            items: payload.items,
+            type: payload.type,
+            total: subtotalValue() + (payload.type === 'lieferung' ? 2 : 0),
+            createdAt: new Date().toISOString(),
+          });
+          showOrderSuccess(data.orderNumber);
+          return;
+        }
+
+        // Online-Zahlung: PaymentIntent anlegen, dann eingebettetes
+        // Stripe-Zahlungsfeld anzeigen (Schritt 5) — keine Weiterleitung.
+        const res = await fetch(API_BASE + '/api/create-payment-intent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        clearTimeout(slowHintTimer);
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.error || 'Unbekannter Fehler');
+
+        pendingOrderNumber = data.orderNumber;
+        pendingClientSecret = data.clientSecret;
+        saveOrderToHistory({
+          orderNumber: data.orderNumber,
+          items: payload.items,
+          type: payload.type,
+          total: subtotalValue() + (payload.type === 'lieferung' ? 2 : 0),
+          createdAt: new Date().toISOString(),
+        });
+        step = 5;
+        renderStep();
+      } catch(err){
+        clearTimeout(slowHintTimer);
+        placeBtn.disabled = false;
+        placeBtn.textContent = checkoutState.payment==='bar' ? 'Jetzt bestellen' : 'Weiter zur Zahlung';
+        modalBody.insertAdjacentHTML('afterbegin', `<div class="demo-note" style="margin-bottom:16px;">❌ Bestellung konnte nicht übermittelt werden: ${err.message}. Bitte versucht es erneut oder ruft uns an: <a href="tel:+4924028644984">02402 86 44 984</a>.</div>`);
+      }
+    });
+  }
+  else if(step===5){
+    renderPaymentStep();
+  }
+}
+
+// -----------------------------------------------------------------
+// Schritt 5: eingebettetes Stripe-Zahlungsfeld (Payment Element).
+// Karte wird komplett auf unserer eigenen Seite eingegeben; nur bei
+// PayPal öffnet sich kurz ein PayPal-eigenes Fenster zur Bestätigung
+// (das verlangt PayPal selbst, unabhängig vom Zahlungsanbieter).
+// -----------------------------------------------------------------
+let pendingOrderNumber = null;
+let pendingClientSecret = null;
+let stripeElementsInstance = null;
+
+async function renderPaymentStep(){
+  modalTitle.textContent = 'Bezahlen';
+  modalBody.innerHTML = `
+    <div class="steps-dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
+    <div id="paymentElementWrap" style="min-height:220px;">
+      <div style="text-align:center; padding:40px 0; color:var(--gray);">Zahlungsfeld wird geladen …</div>
+    </div>
+    <div id="paymentError" style="display:none; color:var(--tomato); font-size:.85rem; font-weight:700; margin-top:12px;"></div>
+  `;
+  modalFoot.innerHTML = `<button class="btn btn-primary" style="width:100%; justify-content:center;" id="confirmPayBtn" disabled>Jetzt bezahlen</button>`;
+
+  const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+  stripeElementsInstance = stripe.elements({ clientSecret: pendingClientSecret, appearance: { theme: document.documentElement.getAttribute('data-theme')==='dark' ? 'night' : 'stripe' } });
+  const paymentElement = stripeElementsInstance.create('payment');
+  paymentElement.mount('#paymentElementWrap');
+  paymentElement.on('ready', ()=>{ document.getElementById('confirmPayBtn').disabled = false; });
+
+  document.getElementById('confirmPayBtn').addEventListener('click', async ()=>{
+    const btn = document.getElementById('confirmPayBtn');
+    btn.disabled = true;
+    btn.textContent = 'Einen Moment …';
+    document.getElementById('paymentError').style.display = 'none';
+
+    const { error } = await stripe.confirmPayment({
+      elements: stripeElementsInstance,
+      confirmParams: {
+        return_url: window.location.origin + window.location.pathname + '?order=' + encodeURIComponent(pendingOrderNumber),
+      },
+      redirect: 'if_required', // nur weiterleiten, wenn PayPal/3D-Secure es zwingend verlangt
+    });
+
+    if(error){
+      document.getElementById('paymentError').textContent = error.message || 'Die Zahlung konnte nicht abgeschlossen werden.';
+      document.getElementById('paymentError').style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Jetzt bezahlen';
+      return;
+    }
+
+    // Kein Redirect nötig (normale Kartenzahlung) — direkt fertig.
+    showOrderSuccess(pendingOrderNumber);
+  });
+}
+
+function showOrderSuccess(orderNumber){
+  modalTitle.textContent = 'Bestellung aufgegeben!';
+  modalBody.innerHTML = `
+    <div class="success-wrap">
+      <div class="ico">✅</div>
+      <h2>Danke euch, ${checkoutState.name || 'liebe Gäste'}!</h2>
+      <p>Eure Bestellung ist bei uns eingegangen und wird direkt bearbeitet. Den aktuellen Stand seht ihr live über "Bestellung verfolgen".</p>
+      <div class="order-num">Bestellnummer ${orderNumber}</div>
+      <a href="order-status.html?order=${encodeURIComponent(orderNumber)}" class="btn btn-outline" style="margin-top:18px; justify-content:center;">📦 Bestellung verfolgen</a>
+    </div>`;
+  modalFoot.innerHTML = `<button class="btn btn-dark" style="width:100%;" id="doneBtn">Schließen</button>`;
+  document.getElementById('doneBtn').addEventListener('click', ()=>{
+    Object.keys(cart).forEach(k=>delete cart[k]);
+    saveCartToStorage();
+    updateCartUI();
+    closeModal();
+    closeCart();
+  });
+}
+
+/* ================= Rückkehr von Stripe (Erfolg/Abbruch) ================= */
+(function handlePaymentReturn(){
+  const params = new URLSearchParams(window.location.search);
+  const orderNumber = params.get('order');
+  const clientSecret = params.get('payment_intent_client_secret');
+  if(!orderNumber) return;
+
+  // URL wieder aufräumen, damit ein Neuladen die Meldung nicht wiederholt
+  window.history.replaceState({}, '', window.location.pathname);
+
+  if(!clientSecret){
+    // Kein Stripe-Redirect-Rückkehr (z.B. nur ?order= von woanders) — nichts zu tun.
+    return;
+  }
+
+  // Rückkehr von einer Zahlungsmethode, die zwingend eine Weiterleitung
+  // brauchte (PayPal-Bestätigung oder 3D-Secure) — jetzt den echten
+  // Zahlungsstatus bei Stripe abfragen.
+  window.addEventListener('DOMContentLoaded', async ()=>{
+    const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+    const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
+    if(paymentIntent && paymentIntent.status === 'succeeded'){
+      Object.keys(cart).forEach(k=>delete cart[k]);
+      saveCartToStorage();
+      updateCartUI();
+      window.location.href = 'order-status.html?order=' + encodeURIComponent(orderNumber);
+    } else {
+      alert('Die Zahlung wurde nicht abgeschlossen. Euer Warenkorb ist noch gefüllt — ihr könnt es jederzeit erneut versuchen.');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
