@@ -58,18 +58,45 @@
 
 <div id="loginView" class="login-box">
   <h2 style="margin:0;">🍕 Bestellübersicht</h2>
-  <p style="color:var(--gray); font-size:.85rem;">Gib euren Admin-Schlüssel ein (aus der .env-Datei, ADMIN_KEY).</p>
-  <input type="password" id="keyInput" placeholder="Admin-Schlüssel">
-  <input type="text" id="apiBaseInput" placeholder="Backend-Adresse, z.B. https://pinocchio-backend.onrender.com">
+  <p style="color:var(--gray); font-size:.85rem;">Mit E-Mail und Passwort anmelden.</p>
+  <input type="email" id="emailInput" placeholder="E-Mail" autocomplete="username">
+  <input type="password" id="passwordInput" placeholder="Passwort" autocomplete="current-password">
+  <input type="hidden" id="apiBaseInput" value="https://pinocchio-backend.onrender.com">
   <button id="loginBtn">Anmelden</button>
   <div class="error" id="loginError" style="display:none;"></div>
+  <div style="text-align:center; margin-top:14px;">
+    <a href="#" id="showKeyLoginLink" style="font-size:.78rem; color:var(--gray);">Stattdessen mit altem Admin-Schlüssel anmelden</a>
+  </div>
+  <div id="keyLoginBox" style="display:none; margin-top:12px; padding-top:12px; border-top:1px solid var(--line);">
+    <input type="password" id="keyInput" placeholder="Admin-Schlüssel">
+    <button id="keyLoginBtn" style="margin-top:8px;">Mit Schlüssel anmelden</button>
+  </div>
 </div>
 
 <div id="dashboardView" style="display:none;">
   <header>
     <h1>🍕 Pinocchio — Bestellübersicht</h1>
-    <button class="refresh-btn" id="refreshBtn">↻ Aktualisieren</button>
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+      <button class="refresh-btn" id="printerConnectBtn" onclick="connectPrinter()">🖨️ Drucker verbinden</button>
+      <button class="refresh-btn" id="refreshBtn">↻ Aktualisieren</button>
+      <button class="refresh-btn" onclick="openNewUserBox()" title="Weiteres Konto für Personal anlegen">👤+ Konto</button>
+      <button class="refresh-btn" onclick="logout()" title="Meldet dich ab und löscht die gespeicherten Zugangsdaten aus diesem Browser">⎋ Abmelden</button>
+    </div>
   </header>
+  <div id="printerStatusBanner" style="display:none; max-width:900px; margin:0 auto 16px;"></div>
+  <div id="newOrderBanner" style="display:none; max-width:900px; margin:0 auto 20px;"></div>
+  <div id="newUserBox" style="display:none; max-width:420px; margin:0 auto 20px; background:var(--white); border:1px solid var(--line); border-radius:12px; padding:18px;">
+    <h3 style="margin:0 0 10px;">Neues Konto anlegen</h3>
+    <input type="text" id="newUserName" placeholder="Name" style="width:100%; margin-bottom:8px;">
+    <input type="email" id="newUserEmail" placeholder="E-Mail" style="width:100%; margin-bottom:8px;">
+    <input type="password" id="newUserPassword" placeholder="Passwort (mind. 8 Zeichen)" style="width:100%; margin-bottom:8px;">
+    <div style="display:flex; gap:8px;">
+      <button class="action-btn" onclick="createNewUser()">Anlegen</button>
+      <button class="action-btn" onclick="document.getElementById('newUserBox').style.display='none';">Abbrechen</button>
+    </div>
+    <div class="error" id="newUserError" style="display:none; margin-top:8px;"></div>
+    <div id="newUserSuccess" style="display:none; margin-top:8px; color:var(--green); font-size:.85rem;">✅ Konto angelegt.</div>
+  </div>
   <main>
     <div class="tabs-row">
       <button class="tab-btn active" id="tabOrdersBtn" onclick="switchTab('orders')">📋 Bestellungen</button>
@@ -100,35 +127,286 @@
 let ADMIN_KEY = '';
 let API_BASE = '';
 
-document.getElementById('loginBtn').addEventListener('click', async () => {
-  ADMIN_KEY = document.getElementById('keyInput').value.trim();
-  API_BASE = document.getElementById('apiBaseInput').value.trim().replace(/\/$/, '');
+// tryLogin nimmt entweder den alten Admin-Schlüssel ODER ein neues
+// Sitzungs-Token entgegen — das Backend behandelt beides gleich, wenn
+// es als ?key=... mitgeschickt wird.
+async function tryLogin(key, base, silent) {
   const errEl = document.getElementById('loginError');
   errEl.style.display = 'none';
-
-  if (!ADMIN_KEY || !API_BASE) {
-    errEl.textContent = 'Bitte beides ausfüllen.';
-    errEl.style.display = 'block';
-    return;
-  }
-
   try {
-    const res = await fetch(`${API_BASE}/api/admin/orders?key=${encodeURIComponent(ADMIN_KEY)}`);
-    if (!res.ok) throw new Error('Falscher Schlüssel oder Backend nicht erreichbar.');
+    const res = await fetch(`${base}/api/admin/orders?key=${encodeURIComponent(key)}`);
+    if (!res.ok) throw new Error('Zugang ungültig oder Backend nicht erreichbar.');
+    ADMIN_KEY = key;
+    API_BASE = base;
+    try {
+      localStorage.setItem('pinocchio_admin_key', key);
+      localStorage.setItem('pinocchio_admin_base', base);
+    } catch (e) {}
     document.getElementById('loginView').style.display = 'none';
     document.getElementById('dashboardView').style.display = 'block';
     renderOrders(await res.json());
+    tryAutoReconnectPrinter();
+    return true;
+  } catch (err) {
+    if (!silent) {
+      errEl.textContent = err.message;
+      errEl.style.display = 'block';
+    }
+    return false;
+  }
+}
+
+document.getElementById('loginBtn').addEventListener('click', async () => {
+  const email = document.getElementById('emailInput').value.trim();
+  const password = document.getElementById('passwordInput').value;
+  const base = document.getElementById('apiBaseInput').value.trim().replace(/\/$/, '');
+  const errEl = document.getElementById('loginError');
+  errEl.style.display = 'none';
+
+  if (!email || !password) {
+    errEl.textContent = 'Bitte E-Mail und Passwort eingeben.';
+    errEl.style.display = 'block';
+    return;
+  }
+  try {
+    const res = await fetch(`${base}/api/admin/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Anmeldung fehlgeschlagen.');
+    await tryLogin(data.token, base, false);
   } catch (err) {
     errEl.textContent = err.message;
     errEl.style.display = 'block';
   }
 });
 
+document.getElementById('showKeyLoginLink').addEventListener('click', (e) => {
+  e.preventDefault();
+  const box = document.getElementById('keyLoginBox');
+  box.style.display = box.style.display === 'none' ? 'block' : 'none';
+});
+document.getElementById('keyLoginBtn').addEventListener('click', () => {
+  const key = document.getElementById('keyInput').value.trim();
+  const base = document.getElementById('apiBaseInput').value.trim().replace(/\/$/, '');
+  if (!key) return;
+  tryLogin(key, base, false);
+});
+
 document.getElementById('refreshBtn').addEventListener('click', loadOrders);
+
+// Beim Öffnen: falls schon mal erfolgreich angemeldet, automatisch einloggen
+(function autoLogin() {
+  let savedKey, savedBase;
+  try {
+    savedKey = localStorage.getItem('pinocchio_admin_key');
+    savedBase = localStorage.getItem('pinocchio_admin_base');
+  } catch (e) {}
+  if (savedKey && savedBase) {
+    document.getElementById('apiBaseInput').value = savedBase;
+    tryLogin(savedKey, savedBase, true);
+  }
+})();
+
+function logout() {
+  try {
+    localStorage.removeItem('pinocchio_admin_key');
+    localStorage.removeItem('pinocchio_admin_base');
+  } catch (e) {}
+  ADMIN_KEY = '';
+  API_BASE = '';
+  document.getElementById('dashboardView').style.display = 'none';
+  document.getElementById('loginView').style.display = 'block';
+  document.getElementById('emailInput').value = '';
+  document.getElementById('passwordInput').value = '';
+  document.getElementById('keyInput').value = '';
+}
 
 async function loadOrders() {
   const res = await fetch(`${API_BASE}/api/admin/orders?key=${encodeURIComponent(ADMIN_KEY)}`);
   renderOrders(await res.json());
+}
+
+/* ================= Ton + Banner bei neuer Bestellung ================= */
+// Wir merken uns, für welche Bestellnummern wir schon einen Ton
+// abgespielt haben, damit es nicht bei jedem Aktualisieren erneut pingt —
+// die Banner-Anzeige selbst bleibt aber, bis wirklich akzeptiert wurde.
+const alertedOrderNumbers = new Set();
+let audioCtx = null;
+
+function playNotificationSound() {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = audioCtx.currentTime;
+    // Zwei kurze, freundliche Töne hintereinander (wie eine kleine Klingel)
+    [880, 1175].forEach((freq, i) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.0001, now + i * 0.28);
+      gain.gain.exponentialRampToValueAtTime(0.35, now + i * 0.28 + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.28 + 0.25);
+      osc.connect(gain).connect(audioCtx.destination);
+      osc.start(now + i * 0.28);
+      osc.stop(now + i * 0.28 + 0.3);
+    });
+  } catch (e) { console.warn('Ton konnte nicht abgespielt werden:', e); }
+}
+
+function checkForNewOrders(orders) {
+  const pending = orders.filter(o => o.status === 'received' && !o.printed);
+  const banner = document.getElementById('newOrderBanner');
+
+  const newlyArrived = pending.filter(o => !alertedOrderNumbers.has(o.orderNumber));
+  if (newlyArrived.length > 0) {
+    playNotificationSound();
+    newlyArrived.forEach(o => alertedOrderNumbers.add(o.orderNumber));
+  }
+
+  if (pending.length === 0) {
+    banner.style.display = 'none';
+    banner.innerHTML = '';
+    return;
+  }
+
+  banner.style.display = 'block';
+  banner.innerHTML = pending.map(o => `
+    <div style="background:#fff6e9; border:2px solid #e3b23c; border-radius:12px; padding:16px 18px; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;">
+      <div>
+        <strong style="font-size:1.05rem;">🔔 Neue Bestellung ${o.orderNumber}</strong>
+        <div style="font-size:.85rem; color:#6b5a2e; margin-top:2px;">${o.name} · ${fmt(o.total)} · ${o.type === 'lieferung' ? '🛵 Lieferung' : o.type === 'abholung' ? '🥡 Abholung' : '🍽️ Vor Ort'}</div>
+      </div>
+      <button class="action-btn" style="background:var(--ink); color:#fff; padding:10px 18px; font-size:.9rem;" onclick="acceptOrder('${o.orderNumber}', this)">✅ Akzeptieren &amp; Drucken</button>
+    </div>
+  `).join('');
+}
+
+/* ================= Drucker direkt per USB (WebUSB) ================= */
+// Der Bondrucker hängt per USB-C-Kabel direkt am Tablet — kein
+// zusätzlicher Computer, kein PrintNode nötig. Der Browser spricht das
+// Gerät über die WebUSB-Schnittstelle direkt an (funktioniert nur in
+// Chrome, z.B. auf Android — nicht in Safari/iOS).
+let usbPrinterDevice = null;
+
+function updatePrinterStatus(connected, message) {
+  const btn = document.getElementById('printerConnectBtn');
+  btn.textContent = connected ? '🖨️ Drucker verbunden ✅' : '🖨️ Drucker verbinden';
+  const banner = document.getElementById('printerStatusBanner');
+  if (message) {
+    banner.style.display = 'block';
+    banner.innerHTML = `<div class="demo-note" style="background:${connected ? '#e9f7ec' : '#fdeceb'};">${message}</div>`;
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
+async function setupPrinterDevice(device) {
+  await device.open();
+  if (device.configuration === null) await device.selectConfiguration(1);
+  const iface = device.configuration.interfaces.find(i =>
+    i.alternates.some(a => a.endpoints.some(e => e.direction === 'out'))
+  );
+  if (!iface) throw new Error('Am ausgewählten Gerät wurde keine passende Druckschnittstelle gefunden.');
+  await device.claimInterface(iface.interfaceNumber);
+  const alt = iface.alternates.find(a => a.endpoints.some(e => e.direction === 'out'));
+  const outEndpoint = alt.endpoints.find(e => e.direction === 'out');
+  usbPrinterDevice = { device, endpointNumber: outEndpoint.endpointNumber };
+  updatePrinterStatus(true, '✅ Drucker verbunden und einsatzbereit.');
+}
+
+async function connectPrinter() {
+  if (!navigator.usb) {
+    alert('Dieser Browser unterstützt WebUSB nicht. Bitte auf dem Tablet Chrome benutzen (nicht Firefox/Samsung Internet).');
+    return;
+  }
+  try {
+    // Herstellerkennung 0x04B8 = Epson — zeigt im Auswahlfenster nur
+    // passende Geräte, statt jedes beliebige USB-Gerät aufzulisten.
+    const device = await navigator.usb.requestDevice({ filters: [{ vendorId: 0x04B8 }] });
+    await setupPrinterDevice(device);
+  } catch (err) {
+    console.warn('Drucker-Verbindung abgebrochen oder fehlgeschlagen:', err);
+    if (err.name !== 'NotFoundError') { // NotFoundError = Nutzer hat Dialog einfach geschlossen, keine Fehlermeldung nötig
+      updatePrinterStatus(false, '❌ Verbindung fehlgeschlagen: ' + err.message);
+    }
+  }
+}
+
+// Beim Öffnen der Seite automatisch mit einem schon einmal erlaubten
+// Drucker verbinden, ohne dass man den Auswahl-Dialog erneut sieht.
+async function tryAutoReconnectPrinter() {
+  if (!navigator.usb) return;
+  try {
+    const devices = await navigator.usb.getDevices();
+    if (devices.length > 0) await setupPrinterDevice(devices[0]);
+  } catch (err) {
+    console.warn('Automatische Drucker-Verbindung fehlgeschlagen:', err);
+  }
+}
+
+async function printBytesViaUSB(base64) {
+  if (!usbPrinterDevice) {
+    throw new Error('Kein Drucker verbunden. Oben auf "🖨️ Drucker verbinden" klicken.');
+  }
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  await usbPrinterDevice.device.transferOut(usbPrinterDevice.endpointNumber, bytes);
+}
+
+async function acceptOrder(orderNumber, btn) {
+  btn.disabled = true;
+  btn.textContent = '⏳ Drucke …';
+  try {
+    const bytesRes = await fetch(`${API_BASE}/api/admin/orders/${orderNumber}/receipt-bytes?key=${encodeURIComponent(ADMIN_KEY)}`);
+    const bytesData = await bytesRes.json();
+    if (!bytesRes.ok) throw new Error(bytesData.error || 'Bon-Daten konnten nicht geladen werden.');
+
+    await printBytesViaUSB(bytesData.base64);
+
+    const markRes = await fetch(`${API_BASE}/api/admin/orders/${orderNumber}/mark-printed?key=${encodeURIComponent(ADMIN_KEY)}`, { method: 'POST' });
+    if (!markRes.ok) throw new Error('Gedruckt, aber Status konnte nicht gespeichert werden — bitte kurz „Aktualisieren" klicken.');
+    loadOrders();
+  } catch (err) {
+    alert('Drucken fehlgeschlagen: ' + err.message + '\n\nIhr könnt es über "Erneut drucken" in der Liste unten nochmal versuchen, sobald der Drucker bereit ist.');
+    btn.disabled = false;
+    btn.textContent = '✅ Akzeptieren & Drucken';
+  }
+}
+
+function openNewUserBox() {
+  document.getElementById('newUserBox').style.display = 'block';
+  document.getElementById('newUserSuccess').style.display = 'none';
+  document.getElementById('newUserError').style.display = 'none';
+}
+
+async function createNewUser() {
+  const name = document.getElementById('newUserName').value.trim();
+  const email = document.getElementById('newUserEmail').value.trim();
+  const password = document.getElementById('newUserPassword').value;
+  const errEl = document.getElementById('newUserError');
+  const okEl = document.getElementById('newUserSuccess');
+  errEl.style.display = 'none';
+  okEl.style.display = 'none';
+  try {
+    const res = await fetch(`${API_BASE}/api/admin/users?key=${encodeURIComponent(ADMIN_KEY)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Fehler beim Anlegen.');
+    okEl.style.display = 'block';
+    document.getElementById('newUserName').value = '';
+    document.getElementById('newUserEmail').value = '';
+    document.getElementById('newUserPassword').value = '';
+  } catch (err) {
+    errEl.textContent = err.message;
+    errEl.style.display = 'block';
+  }
 }
 
 function fmt(n) { return n.toFixed(2).replace('.', ',') + ' €'; }
@@ -156,9 +434,10 @@ async function reprintOrder(orderNumber, btn) {
   btn.disabled = true;
   btn.textContent = '⏳ Drucke …';
   try {
-    const res = await fetch(`${API_BASE}/api/admin/orders/${orderNumber}/reprint?key=${encodeURIComponent(ADMIN_KEY)}`, { method: 'POST' });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Unbekannter Fehler');
+    const bytesRes = await fetch(`${API_BASE}/api/admin/orders/${orderNumber}/receipt-bytes?key=${encodeURIComponent(ADMIN_KEY)}`);
+    const bytesData = await bytesRes.json();
+    if (!bytesRes.ok) throw new Error(bytesData.error || 'Bon-Daten konnten nicht geladen werden.');
+    await printBytesViaUSB(bytesData.base64);
     btn.textContent = '✅ Gedruckt';
   } catch (err) {
     alert('Nachdruck fehlgeschlagen: ' + err.message);
@@ -172,6 +451,7 @@ async function reprintOrder(orderNumber, btn) {
 function renderOrders(data) {
   const wrap = document.getElementById('ordersTableWrap');
   const orders = data.orders || [];
+  checkForNewOrders(orders);
   if (orders.length === 0) {
     wrap.innerHTML = '<div class="empty">Noch keine Bestellungen eingegangen.</div>';
     return;
@@ -195,8 +475,8 @@ function renderOrders(data) {
       <td>${o.name}${o.phone ? '<br><span class="items-list">' + o.phone + '</span>' : ''}</td>
       <td>${o.type === 'lieferung' ? '🛵 Lieferung' : o.type === 'abholung' ? '🥡 Abholung' : '🍽️ Vor Ort'}${o.address ? '<br><span class="items-list">' + o.address + '</span>' : ''}</td>
       <td class="items-list">${itemsStr}${o.note ? '<br><span class="note-badge">Notiz: ' + o.note + '</span>' : ''}</td>
-      <td><strong>${fmt(o.total)}</strong></td>
-      <td>${o.payment === 'karte' ? 'Karte' : o.payment === 'paypal' ? 'PayPal' : 'Bar'}</td>
+      <td><strong>${fmt(o.total)}</strong>${o.tip ? `<br><span class="note-badge">davon ${fmt(o.tip)} Trinkgeld</span>` : ''}</td>
+      <td>${o.payment === 'bar' ? 'Bar' : 'Online'}</td>
       <td><span class="status ${o.status}">${STATUS_LABELS[o.status] || o.status}</span></td>
       <td>${actionsHtml}</td>
     </tr>`;
@@ -205,10 +485,12 @@ function renderOrders(data) {
   wrap.innerHTML = html;
 }
 
-// Alle 30 Sekunden automatisch aktualisieren, wenn eingeloggt
+// Alle 10 Sekunden automatisch aktualisieren, wenn eingeloggt — bewusst
+// unabhängig davon, welcher Tab gerade offen ist, damit der Ton/Banner
+// für neue Bestellungen nie verpasst wird.
 setInterval(() => {
-  if (API_BASE && ADMIN_KEY && document.getElementById('ordersTab').style.display !== 'none') loadOrders();
-}, 30000);
+  if (API_BASE && ADMIN_KEY) loadOrders();
+}, 10000);
 
 /* ================= Tabs & Berichte (Z-Bericht / Jahresbericht) ================= */
 function switchTab(tab) {
@@ -256,7 +538,7 @@ async function loadReport() {
   }
 }
 
-const PAYMENT_LABELS = { karte: 'Karte', paypal: 'PayPal', bar: 'Barzahlung' };
+const PAYMENT_LABELS = { online: 'Online (Karte/PayPal)', bar: 'Barzahlung' };
 const TYPE_LABELS = { lieferung: '🛵 Lieferung', abholung: '🥡 Abholung', vorort: '🍽️ Vor Ort' };
 
 function renderReport(data) {
@@ -272,7 +554,7 @@ function renderReport(data) {
       <td>${o.name}</td>
       <td>${TYPE_LABELS[o.type] || o.type}</td>
       <td>${PAYMENT_LABELS[o.payment] || o.payment}</td>
-      <td><strong>${fmt(o.total)}</strong></td>
+      <td><strong>${fmt(o.total)}</strong>${o.tip ? ` <span style="color:var(--gray); font-size:.78rem;">(${fmt(o.tip)} Trinkgeld)</span>` : ''}</td>
     </tr>`).join('');
 
   document.getElementById('reportResult').innerHTML = `
@@ -284,6 +566,7 @@ function renderReport(data) {
       <div class="report-card"><div class="label">Bestellungen</div><div class="value">${data.orderCount}</div></div>
       <div class="report-card"><div class="label">Website-Rabatt gesamt</div><div class="value">−${fmt(data.totalDiscount)}</div></div>
       <div class="report-card"><div class="label">Liefergebühren gesamt</div><div class="value">${fmt(data.totalDeliveryFees)}</div></div>
+      <div class="report-card"><div class="label">Trinkgeld gesamt</div><div class="value">${fmt(data.totalTips || 0)}</div></div>
     </div>
     <h3 style="font-size:1rem;">Umsatz nach Zahlungsart</h3>
     <div class="report-summary">${paymentRows || '<div class="empty">Keine Daten</div>'}</div>
