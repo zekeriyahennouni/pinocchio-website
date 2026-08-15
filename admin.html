@@ -325,7 +325,10 @@ async function connectPrinter() {
   try {
     // Herstellerkennung 0x04B8 = Epson — zeigt im Auswahlfenster nur
     // passende Geräte, statt jedes beliebige USB-Gerät aufzulisten.
-    const device = await navigator.usb.requestDevice({ filters: [{ vendorId: 0x04B8 }] });
+    // Kein Hersteller-Filter mehr — zeigt alle angeschlossenen USB-Geräte,
+    // damit auch Nicht-Epson-Thermodrucker (z.B. generische China-Modelle,
+    // die ebenfalls ESC/POS sprechen) ausgewählt werden können.
+    const device = await navigator.usb.requestDevice({ filters: [{}] });
     await setupPrinterDevice(device);
   } catch (err) {
     console.warn('Drucker-Verbindung abgebrochen oder fehlgeschlagen:', err);
